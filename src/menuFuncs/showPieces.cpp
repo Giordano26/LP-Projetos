@@ -48,6 +48,7 @@ void showPieces()
 
     printf("Shuffle? (Y/N)\n");
     scanf("%s", &option);
+    flush_in();
 
     printf("\n");
 
@@ -64,6 +65,8 @@ void showPieces()
     {
         printf("Back to normal? (Y/N)\n");
         scanf("%s", &option);
+        flush_in();
+        
         printf("\n");
 
         if (toupper(option) == 'Y')

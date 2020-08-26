@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <time.h>
+#include "./flushBuffer.cpp"
 
 int grabOption()
 {
@@ -10,6 +11,7 @@ int grabOption()
     {
         printf("\nChoose an option: \n");
         scanf("%d", &option);
+        flush_in();
         if (option == 1 || option == 6)
             break;
         else
