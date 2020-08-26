@@ -5,6 +5,7 @@
 #include "../utils/printMenu.cpp"
 #include "../utils/arrayLoop.cpp"
 #include "../utils/shuffle.cpp"
+#include "../utils/flushBuffer.cpp"
 
 void showPieces()
 {
