@@ -3,7 +3,7 @@
 #include <ctype.h>
 #include <time.h>
 
-int printMenu()
+void printMenu()
 {
     printf(
         " _____________________________________ \n"

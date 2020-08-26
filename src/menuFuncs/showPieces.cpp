@@ -6,7 +6,7 @@
 #include "../utils/arrayLoop.cpp"
 #include "../utils/shuffle.cpp"
 
-int showPieces()
+void showPieces()
 {
     int boleano = 0;
     char option;
@@ -58,7 +58,6 @@ int showPieces()
     }
     else if (toupper(option) == 'N')
     {
-        printMenu();
     }
 
     if (boleano == 1)

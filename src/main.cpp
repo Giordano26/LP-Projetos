@@ -16,6 +16,8 @@ int main()
             showPieces();
         }
     }
+
+    return 0;
 }
 
 //ha

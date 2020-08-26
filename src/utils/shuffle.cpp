@@ -3,7 +3,7 @@
 #include <ctype.h>
 #include <time.h>
 
-int shuffle()
+void shuffle()
 {
     char piecesArray[28][3] = {
         "00",

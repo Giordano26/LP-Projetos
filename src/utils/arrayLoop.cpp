@@ -3,7 +3,7 @@
 #include <ctype.h>
 #include <time.h>
 
-int arrayLoop(char arr[28][3])
+void arrayLoop(char arr[28][3])
 {
     for (int k = 0; k < 28; k++)
     {
