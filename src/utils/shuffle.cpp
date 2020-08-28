@@ -5,6 +5,7 @@
 
 void shuffle()
 {
+    //Inicialização do array com as peças
     char piecesArray[28][3] = {
         "00",
         "01",
@@ -36,6 +37,7 @@ void shuffle()
         "66",
     };
 
+    //Criação de um array com os index do array de peças(0 - 27) para ser embaralhado
     int randomShuffle[28];
     srand(time(NULL));
     for (int k = 0; k < 28; k++)
@@ -43,6 +45,7 @@ void shuffle()
         randomShuffle[k] = k;
     }
 
+    //Algoritmo que embaralha os index entre (0-27) sem repetições
     for (int k = 0; k < 28; k++)
     {
         int temp = randomShuffle[k];
@@ -51,6 +54,7 @@ void shuffle()
         randomShuffle[randomIndex] = temp;
     }
 
+    //Impressão do Array embaralhado
     printf("Showing Shuffled Pieces...\n");
     for (int k = 0; k < 28; k++)
     {

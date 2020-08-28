@@ -3,6 +3,8 @@
 #include <ctype.h>
 #include <time.h>
 
+
+//Função simples para printar o menu principal
 void printMenu()
 {
     printf(

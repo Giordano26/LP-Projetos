@@ -9,8 +9,10 @@
 
 void showPieces()
 {
-    int boleano = 0;
+    int boleano = 0; //ini booleano
     char option;
+
+    //inicialização do array de peças 
     char piecesArray[28][3] = {
         "00",
         "01",
@@ -43,13 +45,13 @@ void showPieces()
     };
 
     printf("Showing Pieces...\n");
-    arrayLoop(piecesArray);
+    arrayLoop(piecesArray); //função que printa o array
 
     printf("\n\n");
 
     printf("Shuffle? (Y/N)\n");
     scanf("%s", &option);
-    flush_in();
+    flush_in(); //função de flush do input
 
     printf("\n");
 
@@ -65,7 +67,7 @@ void showPieces()
     if (boleano == 1)
     {
         printf("Back to normal? (Y/N)\n");
-        scanf("%s", &option);
+        getchar();
         flush_in();
         
         printf("\n");
@@ -73,11 +75,11 @@ void showPieces()
         if (toupper(option) == 'Y')
         {
             arrayLoop(piecesArray);
-            printf("\n Restarting \n");
+            printf("\n\n Restarting \n\n");
 
             boleano = 0;
         }
         else if (toupper(option) == 'N')
-            printf("\n Restarting \n");
+            printf("\n\n Restarting \n\n");
     }
 }

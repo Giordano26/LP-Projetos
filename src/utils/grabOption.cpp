@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <time.h>
-#include "./flushBuffer.cpp"
 
+//Função simples para  verificação de opção do usuário no menu apenas
 int grabOption()
 {
     int option;
