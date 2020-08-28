@@ -17,22 +17,33 @@
 
 # Requirements
 
-### Step 1
+### Step 1      <Strong>!!!!DONE!!!!<Strong>
 * <p>The system should be capable to set up the pieces of the game with the correct numbering</p>
 * <p>The system should allow the player to mix up the domino pieces</p>
 * <p>The system should allow the player to organize the domino pieces (in the correct sequence) to play again.</p>
 * <p>The system should be capable to show all domino pieces on the screen (in text or graphic mode)</p>
 
 ### Step 2
-* <strong>Soon</strong>
+* <p>The system must be easyly refactored and posterior code modifications shouldn't impact on further modules</p>
+* <p>The syystem must have different ways to show game options (multiples menus)</p>
 ### Step 3
-* <strong>Soon</strong>
+* <p>The system should let the user dertemine how many players will play the game. Minimum of One and Maximum of Two players</p>
+* <p>The system should create a game table after the domino's pieces between the players</p>
+* <p>The system should let the user distribute the domino's pieces among players</p>
+* <p>The system should let the user start a game</p>
+* <p>The system should let the user pick "Buy" a piece</p>
+* <p>The system must verify if the player's last move is valid (wrong positioning and etc)</p>
 ### Step 4
-* <strong>Soon</strong>
+* <p>The system should let the user  see their own pieces on screen (text mode or graphic) during in game time</p>
+* <p>The system should allow the user to hide their own pieces from other players</p>
+* <p>The system should let the user  end the match</p>
+* <p>The system should let the user visualize the rules in game time</p>
+* <p>The system should let the user buy pieces in game time</p>
 ### Step 5
-* <strong>Soon</strong>
+* <p>The system should let the user save a game on a specific archive in order to continue afterwards. Even if the "game process" is terminated</p>
+* <p>The system should let the user load a "save game archive" from its own computer </p>
 ### Step 6
-* <strong>Soon</strong>
+* <p>When solo game is selected, the system should be able to simulate a intelligent pattern, simillar to an A.I, by the means of the rules implementation on code</p>
 
 # Git and Code Patterns
 
