@@ -23,9 +23,9 @@
 * <p>The system should allow the player to organize the domino pieces (in the correct sequence) to play again.</p>
 * <p>The system should be capable to show all domino pieces on the screen (in text or graphic mode)</p>
 
-### Step 2
+### Step 2      <Strong>!!!!DONE!!!!<Strong>
 * <p>The system must be easyly refactored and posterior code modifications shouldn't impact on further modules</p>
-* <p>The syystem must have different ways to show game options (multiples menus)</p>
+* <p>The system must have different ways to show game options (multiples menus)</p>
 ### Step 3
 * <p>The system should let the user dertemine how many players will play the game. Minimum of One and Maximum of Two players</p>
 * <p>The system should create a game table after the domino's pieces between the players</p>
