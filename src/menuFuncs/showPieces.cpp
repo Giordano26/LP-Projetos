@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <time.h>
-#include "../utils/printMenu.cpp"
+#include "../utils/printInterfaces.cpp"
 #include "../utils/arrayLoop.cpp"
 #include "../utils/shuffle.cpp"
 #include "../utils/flushBuffer.cpp"
