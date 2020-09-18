@@ -1,3 +1,5 @@
+//MVC - Control
+//Grupo shoegazer - função que armazena as peças 
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>

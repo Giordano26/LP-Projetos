@@ -1,8 +1,9 @@
+//MVC - View 
+//Grupo Shoegazer - função para pegar opções e mostrar interfaces principais
+
 #include "./menuFuncs/showPieces.cpp"
 #include "./utils/grabOption.cpp"
 
-
-//Função main apenas para inicilizar o menu e pegar a opção selecionada pelo usuario
 int main()
 {
     while (true)
