@@ -2,6 +2,7 @@
 //Grupo shoegazer - função que armazena as peças 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <ctype.h>
 #include <time.h>
 #include "../View/printInterfaces.cpp"
@@ -9,8 +10,7 @@
 #include "./shuffle.cpp"
 #include "./flushBuffer.cpp"
 
-void showPieces()
-{
+
 
     typedef struct 
     {   
@@ -18,10 +18,22 @@ void showPieces()
         int sideB;
     } piece;
 
-    int pieceA = 0;
-    int pieceB = 0;
 
-    int count = 0;
+
+
+void showPieces()
+{
+   int shuffleIndexA[28];
+   int shuffleIndexB[28];
+   int *A;
+   int *B;
+   int pieceA = 0;
+   int pieceB = 0;
+   int count = 0;
+   int countPrint = 0;
+   int countPrintShuffle = 0 ;
+   int option;
+   bool sentinel = false;
 
     piece dominoPieces[28];
 
@@ -38,9 +50,10 @@ void showPieces()
         pieceB = pieceA;
         }
 
-    int countPrint = 0;
+
 
     printf("Showing Pieces...\n");
+    printf("\n\n");
     //inicialização do array de peças 
     for (int createPiece = 0; createPiece < 4; createPiece++){
         for (int createPieceB = 0; createPieceB < 7; createPieceB++){
@@ -48,4 +61,67 @@ void showPieces()
             countPrint = countPrint + 1;
         }
     }
+    if(countPrint == 28)
+        countPrint = 0;
+
+
+
+    //Gera os indexes randomicos
+    A = shuffle();
+    for (int i = 0; i < 28; i++ ) {
+    shuffleIndexA[i] = *(A + i); //Atribui os indexes randomicos a uma variavel
+   }
+    B = shuffle();
+    for (int i = 0; i < 28; i++ ) {
+    shuffleIndexA[i] = *(B + i); //Atribui os indexes randomicos a uma variavel
+    }
+
+    
+    printf("Shuffle? (Y/N)\n");
+    scanf("%s", &option);
+    flush_in(); //função de flush do input
+    printf("\n");
+
+    if (toupper(option) == 'Y')
+    {
+   
+    printf("Showing Shuffled Pieces...\n");
+    printf("\n\n");
+    //inicialização do array de peças shufflado
+    for (int createPiece = 0; createPiece < 4; createPiece++){
+        for (int createPieceB = 0; createPieceB < 7; createPieceB++){
+            printf("%d | %d\n",dominoPieces[shuffleIndexA[countPrintShuffle]].sideA,dominoPieces[shuffleIndexA[countPrintShuffle]].sideB);
+            countPrintShuffle = countPrintShuffle + 1;
+        }
+    }
+    sentinel = true;
+    }
+    else if (toupper(option) == 'N')
+    {
+    }
+
+    if(sentinel){
+        printf("Back to normal? (Y/N)\n");
+        getchar();
+        flush_in();
+        printf("\n");
+    }
+
+    if (toupper(option) == 'Y')
+    {
+    for (int createPiece = 0; createPiece < 4; createPiece++){
+        for (int createPieceB = 0; createPieceB < 7; createPieceB++){
+            printf("%d | %d\n",dominoPieces[countPrint].sideA,dominoPieces[countPrint].sideB);
+            countPrint = countPrint + 1;
+        }
+    }
+    if(countPrint == 28)
+        countPrint = 0;
+
+    printf("\n\n Restarting... \n\n");    
+    }else if(toupper(option) == 'N')
+        printf("\n\n Restarting \n\n");
+
+   
+    
 }
