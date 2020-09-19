@@ -4,84 +4,48 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <time.h>
-#include "../utils/printInterfaces.cpp"
-#include "../utils/arrayLoop.cpp"
-#include "../utils/shuffle.cpp"
-#include "../utils/flushBuffer.cpp"
+#include "../View/printInterfaces.cpp"
+#include "./arrayLoop.cpp"
+#include "./shuffle.cpp"
+#include "./flushBuffer.cpp"
 
 void showPieces()
 {
-    int boleano = 0; //ini booleano
-    char option;
 
-    //inicialização do array de peças 
-    char piecesArray[28][3] = {
-        "00",
-        "01",
-        "02",
-        "03",
-        "04",
-        "05",
-        "06",
-        "11",
-        "12",
-        "13",
-        "14",
-        "15",
-        "16",
-        "22",
-        "23",
-        "24",
-        "25",
-        "26",
-        "33",
-        "34",
-        "35",
-        "36",
-        "44",
-        "45",
-        "46",
-        "55",
-        "56",
-        "66",
-    };
+    typedef struct 
+    {   
+        int sideA;
+        int sideB;
+    } piece;
+
+    int pieceA = 0;
+    int pieceB = 0;
+
+    int count = 0;
+
+    piece dominoPieces[28];
+
+    // Populate dominoPieces with  "0 | 0" "0 | 1" .... "6 | 6" 
+    for (int createPiece = 0; createPiece < 7; createPiece++){
+        for (int createPieceB = pieceA; createPieceB < 7; createPieceB++){
+            dominoPieces[count].sideA = pieceA;
+            dominoPieces[count].sideB = pieceB;
+
+            pieceB = pieceB + 1;
+            count = count + 1;
+            }
+        pieceA = pieceA + 1;
+        pieceB = pieceA;
+        }
+
+    int countPrint = 0;
 
     printf("Showing Pieces...\n");
-    arrayLoop(piecesArray); //função que printa o array
-
-    printf("\n\n");
-
-    printf("Shuffle? (Y/N)\n");
-    scanf("%s", &option);
-    flush_in(); //função de flush do input
-
-    printf("\n");
-
-    if (toupper(option) == 'Y')
-    {
-        shuffle();
-        boleano = 1;
-    }
-    else if (toupper(option) == 'N')
-    {
-    }
-
-    if (boleano == 1)
-    {
-        printf("Back to normal? (Y/N)\n");
-        getchar();
-        flush_in();
-        
-        printf("\n");
-
-        if (toupper(option) == 'Y')
-        {
-            arrayLoop(piecesArray);
-            printf("\n\n Restarting \n\n");
-
-            boleano = 0;
+    //inicialização do array de peças 
+    for (int createPiece = 0; createPiece < 4; createPiece++){
+        for (int createPieceB = 0; createPieceB < 7; createPieceB++){
+            printf("%d | %d\n",dominoPieces[countPrint].sideA,dominoPieces[countPrint].sideB);
+            countPrint = countPrint + 1;
         }
-        else if (toupper(option) == 'N')
-            printf("\n\n Restarting \n\n");
     }
 }

@@ -12,7 +12,6 @@ int grabOption()
     int option;
     do
     {
-        flush_in();
         printf("\nChoose an option: \n");
         scanf("%d", &option);
         if (option == 1 || option == 2 || option == 3 || option == 5 || option == 6) //evita opções fora do escopo
@@ -31,7 +30,6 @@ int grabOptionMode()
     int option;
     do
     {
-        flush_in();
         printf("\nChoose an option: \n");
         scanf("%d", &option);
         if (option == 3 ) //evita opções fora do escopo
@@ -51,7 +49,6 @@ int grabOptionInGame()
     int option;
     do
     {
-        flush_in();
         printf("\nChoose an option: \n");
         scanf("%d", &option);
         if (option == 5 ) //evita opções fora do escopo
