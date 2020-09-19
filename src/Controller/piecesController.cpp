@@ -6,12 +6,11 @@
 #include <ctype.h>
 #include <time.h>
 #include "../View/printInterfaces.cpp"
-#include "./arrayLoop.cpp"
-#include "./shuffle.cpp"
-#include "./flushBuffer.cpp"
+#include "./shuffleController.cpp"
+#include "./flushController.cpp"
 
 
-
+    //Definição do tipo de peça
     typedef struct 
     {   
         int sideA;
@@ -23,17 +22,17 @@
 
 void showPieces()
 {
-   int shuffleIndexA[28];
-   int shuffleIndexB[28];
+   int shuffleIndexA[28]; //Array para o index randomico
    int *A;
-   int *B;
    int pieceA = 0;
    int pieceB = 0;
+   //contadores para printar as peças
    int count = 0;
    int countPrint = 0;
    int countPrintShuffle = 0 ;
+   //contadores para printar as peças
    int option;
-   bool sentinel = false;
+   bool sentinel = false; //sentinela para o menu
 
     piece dominoPieces[28];
 
@@ -54,14 +53,14 @@ void showPieces()
 
     printf("Showing Pieces...\n");
     printf("\n\n");
-    //inicialização do array de peças 
+    //print do array de peças 
     for (int createPiece = 0; createPiece < 4; createPiece++){
         for (int createPieceB = 0; createPieceB < 7; createPieceB++){
             printf("%d | %d\n",dominoPieces[countPrint].sideA,dominoPieces[countPrint].sideB);
             countPrint = countPrint + 1;
         }
     }
-    if(countPrint == 28)
+    if(countPrint == 28) //zera o contador das peças normais
         countPrint = 0;
 
 
@@ -71,12 +70,7 @@ void showPieces()
     for (int i = 0; i < 28; i++ ) {
     shuffleIndexA[i] = *(A + i); //Atribui os indexes randomicos a uma variavel
    }
-    B = shuffle();
-    for (int i = 0; i < 28; i++ ) {
-    shuffleIndexA[i] = *(B + i); //Atribui os indexes randomicos a uma variavel
-    }
 
-    
     printf("Shuffle? (Y/N)\n");
     scanf("%s", &option);
     flush_in(); //função de flush do input
@@ -87,12 +81,16 @@ void showPieces()
    
     printf("Showing Shuffled Pieces...\n");
     printf("\n\n");
-    //inicialização do array de peças shufflado
+    //print do array de peças shufflado
     for (int createPiece = 0; createPiece < 4; createPiece++){
         for (int createPieceB = 0; createPieceB < 7; createPieceB++){
             printf("%d | %d\n",dominoPieces[shuffleIndexA[countPrintShuffle]].sideA,dominoPieces[shuffleIndexA[countPrintShuffle]].sideB);
             countPrintShuffle = countPrintShuffle + 1;
         }
+    
+    }
+    if(countPrintShuffle == 28){ //zera o contador do shuffle
+        countPrintShuffle = 0;
     }
     sentinel = true;
     }
@@ -100,14 +98,14 @@ void showPieces()
     {
     }
 
-    if(sentinel){
+    if(sentinel){ //sentinela para averiguar se houve ou não shuffle das peças
         printf("Back to normal? (Y/N)\n");
         getchar();
         flush_in();
         printf("\n");
     }
 
-    if (toupper(option) == 'Y')
+    if (toupper(option) == 'Y') //"volta" as peças ao normal
     {
     for (int createPiece = 0; createPiece < 4; createPiece++){
         for (int createPieceB = 0; createPieceB < 7; createPieceB++){
@@ -115,7 +113,7 @@ void showPieces()
             countPrint = countPrint + 1;
         }
     }
-    if(countPrint == 28)
+    if(countPrint == 28) //zera contador de print das peças
         countPrint = 0;
 
     printf("\n\n Restarting... \n\n");    

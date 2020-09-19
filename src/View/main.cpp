@@ -1,8 +1,8 @@
 //MVC - View 
 //Grupo Shoegazer - função para pegar opções e mostrar interfaces principais
 
-#include "../Controller/showPieces.cpp"
-#include "../Controller/grabOption.cpp"
+#include "../Controller/piecesController.cpp"
+#include "../Controller/optionController.cpp"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>

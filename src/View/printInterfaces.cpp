@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-
+//Menu principal
 void printMenu()
 {
     printf(
@@ -28,6 +28,7 @@ void printMenu()
         "|_____________________________________|\n");
 }
 
+//Menu de modo
 void printMode (){
     printf(
     " ___________________________\n"
@@ -42,6 +43,7 @@ void printMode (){
     "|___________________________|\n");
 }
 
+//Menu de jogador
 void printInGameMenu(){
     printf(
     " _______________________________\n"
