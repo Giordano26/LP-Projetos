@@ -8,16 +8,7 @@
 #include "../View/printInterfaces.cpp"
 #include "./shuffleController.cpp"
 #include "./flushController.cpp"
-
-
-    //Definição do tipo de peça
-    typedef struct 
-    {   
-        int sideA;
-        int sideB;
-    } piece;
-
-
+#include "../Model/piecesModel.h"
 
 
 void showPieces()
