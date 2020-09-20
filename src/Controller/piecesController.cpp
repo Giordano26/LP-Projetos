@@ -47,7 +47,7 @@ void showPieces()
     //print do array de peças 
     for (int createPiece = 0; createPiece < 4; createPiece++){
         for (int createPieceB = 0; createPieceB < 7; createPieceB++){
-            printf("%d | %d\n",dominoPieces[countPrint].sideA,dominoPieces[countPrint].sideB);
+            printf("[%d|%d]\n",dominoPieces[countPrint].sideA,dominoPieces[countPrint].sideB);
             countPrint = countPrint + 1;
         }
     }
@@ -75,7 +75,7 @@ void showPieces()
     //print do array de peças shufflado
     for (int createPiece = 0; createPiece < 4; createPiece++){
         for (int createPieceB = 0; createPieceB < 7; createPieceB++){
-            printf("%d | %d\n",dominoPieces[shuffleIndexA[countPrintShuffle]].sideA,dominoPieces[shuffleIndexA[countPrintShuffle]].sideB);
+            printf("[%d|%d]\n",dominoPieces[shuffleIndexA[countPrintShuffle]].sideA,dominoPieces[shuffleIndexA[countPrintShuffle]].sideB);
             countPrintShuffle = countPrintShuffle + 1;
         }
     
@@ -100,7 +100,7 @@ void showPieces()
     {
     for (int createPiece = 0; createPiece < 4; createPiece++){
         for (int createPieceB = 0; createPieceB < 7; createPieceB++){
-            printf("%d | %d\n",dominoPieces[countPrint].sideA,dominoPieces[countPrint].sideB);
+            printf("[%d|%d]\n",dominoPieces[countPrint].sideA,dominoPieces[countPrint].sideB);
             countPrint = countPrint + 1;
         }
     }
