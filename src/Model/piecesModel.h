@@ -5,7 +5,12 @@
     {   
         int sideA;
         int sideB;
+        bool inGame;
+        bool available;
+        int player;
     } piece;
 
+    typedef struct{
 
+    }player;
 
