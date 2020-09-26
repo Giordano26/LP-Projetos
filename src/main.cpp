@@ -11,7 +11,7 @@
 
 //Criação da mesa inicial
 
-int playerInicio;
+int playerInicio,playerSecundario;
 int game(player playerA, player playerB);
 
 
@@ -23,6 +23,7 @@ int main()
         
         printMenu();
         option = grabOption();
+        clearScreen();
         
         flush_in();
 
@@ -35,9 +36,11 @@ int main()
             
           printMode();
           option = grabOptionMode();
+          clearScreen();
+          
           
           if(option == 1){
-              printf("Modo em desenvolvimento....\n");
+              printf("Modo em desenvolvimento...\n");
               printf("Reiniciando...\n\n");
           }
           else if(option == 2){
@@ -47,7 +50,9 @@ int main()
               playerA.playerNum = 1;
               playerB.playerNum = 2;
               printf("Iniciando o Jogo...\n");
+              clearScreen();
               game(playerA,playerB);
+              
               
           }
             
@@ -72,7 +77,7 @@ void mesinhaInicial(){ //função para printar a primeira mesa
     board mesa;
     mesa.creation = false;
     if(!mesa.creation){
-        printMesaInicial();
+        //printMesa();
         printf("\n\n\n");
         mesa.creation = true;
     }
@@ -80,9 +85,10 @@ void mesinhaInicial(){ //função para printar a primeira mesa
 }
 
 
+
 int game(player playerA, player playerB){
 
-    mesinhaInicial(); //printa a primeira mesa
+    
      
     //gera as peças para o jogo;
         int pieceA = 0;
@@ -125,96 +131,348 @@ int game(player playerA, player playerB){
    }
    //Embaralhando as peças
 
-    // Dando 7 peças aos jogadores
-    for (int y = 0; y < 14; y++ ){
-        if(y < 7){
+    // Dando 7 peças aos jogadores --> playerPieces
+    for (int y = 0; y < 7; y++ ){
             playerA.playerPieces[y] = shuffleSideA[y];
             dominoPieces[y].available = false; //Peça deixa de ser disponível
             dominoPieces[y].player = 1; // Vai para o player A
-        } else {
-            playerB.playerPieces[y] = shuffleSideA[y]; 
+    }
+    for(int y = 0; y < 7; y++){
+            playerB.playerPieces[y] = shuffleSideA[y+7]; 
             dominoPieces[y].available = false;  //Peça deixa de ser disponível
             dominoPieces[y].player = 2; // Vai para o player B
-        }
     }
 
-    int pecaMaiorA = NULL; // Analisa as peças de cada jogador para decidir quem começa o jogo
-    int pecaMaiorB = NULL;
+    int playerA_Piece_Count = 7; // Primeira posição com index vazio para peça
+    int playerB_Piece_Count = 7; // Primeira posição com index vazio para peça
+
+
+    int pecaMaiorA = '\0'; // Analisa as peças de cada jogador para decidir quem começa o jogo
+    int pecaMaiorB = '\0';
     bool sentinelaPrimordialA,sentinelaPrimordialB = false;
 
 
-    for (int y = 0; y < 14; y++ ){
-        if (y < 7){
+    for (int y = 0; y < 7; y++ ){
+
         if(dominoPieces[playerA.playerPieces[y]].sideA == dominoPieces[playerA.playerPieces[y]].sideB){
             if (dominoPieces[pecaMaiorA].sideA + dominoPieces[pecaMaiorA].sideB < dominoPieces[playerA.playerPieces[y]].sideA + dominoPieces[playerA.playerPieces[y]].sideB )
-            pecaMaiorA = playerA.playerPieces[y];
-        }
-            
-        }else if(dominoPieces[playerB.playerPieces[y]].sideA == dominoPieces[playerB.playerPieces[y]].sideB){
-            if (dominoPieces[pecaMaiorB].sideA + dominoPieces[pecaMaiorB].sideB < dominoPieces[playerB.playerPieces[y]].sideA + dominoPieces[playerB.playerPieces[y]].sideB )
-            pecaMaiorB = playerB.playerPieces[y];
+                pecaMaiorA = playerA.playerPieces[y];
         }
     }
-    if(pecaMaiorA != NULL) //se achou uma peça gêmea ativa a sentinela
+
+    for(int y = 0; y < 7; y++){
+        if(dominoPieces[playerB.playerPieces[y]].sideA == dominoPieces[playerB.playerPieces[y]].sideB){
+            if (dominoPieces[pecaMaiorB].sideA + dominoPieces[pecaMaiorB].sideB < dominoPieces[playerB.playerPieces[y]].sideA + dominoPieces[playerB.playerPieces[y]].sideB )
+                pecaMaiorB = playerB.playerPieces[y];
+    }
+    }
+
+
+    
+    if(pecaMaiorA !=  '\0') //se achou uma peça gêmea ativa a sentinela
         sentinelaPrimordialA = true;
 
-    if(pecaMaiorB != NULL) //se achou uma peça gêmea ativa a sentinela
+    if(pecaMaiorB !=  '\0') //se achou uma peça gêmea ativa a sentinela
         sentinelaPrimordialB =  true;
 
     //Escopo do caso onde ambos sentinelas são nulas
-    if(pecaMaiorA && pecaMaiorB == NULL){
+    if(pecaMaiorA && pecaMaiorB ==  '\0'){
 
-        for (int y = 0; y <14; y++ ){
-        {
-            if(y < 7){
+        for (int y = 0; y <7; y++ ){
+        
                 if (pecaMaiorA < dominoPieces[playerA.playerPieces[y]].sideA + dominoPieces[playerA.playerPieces[y]].sideB){
-
                     pecaMaiorA = playerA.playerPieces[y];
-            
-                }
-
-            }
-
-            if(y >= 7){
-                 if (pecaMaiorB < dominoPieces[playerB.playerPieces[y]].sideA + dominoPieces[playerB.playerPieces[y]].sideB){
-
-                     pecaMaiorB = playerB.playerPieces[y];
-                }
             }
         }
-    }
+        for(int y = 0; y < 7; y++){
+            if (pecaMaiorB < dominoPieces[playerB.playerPieces[y]].sideA + dominoPieces[playerB.playerPieces[y]].sideB){
+                pecaMaiorB = playerB.playerPieces[y];
+            }
+        }
 
-    if(dominoPieces[pecaMaiorA].sideA + dominoPieces[pecaMaiorA].sideB > dominoPieces[pecaMaiorB].sideA + dominoPieces[pecaMaiorB].sideB )
+    if(dominoPieces[pecaMaiorA].sideA + dominoPieces[pecaMaiorA].sideB > dominoPieces[pecaMaiorB].sideA + dominoPieces[pecaMaiorB].sideB ){
         playerInicio = 1;
-    else 
+        playerSecundario = 2;
+    }
+    else {
         playerInicio = 2;
+        playerSecundario = 1;
+    }
     } //fim do escopo do nulo
 
     //Caso onde nenhum é nulo, duas peças são gêmeas 
     if(sentinelaPrimordialA && sentinelaPrimordialB){
 
-    if(dominoPieces[pecaMaiorA].sideA > dominoPieces[pecaMaiorB].sideB)
+    if(dominoPieces[pecaMaiorA].sideA > dominoPieces[pecaMaiorB].sideB){
         playerInicio = 1;
-    else
+        playerSecundario = 2;
+    }
+    else{
         playerInicio = 2;
+        playerSecundario = 1;
+    }
 
     }else //fim do caso onde nenhum é nulo
 
     //caso algum seja nulo
     if(!sentinelaPrimordialA || !sentinelaPrimordialB){
-        if(dominoPieces[pecaMaiorA].sideA == dominoPieces[pecaMaiorA].sideB )
+        if(dominoPieces[pecaMaiorA].sideA == dominoPieces[pecaMaiorA].sideB ){
             playerInicio = 1;
-        else if(dominoPieces[pecaMaiorB].sideB == dominoPieces[pecaMaiorB].sideB)
+            playerSecundario = 2;
+        }
+        else if(dominoPieces[pecaMaiorB].sideA == dominoPieces[pecaMaiorB].sideB){
             playerInicio = 2;
+            playerSecundario = 1;
+        }
     } //fim do caso em que algum seja nulo;
+
+
+
+
+
+        printf("Peça Maior do jogador A é: [%d|%d]\n",dominoPieces[pecaMaiorA].sideA,dominoPieces[pecaMaiorA].sideB);
+        printf("Peça Maior do jogador B é: [%d|%d]\n",dominoPieces[pecaMaiorB].sideA,dominoPieces[pecaMaiorB].sideB);
+        
+            printf(          
+                   " ░██████╗██╗░░██╗░█████╗░███████╗░██████╗░░█████╗░███████╗███████╗██████╗░\n"
+                   " ██╔════╝██║░░██║██╔══██╗██╔════╝██╔════╝░██╔══██╗╚════██║██╔════╝██╔══██╗\n"
+                   " ╚█████╗░███████║██║░░██║█████╗░░██║░░██╗░███████║░░███╔═╝█████╗░░██████╔╝\n"
+                   " ░╚═══██╗██╔══██║██║░░██║██╔══╝░░██║░░╚██╗██╔══██║██╔══╝░░██╔══╝░░██╔══██╗\n"
+                   " ██████╔╝██║░░██║╚█████╔╝███████╗╚██████╔╝██║░░██║███████╗███████╗██║░░██║\n"
+                   " ╚═════╝░╚═╝░░╚═╝░╚════╝░╚══════╝░╚═════╝░╚═╝░░╚═╝╚══════╝╚══════╝╚═╝░░╚═╝\n"
+                                                                           );
+                    
+
+            printf(" -------------------------------- BETA V0.1 ---------------------------------\n\n");
+            printf("Primeiro a jogar: Player%d \n", playerInicio);
+            printf("Segundo a jogar: Player%d \n\n", playerSecundario);
+
+
+
+        bool winCondition = false; //condição de vitória para algum jogador, sera o controlador do loop do jogo
+        while(winCondition == false){
+            int option;
+            
+            int newPiece;
+
+            //mesinhaInicial();
+            printInGameMenu(playerInicio);
+            option = grabOptionInGame();
+
+            switch(option){  //trocar todos os breaks para continue, apenas brake se a jogada for efetuada
+                case 1:
+                printf("Voce está vendo a mesa - EM ANDAMENTO -\n");
+                printMesa();
+                break;
+
+                //Caso mostrar peças
+                case 2:
+                if(1 == playerInicio){ //checa se é jogador A 
+                    for(int k = 0 ; k < playerA_Piece_Count; k++){
+                        printf("[%d|%d] ",dominoPieces[playerA.playerPieces[k]].sideA,dominoPieces[playerA.playerPieces[k]].sideB);
+                   }
+                   
+                
+                }if(2 == playerInicio){
+                    
+                    for(int j = 0 ; j < playerB_Piece_Count; j++){
+                       printf("[%d|%d] ",dominoPieces[playerB.playerPieces[j]].sideA,dominoPieces[playerB.playerPieces[j]].sideB); 
+                   }
+                }
+                printf("\n");
+                continue;
+
+                //Caso comprar peças
+                case 3:
+                for(int k = 14; k < 28; k++){ //Função para o jogador comprar uma peça
+                    if(dominoPieces[k].available  == true){
+                        newPiece = k;
+                        dominoPieces[k].available = false;
+                        printf("Próxima posição válida = %d\n",k);
+                        break;
+                    }else 
+                        continue;
+            }
+                if (1 == playerInicio){ //checa se é Jogador A
+            
+                playerA.playerPieces[playerA_Piece_Count] = shuffleSideA[newPiece]; //Pega o index de peça disponivel, acessa no array de peças embaralhadas e atribui ao jogador na primeira posição disponivel.
+
+                dominoPieces[newPiece].available = false; //Peça deixa de ser disponível
+
+                dominoPieces[newPiece].player = 1; // Vai para o player A
+
+                printf("Peça comprada: [%d|%d]\n",dominoPieces[playerA.playerPieces[playerA_Piece_Count]].sideA,dominoPieces[playerA.playerPieces[playerA_Piece_Count]].sideB);
+
+                playerA_Piece_Count = playerA_Piece_Count + 1; // move 1 na posição do proximo index valido
+
+                } else if(2 == playerInicio) {
+                    
+                playerB.playerPieces[playerB_Piece_Count] = shuffleSideA[newPiece]; //Pega o index de peça disponivel, acessa no array de peças embaralhadas e atribui ao jogador na primeira posição disponivel.
+
+                dominoPieces[newPiece].available = false; //Peça deixa de ser disponível
+
+                dominoPieces[newPiece].player = 2; // Vai para o player B
+
+                 printf("Peça comprada: [%d|%d]\n",dominoPieces[playerB.playerPieces[playerB_Piece_Count]].sideA,dominoPieces[playerB.playerPieces[playerB_Piece_Count]].sideB);
+
+                playerB_Piece_Count = playerB_Piece_Count + 1; // move 1 na posição do proximo index valido
+                }
+               
+                continue;
+
+                case 4:
+                if(playerInicio == 1){
+                do{
+                printf("Escolha uma peça de 0 a %d\n",playerA_Piece_Count-1);
+                scanf("%d",&option);
+                if(option < 0 || option > playerA_Piece_Count){
+                    //scanf("%d",&option);
+                    printf("Peça inválida...\n");
+                    continue;
+                }else
+                    break;
+
+                }while(true); //invalidar a peça, mudar on table para true e available false
+                printf("Peça jogada: [%d|%d] foi jogada\n",dominoPieces[playerB.playerPieces[option]].sideA,dominoPieces[playerB.playerPieces[option]].sideB);
+                }
+                 if(playerInicio == 2){
+                do{
+                printf("Escolha uma peça de 0 a %d\n",playerB_Piece_Count);
+                scanf("%d",&option);
+                if(option < 0 || option > playerB_Piece_Count){
+                    //scanf("%d",&option);
+                    printf("Peça inválida...\n");
+                    continue;
+                }else
+                    break;
+
+                }while(true);
+                printf("Peça jogada: [%d|%d] foi jogada\n",dominoPieces[playerB.playerPieces[option]].sideA,dominoPieces[playerB.playerPieces[option]].sideB);
+                 }
+                
+                break; 
+
+                //Imprime as regras
+                case 5:
+                printRules();
+                break;
+
+                case 6:
+                exit(1);
+                // Sai do jogo 
+                break;
+            }
+
+            printInGameMenu(playerSecundario);
+            option = grabOptionInGame();
+            
+             switch(option){ //trocar todos os breaks para continue, apenas brake se a jogada for efetuada
+                case 1:
+                printf("Voce está vendo a mesa - EM ANDAMENTO -\n");
+                printMesa();
+                break;
+
+                case 2:
+                if(1 == playerSecundario){
+                    for(int k = 0 ; k < playerA_Piece_Count; k++){
+                        printf("[%d|%d] ",dominoPieces[playerA.playerPieces[k]].sideA,dominoPieces[playerA.playerPieces[k]].sideB);
+                   }
+                
+                }if(2 == playerSecundario){
+                    for(int j = 0 ; j < playerB_Piece_Count; j++){
+                       
+                       printf("[%d|%d] ",dominoPieces[playerB.playerPieces[j]].sideA,dominoPieces[playerB.playerPieces[j]].sideB);
+                   }
+                }
+                printf("\n");
+                continue;
+
+                case 3:
+                for(int k = 14; k < 28; k++){ //Função para o jogador comprar uma peça
+                    if(dominoPieces[k].available == true){
+                        newPiece = k;
+                        dominoPieces[k].available = false;
+                        printf("Próxima posição válida = %d\n",k);
+                        break;
+                    }else 
+                        continue;
+            }
+                if (1 == playerSecundario){ //checa se é jogador A
+            
+                playerA.playerPieces[playerA_Piece_Count] = shuffleSideA[newPiece]; //Pega o index de peça disponivel, acessa no array de peças embaralhadas e atribui ao jogador na primeira posição disponivel.
+
+                dominoPieces[newPiece].available = false; //Peça deixa de ser disponível
+
+                dominoPieces[newPiece].player = 1; // Vai para o player A
+
+                printf("Peça comprada: [%d|%d]\n",dominoPieces[playerA.playerPieces[playerA_Piece_Count]].sideA,dominoPieces[playerA.playerPieces[playerA_Piece_Count]].sideB);
+
+
+                playerA_Piece_Count = playerA_Piece_Count + 1; // move 1 na posição do proximo index valido
+
+                
+
+                } else if(2 == playerSecundario) { //checa se é jogador B
+                    
+                playerB.playerPieces[playerB_Piece_Count] = shuffleSideA[newPiece]; //Pega o index de peça disponivel, acessa no array de peças embaralhadas e atribui ao jogador na primeira posição disponivel.
+
+                dominoPieces[newPiece].available = false; //Peça deixa de ser disponível
+
+                dominoPieces[newPiece].player = 2; // Vai para o player B
+
+                printf("Peça comprada: [%d|%d]\n",dominoPieces[playerB.playerPieces[playerB_Piece_Count]].sideA,dominoPieces[playerB.playerPieces[playerB_Piece_Count]].sideB);
+
+                playerB_Piece_Count = playerB_Piece_Count + 1; // move 1 na posição do proximo index valido
+
+                }
+                continue;
+
+                case 4:
+                if(playerSecundario == 1){
+                do{
+                printf("Escolha uma peça de 0 a %d\n",playerA_Piece_Count -1); //invalidar a peça, mudar on table para true e available false
+                scanf("%d",&option);
+                if(option < 0 || option > playerA_Piece_Count){
+                    //scanf("%d",&option);
+                    printf("Peça inválida...\n");
+                    continue;
+                }else
+                    break;
+
+                }while(true);
+                printf("Peça jogada: [%d|%d] foi jogada",dominoPieces[playerB.playerPieces[option]].sideA,dominoPieces[playerB.playerPieces[option]].sideB);
+                }
+                 if(playerSecundario == 2){
+                do{
+                printf("Escolha uma peça de 0 a %d\n",playerB_Piece_Count - 1);
+                scanf("%d",&option);
+                if(option < 0 || option > playerB_Piece_Count){
+                    //scanf("%d",&option);
+                    printf("Peça inválida...\n");
+                    continue;
+                }else
+                    break;
+
+                }while(true);
+                printf("Peça jogada: [%d|%d] foi jogada\n",dominoPieces[playerB.playerPieces[option]].sideA,dominoPieces[playerB.playerPieces[option]].sideB);
+                 }
+                break;
+
+                //Imprime as regras
+                case 5:
+                printRules();
+                break;
+
+                case 6:
+                exit(1);
+                // Sai do jogo 
+                break;
+            }
+
+            winCondition = true;
+        }
     
 
-
-
-       // printf("Peça Maior do jogador A é: [%d|%d]\n",dominoPieces[pecaMaiorA].sideA,dominoPieces[pecaMaiorA].sideB);
-       // printf("Peça Maior do jogador B é: [%d|%d]\n",dominoPieces[pecaMaiorB].sideA,dominoPieces[pecaMaiorB].sideB);
-        printf("Jogador que inicia é o Player%d \n\n",playerInicio);
-    
 
    return 0; 
 }

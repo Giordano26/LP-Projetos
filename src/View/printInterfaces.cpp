@@ -2,6 +2,8 @@
 //Grupo Shoegazer - Função para imprimir menus
 
 #include <stdio.h>
+#include <stdlib.h>
+
 
 //Menu principal
 void printMenu()
@@ -41,7 +43,7 @@ void printInGameMenu(int numero){
     printf(
     " _______________________________\n"
     "|                               |\n"
-    "|         Jogador  #%d          |\n"
+    "|         Jogador  #%d           |\n" //espaço pois % não vai para a tela final
     "|                               |\n"
     "|   1) Ver Mesa                 |\n"
     "|                               |\n"
@@ -51,7 +53,9 @@ void printInGameMenu(int numero){
     "|                               |\n"
     "|   4) Jogar                    |\n"
     "|                               |\n"
-    "|   5) Sair do Jogo             |\n"
+    "|   5) Regras                   |\n"
+    "|                               |\n"
+    "|   6) Sair do Jogo             |\n"
     "|_______________________________|\n"
     ,numero);
 }
@@ -114,8 +118,12 @@ void printRules(){
 }
 
 //Mesa inicial
-void printMesaInicial(){
-        printf(
+void printMesa(){ // NÃO CONSEGUIMOS FAZER A MESA AINDA, ESTÁ MUITO COMPLICADO!!!!!!!!
+                  // O PROGRAMA SE TORNOU UM MONSTRO A PARTIR DO MOMENTO EM QUE TIRARM MINHA LIBERDADE
+                  // DE MODULARIZAR, LOGO EU NAO CONSIGO TRABALHAR COM UMA FILE DE 500 LINHAS PQ MEU SCROLL DO MOUSE NAO E GRANDE
+                  // OU SEJA, EU SEI PONTEIRO NAO POSSO USA E TENHO QUE FICAR USANDO METODOS PALEOLITICOS;
+    
+            printf(
         " __________________________________________________________________\n"
         "|                                                                  |\n"
         "|                                                                  |\n"  
@@ -134,7 +142,16 @@ void printMesaInicial(){
         "|                                                                  |\n"
         "|                                                                  |\n"
         "|                                                                  |\n"
-        "|__________________________________________________________________|\n");
+        "|__________________________________________________________________|\n\n");
 
 }
+//função para apagar a tela e dar a impressão de mudança de interface 
+void clearScreen()
+{
+    system("cls"); //clear para powershell
+    printf("\033[H\033[J"); //clear para unix 
+}
 
+// --> 5 for(k = 5; k< 123; k++) --> array ... em cim
+// --> 123 for(k = 123; k <5; k--) --> array ... em baixo
+// --> 

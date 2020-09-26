@@ -11,7 +11,7 @@
         bool available; // verifica se a peça esta disponível para ser comprada
         int player; //determina com que jogador está a peça 
 
-    } piece;
+    }piece;
 
     typedef struct{
         int playerNum; //numero do jogador

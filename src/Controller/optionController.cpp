@@ -15,18 +15,15 @@ int grabOption()
     {
         printf("\nEscolha uma opção: \n");
         scanf("%d", &option);
-        if (option == 1 || option == 2 || option == 3 || option == 5 || option == 6) //evita opções fora do escopo
-            break;
-        else
-        {
-            printf("Opção inválida...\n");
-            continue;
-        }
 
+        if(option < 1 || option > 3){
+            printf("Opção inválida...\n");
+        }else
+            break;
     } while (true);
-    
+
     printf("\n");
-    
+
     return option;
 }
 
@@ -34,20 +31,16 @@ int grabOption()
 int grabOptionMode()
 {
     int option;
-    
+
     do
     {
         printf("\nEscolha uma opção: \n");
         scanf("%d", &option);
 
-        if (option == 1 || option == 2 || option == 3) //evita opções fora do escopo
-            break;
-        else
-        {
+        if(option < 1 || option > 3){
             printf("Opção inválida...\n");
-            continue;
-        }
-
+        }else
+            break;
     } while (true);
 
     printf("\n");
@@ -65,13 +58,10 @@ int grabOptionInGame()
         printf("\nEscolha uma opção: \n");
         scanf("%d", &option);
 
-        if (option == 5) //evita opções fora do escopo
-            break;
-        else
-        {
+        if(option < 1 || option > 6){
             printf("Opção inválida...\n");
-            continue;
-        }
+        }else
+            break;
     } while (true);
 
     printf("\n");
