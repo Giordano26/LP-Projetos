@@ -263,7 +263,7 @@ int game(player playerA, player playerB){
                 case 1:
                 printf("Voce está vendo a mesa - EM ANDAMENTO -\n");
                 printMesa();
-                break;
+                continue;
 
                 //Caso mostrar peças
                 case 2:
@@ -355,7 +355,7 @@ int game(player playerA, player playerB){
                 //Imprime as regras
                 case 5:
                 printRules();
-                break;
+                continue;
 
                 case 6:
                 exit(1);
@@ -370,7 +370,7 @@ int game(player playerA, player playerB){
                 case 1:
                 printf("Voce está vendo a mesa - EM ANDAMENTO -\n");
                 printMesa();
-                break;
+                continue;
 
                 case 2:
                 if(1 == playerSecundario){
@@ -461,7 +461,7 @@ int game(player playerA, player playerB){
                 //Imprime as regras
                 case 5:
                 printRules();
-                break;
+                continue;
 
                 case 6:
                 exit(1);
