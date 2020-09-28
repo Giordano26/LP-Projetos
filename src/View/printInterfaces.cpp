@@ -154,4 +154,4 @@ void clearScreen()
 
 // --> 5 for(k = 5; k< 123; k++) --> array ... em cim
 // --> 123 for(k = 123; k <5; k--) --> array ... em baixo
-// --> 
+// -->  

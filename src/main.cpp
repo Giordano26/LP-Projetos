@@ -52,6 +52,7 @@ int main()
               printf("Iniciando o Jogo...\n");
               clearScreen();
               game(playerA,playerB);
+              continue;
               
               
           }
@@ -261,7 +262,7 @@ int game(player playerA, player playerB){
 
             switch(option){  //trocar todos os breaks para continue, apenas brake se a jogada for efetuada
                 case 1:
-                printf("Voce está vendo a mesa - EM ANDAMENTO -\n");
+                printf("Você está vendo a mesa - EM ANDAMENTO -\n");
                 printMesa();
                 continue;
 
@@ -272,14 +273,14 @@ int game(player playerA, player playerB){
                         printf("[%d|%d] ",dominoPieces[playerA.playerPieces[k]].sideA,dominoPieces[playerA.playerPieces[k]].sideB);
                    }
                    
-                
-                }if(2 == playerInicio){
+                    printf("\n");
+                }else{
                     
-                    for(int j = 0 ; j < playerB_Piece_Count; j++){
-                       printf("[%d|%d] ",dominoPieces[playerB.playerPieces[j]].sideA,dominoPieces[playerB.playerPieces[j]].sideB); 
+                    for(int k = 0 ; k < playerB_Piece_Count; k++){
+                       printf("[%d|%d] ",dominoPieces[playerB.playerPieces[k]].sideA,dominoPieces[playerB.playerPieces[k]].sideB); 
                    }
+                    printf("\n");
                 }
-                printf("\n");
                 continue;
 
                 //Caso comprar peças
@@ -325,6 +326,7 @@ int game(player playerA, player playerB){
                 do{
                 printf("Escolha uma peça de 0 a %d\n",playerA_Piece_Count-1);
                 scanf("%d",&option);
+                flush_in();
                 if(option < 0 || option > playerA_Piece_Count){
                     //scanf("%d",&option);
                     printf("Peça inválida...\n");
@@ -333,12 +335,13 @@ int game(player playerA, player playerB){
                     break;
 
                 }while(true); //invalidar a peça, mudar on table para true e available false
-                printf("Peça jogada: [%d|%d] foi jogada\n",dominoPieces[playerB.playerPieces[option]].sideA,dominoPieces[playerB.playerPieces[option]].sideB);
+                printf("Peça jogada: [%d|%d] foi jogada\n",dominoPieces[playerA.playerPieces[option]].sideA,dominoPieces[playerA.playerPieces[option]].sideB);
                 }
                  if(playerInicio == 2){
                 do{
                 printf("Escolha uma peça de 0 a %d\n",playerB_Piece_Count);
                 scanf("%d",&option);
+                flush_in();
                 if(option < 0 || option > playerB_Piece_Count){
                     //scanf("%d",&option);
                     printf("Peça inválida...\n");
@@ -347,7 +350,7 @@ int game(player playerA, player playerB){
                     break;
 
                 }while(true);
-                printf("Peça jogada: [%d|%d] foi jogada\n",dominoPieces[playerB.playerPieces[option]].sideA,dominoPieces[playerB.playerPieces[option]].sideB);
+                printf("Peça jogada: [%d|%d] foi jogada\n",dominoPieces[playerB.playerPieces[option]].sideA,dominoPieces[playerB.playerPieces[option]].sideB); //change option index to right index
                  }
                 
                 break; 
@@ -363,33 +366,39 @@ int game(player playerA, player playerB){
                 break;
             }
 
+
+            back2:
             printInGameMenu(playerSecundario);
             option = grabOptionInGame();
+            flush_in();
             
-             switch(option){ //trocar todos os breaks para continue, apenas brake se a jogada for efetuada
+            switch(option){  //trocar todos os breaks para continue, apenas brake se a jogada for efetuada
                 case 1:
-                printf("Voce está vendo a mesa - EM ANDAMENTO -\n");
+                printf("Você está vendo a mesa - EM ANDAMENTO -\n");
                 printMesa();
                 continue;
 
+                //Caso mostrar peças
                 case 2:
-                if(1 == playerSecundario){
+                if(1 == playerSecundario){ //checa se é jogador A 
                     for(int k = 0 ; k < playerA_Piece_Count; k++){
                         printf("[%d|%d] ",dominoPieces[playerA.playerPieces[k]].sideA,dominoPieces[playerA.playerPieces[k]].sideB);
                    }
-                
-                }if(2 == playerSecundario){
-                    for(int j = 0 ; j < playerB_Piece_Count; j++){
-                       
-                       printf("[%d|%d] ",dominoPieces[playerB.playerPieces[j]].sideA,dominoPieces[playerB.playerPieces[j]].sideB);
+                   
+                    printf("\n");
+                }else{
+                    
+                    for(int k = 0 ; k < playerB_Piece_Count; k++){
+                       printf("[%d|%d] ",dominoPieces[playerB.playerPieces[k]].sideA,dominoPieces[playerB.playerPieces[k]].sideB); 
                    }
+                    printf("\n");
                 }
-                printf("\n");
-                continue;
+                goto back2; //solução primata porém é oq temos para hj
 
+                //Caso comprar peças
                 case 3:
                 for(int k = 14; k < 28; k++){ //Função para o jogador comprar uma peça
-                    if(dominoPieces[k].available == true){
+                    if(dominoPieces[k].available  == true){
                         newPiece = k;
                         dominoPieces[k].available = false;
                         printf("Próxima posição válida = %d\n",k);
@@ -397,7 +406,7 @@ int game(player playerA, player playerB){
                     }else 
                         continue;
             }
-                if (1 == playerSecundario){ //checa se é jogador A
+                if (1 == playerSecundario){ //checa se é Jogador A
             
                 playerA.playerPieces[playerA_Piece_Count] = shuffleSideA[newPiece]; //Pega o index de peça disponivel, acessa no array de peças embaralhadas e atribui ao jogador na primeira posição disponivel.
 
@@ -407,12 +416,9 @@ int game(player playerA, player playerB){
 
                 printf("Peça comprada: [%d|%d]\n",dominoPieces[playerA.playerPieces[playerA_Piece_Count]].sideA,dominoPieces[playerA.playerPieces[playerA_Piece_Count]].sideB);
 
-
                 playerA_Piece_Count = playerA_Piece_Count + 1; // move 1 na posição do proximo index valido
 
-                
-
-                } else if(2 == playerSecundario) { //checa se é jogador B
+                } else if(2 == playerSecundario) {
                     
                 playerB.playerPieces[playerB_Piece_Count] = shuffleSideA[newPiece]; //Pega o index de peça disponivel, acessa no array de peças embaralhadas e atribui ao jogador na primeira posição disponivel.
 
@@ -420,18 +426,19 @@ int game(player playerA, player playerB){
 
                 dominoPieces[newPiece].player = 2; // Vai para o player B
 
-                printf("Peça comprada: [%d|%d]\n",dominoPieces[playerB.playerPieces[playerB_Piece_Count]].sideA,dominoPieces[playerB.playerPieces[playerB_Piece_Count]].sideB);
+                 printf("Peça comprada: [%d|%d]\n",dominoPieces[playerB.playerPieces[playerB_Piece_Count]].sideA,dominoPieces[playerB.playerPieces[playerB_Piece_Count]].sideB);
 
                 playerB_Piece_Count = playerB_Piece_Count + 1; // move 1 na posição do proximo index valido
-
                 }
-                continue;
+               
+                goto back2; //solução primata porém é oq temos pra hj
 
                 case 4:
                 if(playerSecundario == 1){
                 do{
-                printf("Escolha uma peça de 0 a %d\n",playerA_Piece_Count -1); //invalidar a peça, mudar on table para true e available false
+                printf("Escolha uma peça de 0 a %d\n",playerA_Piece_Count-1);
                 scanf("%d",&option);
+                flush_in();
                 if(option < 0 || option > playerA_Piece_Count){
                     //scanf("%d",&option);
                     printf("Peça inválida...\n");
@@ -439,13 +446,14 @@ int game(player playerA, player playerB){
                 }else
                     break;
 
-                }while(true);
-                printf("Peça jogada: [%d|%d] foi jogada",dominoPieces[playerB.playerPieces[option]].sideA,dominoPieces[playerB.playerPieces[option]].sideB);
+                }while(true); //invalidar a peça, mudar on table para true e available false
+                printf("Peça jogada: [%d|%d] foi jogada\n",dominoPieces[playerA.playerPieces[option]].sideA,dominoPieces[playerA.playerPieces[option]].sideB);
                 }
                  if(playerSecundario == 2){
                 do{
-                printf("Escolha uma peça de 0 a %d\n",playerB_Piece_Count - 1);
+                printf("Escolha uma peça de 0 a %d\n",playerB_Piece_Count);
                 scanf("%d",&option);
+                flush_in();
                 if(option < 0 || option > playerB_Piece_Count){
                     //scanf("%d",&option);
                     printf("Peça inválida...\n");
@@ -454,9 +462,10 @@ int game(player playerA, player playerB){
                     break;
 
                 }while(true);
-                printf("Peça jogada: [%d|%d] foi jogada\n",dominoPieces[playerB.playerPieces[option]].sideA,dominoPieces[playerB.playerPieces[option]].sideB);
+                printf("Peça jogada: [%d|%d] foi jogada\n",dominoPieces[playerB.playerPieces[option]].sideA,dominoPieces[playerB.playerPieces[option]].sideB); //change option index to right index
                  }
-                break;
+                
+                break; 
 
                 //Imprime as regras
                 case 5:

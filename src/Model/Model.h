@@ -22,6 +22,7 @@
     typedef struct{
         bool creation; //verifica se a mesa foi ou não criada vazia
         char indexBoard[1100]; // ----> if('\0') aplica/ caso... --> 
+        bool isAvailable; // 
 
     } board;
 
