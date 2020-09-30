@@ -11,7 +11,7 @@
 #include "./Controller/flushController.cpp"
 #include <ctype.h>
 
-  int penisBemSujo;
+  
   char str[1000];
 
 int playerInicio,playerSecundario;
