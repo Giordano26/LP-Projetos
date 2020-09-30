@@ -23,13 +23,13 @@
 * <p><s>The system should allow the player to organize the domino pieces (in the correct sequence) to play again.</s></p>
 * <p><s>The system should be capable to show all domino pieces on the screen (in text or graphic mode)</s></p>
 
-### Step 2      <Strong>!!!!DONE!!!!<Strong>
+### Step 2      
 * <p><s>The system must be easyly refactored and posterior code modifications shouldn't impact on further modules</s></p>
-* <p><s>The system must have different ways to show game options (multiples menus</s></p>
+* <p><s>The system must have different ways to show game options (multiples menus)</s></p>
 ### Step 3
 * <p><s>The system should let the user dertemine how many players will play the game. Minimum of One and Maximum of Two players</s></p>
 * <p><s>The system should create a game table after the domino's pieces between the players</s></p>
-* <p><s>The system should let the user distribute the domino's pieces among players<\s></p>
+* <p><s>The system should let the user distribute the domino's pieces among players</s></p>
 * <p><s>The system should let the user start a game</s></p>
 * <p><s>The system should let the user pick "Buy" a piece</s></p>
 * <p>The system must verify if the player's last move is valid (wrong positioning and etc)</p>
