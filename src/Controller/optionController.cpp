@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <ctype.h>
 
 //Cada menu tem que ter sua função própria de escolha
 
@@ -67,4 +68,25 @@ int grabOptionInGame()
     printf("\n");
 
     return option;
+}
+
+char grabOptionBoard(){
+    char option;
+    do{
+        printf("\n Jogar no começo ou no final?\n(C/F)\n");
+        scanf("%c",&option);
+
+        if(toupper(option) == 'C' || toupper(option) == 'F'){
+            return option;
+        }
+        else{
+            printf("Opção inválida...");
+            continue;
+        }
+
+    }while(true);
+
+
+
+    
 }

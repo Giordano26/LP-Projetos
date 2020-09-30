@@ -117,7 +117,7 @@ void printRules(){
         "|_____________________________________|\n");
 }
 
-//Mesa inicial
+//Mesa inicial -- essa função vai fica so pro rage
 void printMesa(){ // NÃO CONSEGUIMOS FAZER A MESA AINDA, ESTÁ MUITO COMPLICADO!!!!!!!!
                   // O PROGRAMA SE TORNOU UM MONSTRO A PARTIR DO MOMENTO EM QUE TIRARM MINHA LIBERDADE
                   // DE MODULARIZAR, LOGO EU NAO CONSIGO TRABALHAR COM UMA FILE DE 500 LINHAS PQ MEU SCROLL DO MOUSE NAO E GRANDE

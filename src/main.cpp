@@ -1,4 +1,5 @@
 //Grupo Shoegazer - Função Principal com lógica do jogo e inicio do mesmo.
+//MVC - Controller - isto virou uma anarquia
 
 #include "./Controller/optionController.cpp"
 #include <stdio.h>
@@ -8,11 +9,12 @@
 #include "./Controller/shuffleController.cpp"
 #include "./Model/Model.h"
 #include "./Controller/flushController.cpp"
+#include <ctype.h>
 
-//Criação da mesa inicial
 
 int playerInicio,playerSecundario;
 int game(player playerA, player playerB);
+char megaOption;
 
 
 int main()
@@ -74,17 +76,6 @@ int main()
 }
 
 
-void mesinhaInicial(){ //função para printar a primeira mesa 
-    board mesa;
-    mesa.creation = false;
-    if(!mesa.creation){
-        //printMesa();
-        printf("\n\n\n");
-        mesa.creation = true;
-    }
-       
-}
-
 
 
 int game(player playerA, player playerB){
@@ -95,6 +86,13 @@ int game(player playerA, player playerB){
         int pieceA = 0;
         int pieceB = 0;
         int count = 0;
+
+    //variaveis para a mesa;
+        char mesaLinda[168];
+        bool mesafudida[168];
+        int mesaCounter;
+        int mesaCounter2;
+        
 
         piece dominoPieces[28];
 
@@ -140,8 +138,8 @@ int game(player playerA, player playerB){
     }
     for(int y = 0; y < 7; y++){
             playerB.playerPieces[y] = shuffleSideA[y+7]; 
-            dominoPieces[y].available = false;  //Peça deixa de ser disponível
-            dominoPieces[y].player = 2; // Vai para o player B
+            dominoPieces[y+7].available = false;  //Peça deixa de ser disponível
+            dominoPieces[y+7].player = 2; // Vai para o player B
     }
 
     int playerA_Piece_Count = 7; // Primeira posição com index vazio para peça
@@ -228,6 +226,14 @@ int game(player playerA, player playerB){
     } //fim do caso em que algum seja nulo;
 
 
+    //gerar a mesa
+
+    for(int lin = 0; lin <= 168; lin++){
+        mesaLinda[lin] = ' ';
+        mesafudida[lin] = true;
+    }
+
+
 
 
 
@@ -256,14 +262,22 @@ int game(player playerA, player playerB){
             
             int newPiece;
 
-            //mesinhaInicial();
+            
             printInGameMenu(playerInicio);
             option = grabOptionInGame();
 
             switch(option){  //trocar todos os breaks para continue, apenas brake se a jogada for efetuada
                 case 1:
                 printf("Você está vendo a mesa - EM ANDAMENTO -\n");
-                printMesa();
+                    mesaCounter2 = -1;
+                   for(int lin = 0; lin <= 168  ; lin++){
+                    printf("%c",mesaLinda[lin]);
+                    mesaCounter2++;
+                    if(mesaCounter2%24 == 0)
+                        printf("\n");
+
+                    };
+                    printf("\n");
                 continue;
 
                 //Caso mostrar peças
@@ -335,11 +349,87 @@ int game(player playerA, player playerB){
                     break;
 
                 }while(true); //invalidar a peça, mudar on table para true e available false
-                printf("Peça jogada: [%d|%d] foi jogada\n",dominoPieces[playerA.playerPieces[option]].sideA,dominoPieces[playerA.playerPieces[option]].sideB);
+                //printf("Peça jogada: [%d|%d] foi jogada\n",dominoPieces[playerA.playerPieces[option]].sideA,dominoPieces[playerA.playerPieces[option]].sideB);
+                megaOption = grabOptionBoard(); //opção começo ou fim?
+                mesaCounter = 0; //contador para quebrar a atribuição em partes
+                if(toupper(megaOption) == 'C'){
+                    for(int k = 0; k <= 168; k++){ //começa percorrer o array pelo começo
+                        if(mesafudida[k]){
+                            if(mesaCounter == 0){ //vai colocando em partes a peça no array da mesa
+                                mesaLinda[k] = '[';
+                                mesafudida[k] = false;
+                                mesaCounter++;
+                            }
+                            else if(mesaCounter == 1){
+                                mesaLinda[k] = dominoPieces[playerA.playerPieces[option]].sideA;
+                                mesafudida[k] = false;
+                                mesaCounter++;
+                            }
+                            else if(mesaCounter == 2){
+                                mesaLinda[k] = '|';
+                                mesafudida[k] = false;
+                                mesaCounter++;
+                            }else if(mesaCounter == 3){
+                                mesaLinda[k] = dominoPieces[playerA.playerPieces[option]].sideB;
+                                mesafudida[k] = false;
+                                mesaCounter++;
+                            }else if(mesaCounter == 4){
+                                mesaLinda[k] = ']';
+                                mesafudida[k] = false;
+                                mesaCounter++;
+                            }else if(mesaCounter == 5){
+                                mesaLinda[k] = ' ';
+                                mesafudida[k] = false;
+                                mesaCounter++;
+                            }
+
+                        }
+                    }
+                }else if(toupper(megaOption) == 'F'){
+                    for(int k = 168; k >= 0 ; k--){
+                        if(mesafudida[k]){
+                            if(mesaCounter == 0){
+                                mesaLinda[k] = ']';
+                                mesafudida[k] = false;
+                                mesaCounter++;
+                            }
+                            else if(mesaCounter == 1){
+                                mesaLinda[k] = dominoPieces[playerA.playerPieces[option]].sideB;
+                                mesafudida[k] = false;
+                                mesaCounter++;
+                            }
+                            else if(mesaCounter == 2){
+                                mesaLinda[k] = '|';
+                                mesafudida[k] = false;
+                                mesaCounter++;
+                            }else if(mesaCounter == 3){
+                                mesaLinda[k] = dominoPieces[playerA.playerPieces[option]].sideA;
+                                mesafudida[k] = false;
+                                mesaCounter++;
+                            }else if(mesaCounter == 4){
+                                mesaLinda[k] = '[';
+                                mesafudida[k] = false;
+                                mesaCounter++;
+                            }else if(mesaCounter == 5){
+                                mesaLinda[k] = ' ';
+                                mesafudida[k] = false;
+                                mesaCounter++;
+                            }
+
+                        }
+                    }
+                    
+                };
+
+                for(int k = option; k < playerA_Piece_Count; k++){ //algoritmo que joga todo o array pra esquerda
+                    dominoPieces[playerA.playerPieces[k]].sideA = dominoPieces[playerA.playerPieces[k+1]].sideA;
+                    dominoPieces[playerA.playerPieces[k]].sideB = dominoPieces[playerA.playerPieces[k+1]].sideB;
+                }
+                dominoPieces[playerA.playerPieces[option]].inGame = true; //status da peça em jogo
                 }
                  if(playerInicio == 2){
-                do{
-                printf("Escolha uma peça de 0 a %d\n",playerB_Piece_Count);
+                               do{
+                printf("Escolha uma peça de 0 a %d\n",playerB_Piece_Count-1);
                 scanf("%d",&option);
                 flush_in();
                 if(option < 0 || option > playerB_Piece_Count){
@@ -349,10 +439,85 @@ int game(player playerA, player playerB){
                 }else
                     break;
 
-                }while(true);
-                printf("Peça jogada: [%d|%d] foi jogada\n",dominoPieces[playerB.playerPieces[option]].sideA,dominoPieces[playerB.playerPieces[option]].sideB); //change option index to right index
-                 }
-                
+                }while(true); //invalidar a peça, mudar on table para true e available false
+                //printf("Peça jogada: [%d|%d] foi jogada\n",dominoPieces[playerA.playerPieces[option]].sideA,dominoPieces[playerA.playerPieces[option]].sideB);
+                megaOption = grabOptionBoard(); //opção começo ou fim?
+                mesaCounter = 0; //contador para quebrar a atribuição em partes
+                if(toupper(megaOption) == 'C'){
+                    for(int k = 0; k <= 168; k++){ //começa percorrer o array pelo começo
+                        if(mesafudida[k]){
+                            if(mesaCounter == 0){ //vai colocando em partes a peça no array da mesa
+                                mesaLinda[k] = '[';
+                                mesafudida[k] = false;
+                                mesaCounter++;
+                            }
+                            else if(mesaCounter == 1){
+                                mesaLinda[k] = dominoPieces[playerB.playerPieces[option]].sideA;
+                                mesafudida[k] = false;
+                                mesaCounter++;
+                            }
+                            else if(mesaCounter == 2){
+                                mesaLinda[k] = '|';
+                                mesafudida[k] = false;
+                                mesaCounter++;
+                            }else if(mesaCounter == 3){
+                                mesaLinda[k] = dominoPieces[playerB.playerPieces[option]].sideB;
+                                mesafudida[k] = false;
+                                mesaCounter++;
+                            }else if(mesaCounter == 4){
+                                mesaLinda[k] = ']';
+                                mesafudida[k] = false;
+                                mesaCounter++;
+                            }else if(mesaCounter == 5){
+                                mesaLinda[k] = ' ';
+                                mesafudida[k] = false;
+                                mesaCounter++;
+                            }
+
+                        }
+                    }
+                }else if(toupper(megaOption) == 'F'){
+                    for(int k = 168; k >= 0 ; k--){
+                        if(mesafudida[k]){
+                            if(mesaCounter == 0){
+                                mesaLinda[k] = ']';
+                                mesafudida[k] = false;
+                                mesaCounter++;
+                            }
+                            else if(mesaCounter == 1){
+                                mesaLinda[k] = dominoPieces[playerB.playerPieces[option]].sideB;
+                                mesafudida[k] = false;
+                                mesaCounter++;
+                            }
+                            else if(mesaCounter == 2){
+                                mesaLinda[k] = '|';
+                                mesafudida[k] = false;
+                                mesaCounter++;
+                            }else if(mesaCounter == 3){
+                                mesaLinda[k] = dominoPieces[playerB.playerPieces[option]].sideA;
+                                mesafudida[k] = false;
+                                mesaCounter++;
+                            }else if(mesaCounter == 4){
+                                mesaLinda[k] = '[';
+                                mesafudida[k] = false;
+                                mesaCounter++;
+                            }else if(mesaCounter == 5){
+                                mesaLinda[k] = ' ';
+                                mesafudida[k] = false;
+                                mesaCounter++;
+                            }
+
+                        }
+                    }
+                    
+                };
+
+                for(int k = option; k < playerA_Piece_Count; k++){ //algoritmo que joga todo o array pra esquerda
+                    dominoPieces[playerB.playerPieces[k]].sideA = dominoPieces[playerB.playerPieces[k+1]].sideA;
+                    dominoPieces[playerB.playerPieces[k]].sideB = dominoPieces[playerB.playerPieces[k+1]].sideB;
+                }
+                dominoPieces[playerB.playerPieces[option]].inGame = true; //status da peça em jogo
+                }
                 break; 
 
                 //Imprime as regras
@@ -375,7 +540,15 @@ int game(player playerA, player playerB){
             switch(option){  //trocar todos os breaks para continue, apenas brake se a jogada for efetuada
                 case 1:
                 printf("Você está vendo a mesa - EM ANDAMENTO -\n");
-                printMesa();
+                    mesaCounter2 = -1;
+                   for(int lin = 0; lin <= 168  ; lin++){
+                    printf("%c",mesaLinda[lin]);
+                    mesaCounter2++;
+                    if(mesaCounter2%24 == 0)
+                        printf("\n");
+
+                    };
+                    printf("\n");
                 continue;
 
                 //Caso mostrar peças
