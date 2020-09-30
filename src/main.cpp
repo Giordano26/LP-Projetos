@@ -252,7 +252,7 @@ int game(player playerA, player playerB){
                                                                            );
                     
 
-            printf(" -------------------------------- BETA V1.0 ---------------------------------\n\n");
+            printf(" -------------------------------- BETA V1.1 ---------------------------------\n\n");
             printf("Primeiro a jogar: Player%d \n", playerInicio);
             printf("Segundo a jogar: Player%d \n\n", playerSecundario);
 
