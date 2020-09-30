@@ -322,6 +322,7 @@ int game(player playerA, player playerB){
 
                 printf("Peça comprada: [%d|%d]\n",dominoPieces[playerA.playerPieces[playerA_Piece_Count]].sideA,dominoPieces[playerA.playerPieces[playerA_Piece_Count]].sideB);
 
+
                 playerA_Piece_Count = playerA_Piece_Count + 1; // move 1 na posição do proximo index valido
 
                 } else if(2 == playerInicio) {
