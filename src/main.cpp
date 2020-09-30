@@ -11,6 +11,8 @@
 #include "./Controller/flushController.cpp"
 #include <ctype.h>
 
+  int penisBemSujo;
+  char str[1000];
 
 int playerInicio,playerSecundario;
 int game(player playerA, player playerB);
@@ -229,7 +231,7 @@ int game(player playerA, player playerB){
     //gerar a mesa
 
     for(int lin = 0; lin <= 168; lin++){
-        mesaLinda[lin] = ' ';
+        mesaLinda[lin] = '\0';
         mesafudida[lin] = true;
     }
 
@@ -250,7 +252,7 @@ int game(player playerA, player playerB){
                                                                            );
                     
 
-            printf(" -------------------------------- BETA V0.1 ---------------------------------\n\n");
+            printf(" -------------------------------- BETA V1.0 ---------------------------------\n\n");
             printf("Primeiro a jogar: Player%d \n", playerInicio);
             printf("Segundo a jogar: Player%d \n\n", playerSecundario);
 
@@ -271,7 +273,7 @@ int game(player playerA, player playerB){
                 printf("Você está vendo a mesa - EM ANDAMENTO -\n");
                     mesaCounter2 = -1;
                    for(int lin = 0; lin <= 168  ; lin++){
-                    printf("%c",mesaLinda[lin]);
+                    printf("%s",mesaLinda[lin]);
                     mesaCounter2++;
                     if(mesaCounter2%24 == 0)
                         printf("\n");
@@ -354,14 +356,15 @@ int game(player playerA, player playerB){
                 mesaCounter = 0; //contador para quebrar a atribuição em partes
                 if(toupper(megaOption) == 'C'){
                     for(int k = 0; k <= 168; k++){ //começa percorrer o array pelo começo
-                        if(mesafudida[k]){
+                        if(mesafudida[k] == true){
                             if(mesaCounter == 0){ //vai colocando em partes a peça no array da mesa
                                 mesaLinda[k] = '[';
                                 mesafudida[k] = false;
                                 mesaCounter++;
                             }
                             else if(mesaCounter == 1){
-                                mesaLinda[k] = dominoPieces[playerA.playerPieces[option]].sideA;
+                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideA);
+                                mesaLinda[k] = *str;
                                 mesafudida[k] = false;
                                 mesaCounter++;
                             }
@@ -370,7 +373,9 @@ int game(player playerA, player playerB){
                                 mesafudida[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 3){
-                                mesaLinda[k] = dominoPieces[playerA.playerPieces[option]].sideB;
+                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideB);
+                                mesaLinda[k] = *str;
+                               // mesaLinda[k] = dominoPieces[playerA.playerPieces[option]].sideB;
                                 mesafudida[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 4){
@@ -387,14 +392,16 @@ int game(player playerA, player playerB){
                     }
                 }else if(toupper(megaOption) == 'F'){
                     for(int k = 168; k >= 0 ; k--){
-                        if(mesafudida[k]){
+                        if(mesafudida[k] == true){
                             if(mesaCounter == 0){
                                 mesaLinda[k] = ']';
                                 mesafudida[k] = false;
                                 mesaCounter++;
                             }
                             else if(mesaCounter == 1){
-                                mesaLinda[k] = dominoPieces[playerA.playerPieces[option]].sideB;
+                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideB);
+                                mesaLinda[k] = *str;
+                                //mesaLinda[k] = dominoPieces[playerA.playerPieces[option]].sideB;
                                 mesafudida[k] = false;
                                 mesaCounter++;
                             }
@@ -403,7 +410,9 @@ int game(player playerA, player playerB){
                                 mesafudida[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 3){
-                                mesaLinda[k] = dominoPieces[playerA.playerPieces[option]].sideA;
+                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideA);
+                                mesaLinda[k] = *str;
+                                //mesaLinda[k] = dominoPieces[playerA.playerPieces[option]].sideA;
                                 mesafudida[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 4){
@@ -445,14 +454,16 @@ int game(player playerA, player playerB){
                 mesaCounter = 0; //contador para quebrar a atribuição em partes
                 if(toupper(megaOption) == 'C'){
                     for(int k = 0; k <= 168; k++){ //começa percorrer o array pelo começo
-                        if(mesafudida[k]){
+                        if(mesafudida[k] == true){
                             if(mesaCounter == 0){ //vai colocando em partes a peça no array da mesa
                                 mesaLinda[k] = '[';
                                 mesafudida[k] = false;
                                 mesaCounter++;
                             }
                             else if(mesaCounter == 1){
-                                mesaLinda[k] = dominoPieces[playerB.playerPieces[option]].sideA;
+                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideA);
+                                mesaLinda[k] = *str;
+                                //mesaLinda[k] = dominoPieces[playerB.playerPieces[option]].sideA;
                                 mesafudida[k] = false;
                                 mesaCounter++;
                             }
@@ -461,7 +472,9 @@ int game(player playerA, player playerB){
                                 mesafudida[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 3){
-                                mesaLinda[k] = dominoPieces[playerB.playerPieces[option]].sideB;
+                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideB);
+                                mesaLinda[k] = *str;
+                               // mesaLinda[k] = dominoPieces[playerB.playerPieces[option]].sideB;
                                 mesafudida[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 4){
@@ -478,14 +491,16 @@ int game(player playerA, player playerB){
                     }
                 }else if(toupper(megaOption) == 'F'){
                     for(int k = 168; k >= 0 ; k--){
-                        if(mesafudida[k]){
+                        if(mesafudida[k] == true){
                             if(mesaCounter == 0){
                                 mesaLinda[k] = ']';
                                 mesafudida[k] = false;
                                 mesaCounter++;
                             }
                             else if(mesaCounter == 1){
-                                mesaLinda[k] = dominoPieces[playerB.playerPieces[option]].sideB;
+                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideB);
+                                mesaLinda[k] = *str;
+                               // mesaLinda[k] = dominoPieces[playerB.playerPieces[option]].sideB;
                                 mesafudida[k] = false;
                                 mesaCounter++;
                             }
@@ -494,7 +509,9 @@ int game(player playerA, player playerB){
                                 mesafudida[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 3){
-                                mesaLinda[k] = dominoPieces[playerB.playerPieces[option]].sideA;
+                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideA);
+                                mesaLinda[k] = *str;
+                                //mesaLinda[k] = dominoPieces[playerB.playerPieces[option]].sideA;
                                 mesafudida[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 4){

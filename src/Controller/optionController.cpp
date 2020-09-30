@@ -74,7 +74,7 @@ char grabOptionBoard(){
     char option;
     do{
         printf("\n Jogar no começo ou no final?\n(C/F)\n");
-        scanf("%c",&option);
+        scanf("%s",&option);
 
         if(toupper(option) == 'C' || toupper(option) == 'F'){
             return option;
