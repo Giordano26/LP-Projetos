@@ -207,12 +207,12 @@ int game(player playerA, player playerB){
 
             switch(option){  
                 case 1:
-                printf("MESA:\n"); //2 linhas de  14 peças ...
-                    mesaCounter2 = 0;
-                   for(int lin = 0; lin <= 168  ; lin++){
+                showMessage("MESA:\n");
+                mesaCounter2 = 0;
+                for(int lin = 0; lin <= 168  ; lin++){
                     printf("%c",mesaLinda[lin]);
                     mesaCounter2++;
-                    if(mesaCounter2%24 == 0)
+                    if(mesaCounter2 == 84)
                         printf("\n");
                     else if(mesaCounter2 == 0)
                         printf("\n");
@@ -517,7 +517,7 @@ int game(player playerA, player playerB){
                    for(int lin = 0; lin <= 168  ; lin++){
                     printf("%c",mesaLinda[lin]);
                     mesaCounter2++;
-                    if(mesaCounter2%24 == 0)
+                    if(mesaCounter2 == 84)
                         printf("\n");
                     else if(mesaCounter2 == 0)
                         printf("\n");
