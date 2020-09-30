@@ -270,12 +270,14 @@ int game(player playerA, player playerB){
 
             switch(option){  //trocar todos os breaks para continue, apenas brake se a jogada for efetuada
                 case 1:
-                printf("Você está vendo a mesa - EM ANDAMENTO -\n");
-                    mesaCounter2 = -1;
+                printf("MESA:\n");
+                    mesaCounter2 = 0;
                    for(int lin = 0; lin <= 168  ; lin++){
                     printf("%c",mesaLinda[lin]);
                     mesaCounter2++;
                     if(mesaCounter2%24 == 0)
+                        printf("\n");
+                    else if(mesaCounter2 == 0)
                         printf("\n");
 
                     };
@@ -439,7 +441,7 @@ int game(player playerA, player playerB){
                 playerA_Piece_Count--;
                 dominoPieces[playerA.playerPieces[option]].inGame = true; //status da peça em jogo
                 }
-                 if(playerInicio == 2){
+                 if(playerInicio == 2){ //erro do dampé ta aqui mello .... 
                                do{
                 printf("Escolha uma peça de 0 a %d\n",playerB_Piece_Count-1);
                 scanf("%d",&option);
@@ -572,12 +574,14 @@ int game(player playerA, player playerB){
             
             switch(option){  //trocar todos os breaks para continue, apenas brake se a jogada for efetuada
                 case 1:
-                printf("Você está vendo a mesa - EM ANDAMENTO -\n");
-                    mesaCounter2 = -1;
+                    printf("MESA:\n");
+                    mesaCounter2 = 0;
                    for(int lin = 0; lin <= 168  ; lin++){
                     printf("%c",mesaLinda[lin]);
                     mesaCounter2++;
                     if(mesaCounter2%24 == 0)
+                        printf("\n");
+                    else if(mesaCounter2 == 0)
                         printf("\n");
 
                     };
@@ -858,7 +862,7 @@ int game(player playerA, player playerB){
 
             
         }; //fase de testes ok...............
-    
+            //jogador 2 playerInicio jogar peça (ao menos index 0) jogar no inicio quebra o jogo
 
 
    return 0; 
