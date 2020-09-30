@@ -155,3 +155,33 @@ void clearScreen()
 // --> 5 for(k = 5; k< 123; k++) --> array ... em cim
 // --> 123 for(k = 123; k <5; k--) --> array ... em baixo
 // -->  
+
+
+void showMessage(char msg[200])
+{
+    printf("%s",msg);
+
+}
+
+void showBiggestPiece(int peca1_ladoA, int peca1_ladoB, int peca2_ladoA, int peca2_ladoB){
+
+        printf("Peça Maior do jogador A é: [%d|%d]\n",peca1_ladoA, peca1_ladoB);
+        printf("Peça Maior do jogador B é: [%d|%d]\n",peca2_ladoA,peca2_ladoB);
+
+}
+
+void firstToPlay(int player_1, int player_2){
+    printf("Primeiro a jogar: Player%d \n", player_1);
+    printf("Segundo a jogar: Player%d \n\n", player_2);
+
+}
+
+void showPlayerPieces(int pecaLadoA, int pecaLadoB){
+    printf("[%d|%d] ",pecaLadoA,pecaLadoB);
+
+}
+
+void purchasedPiece(int pecaLadoA, int pecaLadoB){
+
+    printf("Peça comprada: [%d|%d]\n",pecaLadoA,pecaLadoB);
+}

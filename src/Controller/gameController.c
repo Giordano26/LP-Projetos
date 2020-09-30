@@ -1,83 +1,20 @@
-//Grupo Shoegazer - Função Principal com lógica do jogo e inicio do mesmo.
-//MVC - Controller - isto virou uma anarquia
 
-#include "./Controller/optionController.cpp"
+#include "./optionController.cpp"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "./View/printInterfaces.cpp"
-#include "./Controller/shuffleController.cpp"
-#include "./Model/Model.h"
-#include "./Controller/flushController.cpp"
+#include "../View/printInterfaces.cpp"
+#include "./shuffleController.cpp"
+#include "../Model/Model.h"
+#include "./flushController.cpp"
 #include <ctype.h>
 
-  
   char str[1000];
+  char str2[1000];
 
 int playerInicio,playerSecundario;
 int game(player playerA, player playerB);
 char megaOption;
-
-
-int main()
-{
-    while (true)
-    {
-        int option;
-        
-        printMenu();
-        option = grabOption();
-        clearScreen();
-        
-        flush_in();
-
-        // OPÇÃO --
-        if(option == 3)
-            exit(1);
-
-        // OPÇÃO --> Selecionar numero de jogadores
-        else if(option == 1) {
-            
-          printMode();
-          option = grabOptionMode();
-          clearScreen();
-          
-          
-          if(option == 1){
-              printf("Modo em desenvolvimento...\n");
-              printf("Reiniciando...\n\n");
-          }
-          else if(option == 2){
-              printf("Modo de 2 jogadores selecionado\n\n");
-              player playerA, playerB;
-              
-              playerA.playerNum = 1;
-              playerB.playerNum = 2;
-              printf("Iniciando o Jogo...\n");
-              clearScreen();
-              game(playerA,playerB);
-              continue;
-              
-              
-          }
-            
-          flush_in();
-          if(option == 3)
-            continue;
-        }
-
-        // OPÇÃO --> Regras
-        else if (option == 2) {
-            
-            printRules();
-            continue;
-        }
-    }
-
-    return 0;
-}
-
-
 
 
 int game(player playerA, player playerB){
@@ -237,12 +174,10 @@ int game(player playerA, player playerB){
 
 
 
-
-
-        printf("Peça Maior do jogador A é: [%d|%d]\n",dominoPieces[pecaMaiorA].sideA,dominoPieces[pecaMaiorA].sideB);
-        printf("Peça Maior do jogador B é: [%d|%d]\n",dominoPieces[pecaMaiorB].sideA,dominoPieces[pecaMaiorB].sideB);
+        // Mostra a maior peça do Jogador A e B
+        showBiggestPiece(dominoPieces[pecaMaiorA].sideA,dominoPieces[pecaMaiorA].sideB,dominoPieces[pecaMaiorB].sideA,dominoPieces[pecaMaiorB].sideB);
         
-            printf(          
+        showMessage(          
                    " ░██████╗██╗░░██╗░█████╗░███████╗░██████╗░░█████╗░███████╗███████╗██████╗░\n"
                    " ██╔════╝██║░░██║██╔══██╗██╔════╝██╔════╝░██╔══██╗╚════██║██╔════╝██╔══██╗\n"
                    " ╚█████╗░███████║██║░░██║█████╗░░██║░░██╗░███████║░░███╔═╝█████╗░░██████╔╝\n"
@@ -250,11 +185,13 @@ int game(player playerA, player playerB){
                    " ██████╔╝██║░░██║╚█████╔╝███████╗╚██████╔╝██║░░██║███████╗███████╗██║░░██║\n"
                    " ╚═════╝░╚═╝░░╚═╝░╚════╝░╚══════╝░╚═════╝░╚═╝░░╚═╝╚══════╝╚══════╝╚═╝░░╚═╝\n"
                                                                            );
-                    
 
-            printf(" -------------------------------- BETA V1.1 ---------------------------------\n\n");
-            printf("Primeiro a jogar: Player%d \n", playerInicio);
-            printf("Segundo a jogar: Player%d \n\n", playerSecundario);
+                    
+            showMessage(" -------------------------------- BETA V1.1 ---------------------------------\n\n");
+
+            
+            // Mostra quem é o primeiro e o segundo a jogar
+            firstToPlay(playerInicio,playerSecundario);
 
 
 
@@ -288,14 +225,14 @@ int game(player playerA, player playerB){
                 case 2:
                 if(1 == playerInicio){ //checa se é jogador A 
                     for(int k = 0 ; k < playerA_Piece_Count; k++){
-                        printf("[%d|%d] ",dominoPieces[playerA.playerPieces[k]].sideA,dominoPieces[playerA.playerPieces[k]].sideB);
+                        showPlayerPieces(dominoPieces[playerA.playerPieces[k]].sideA,dominoPieces[playerA.playerPieces[k]].sideB);
                    }
                    
                     printf("\n");
                 }else{
                     
                     for(int k = 0 ; k < playerB_Piece_Count; k++){
-                       printf("[%d|%d] ",dominoPieces[playerB.playerPieces[k]].sideA,dominoPieces[playerB.playerPieces[k]].sideB); 
+                        showPlayerPieces(dominoPieces[playerB.playerPieces[k]].sideA,dominoPieces[playerB.playerPieces[k]].sideB);
                    }
                     printf("\n");
                 }
@@ -307,7 +244,7 @@ int game(player playerA, player playerB){
                     if(dominoPieces[k].available  == true){
                         newPiece = k;
                         dominoPieces[k].available = false;
-                        printf("Próxima posição válida = %d\n",k);
+                        printf("Próxima posição válida = %d\n",k); 
                         break;
                     }else 
                         continue;
@@ -320,7 +257,7 @@ int game(player playerA, player playerB){
 
                 dominoPieces[newPiece].player = 1; // Vai para o player A
 
-                printf("Peça comprada: [%d|%d]\n",dominoPieces[playerA.playerPieces[playerA_Piece_Count]].sideA,dominoPieces[playerA.playerPieces[playerA_Piece_Count]].sideB);
+                purchasedPiece(dominoPieces[playerA.playerPieces[playerA_Piece_Count]].sideA,dominoPieces[playerA.playerPieces[playerA_Piece_Count]].sideB);
 
 
                 playerA_Piece_Count = playerA_Piece_Count + 1; // move 1 na posição do proximo index valido
@@ -333,7 +270,7 @@ int game(player playerA, player playerB){
 
                 dominoPieces[newPiece].player = 2; // Vai para o player B
 
-                 printf("Peça comprada: [%d|%d]\n",dominoPieces[playerB.playerPieces[playerB_Piece_Count]].sideA,dominoPieces[playerB.playerPieces[playerB_Piece_Count]].sideB);
+                 purchasedPiece(dominoPieces[playerB.playerPieces[playerB_Piece_Count]].sideA,dominoPieces[playerB.playerPieces[playerB_Piece_Count]].sideB);
 
                 playerB_Piece_Count = playerB_Piece_Count + 1; // move 1 na posição do proximo index valido
                 }
@@ -348,7 +285,7 @@ int game(player playerA, player playerB){
                 flush_in();
                 if(option < 0 || option > playerA_Piece_Count){
                     //scanf("%d",&option);
-                    printf("Peça inválida...\n");
+                    showMessage("Peça inválida...\n");
                     continue;
                 }else
                     break;
@@ -449,7 +386,7 @@ int game(player playerA, player playerB){
                 flush_in();
                 if(option < 0 || option > playerB_Piece_Count){
                     //scanf("%d",&option);
-                    printf("Peça inválida...\n");
+                    showMessage("Peça inválida...\n");
                     continue;
                 }else
                     break;
@@ -575,7 +512,7 @@ int game(player playerA, player playerB){
             
             switch(option){  
                 case 1:
-                    printf("MESA:\n");
+                    showMessage("MESA:\n");
                     mesaCounter2 = 0;
                    for(int lin = 0; lin <= 168  ; lin++){
                     printf("%c",mesaLinda[lin]);
@@ -593,14 +530,14 @@ int game(player playerA, player playerB){
                 case 2:
                 if(1 == playerSecundario){ //checa se é jogador A 
                     for(int k = 0 ; k < playerA_Piece_Count; k++){
-                        printf("[%d|%d] ",dominoPieces[playerA.playerPieces[k]].sideA,dominoPieces[playerA.playerPieces[k]].sideB);
+                        showPlayerPieces(dominoPieces[playerA.playerPieces[k]].sideA,dominoPieces[playerA.playerPieces[k]].sideB);
                    }
                    
                     printf("\n");
                 }else{
                     
                     for(int k = 0 ; k < playerB_Piece_Count; k++){
-                       printf("[%d|%d] ",dominoPieces[playerB.playerPieces[k]].sideA,dominoPieces[playerB.playerPieces[k]].sideB); 
+                        showPlayerPieces(dominoPieces[playerB.playerPieces[k]].sideA,dominoPieces[playerB.playerPieces[k]].sideB);
                    }
                     printf("\n");
                 }
@@ -625,7 +562,7 @@ int game(player playerA, player playerB){
 
                 dominoPieces[newPiece].player = 1; // Vai para o player A
 
-                printf("Peça comprada: [%d|%d]\n",dominoPieces[playerA.playerPieces[playerA_Piece_Count]].sideA,dominoPieces[playerA.playerPieces[playerA_Piece_Count]].sideB);
+                purchasedPiece(dominoPieces[playerA.playerPieces[playerA_Piece_Count]].sideA,dominoPieces[playerA.playerPieces[playerA_Piece_Count]].sideB);
 
                 playerA_Piece_Count = playerA_Piece_Count + 1; // move 1 na posição do proximo index valido
 
@@ -637,7 +574,7 @@ int game(player playerA, player playerB){
 
                 dominoPieces[newPiece].player = 2; // Vai para o player B
 
-                 printf("Peça comprada: [%d|%d]\n",dominoPieces[playerB.playerPieces[playerB_Piece_Count]].sideA,dominoPieces[playerB.playerPieces[playerB_Piece_Count]].sideB);
+                purchasedPiece(dominoPieces[playerB.playerPieces[playerB_Piece_Count]].sideA,dominoPieces[playerB.playerPieces[playerB_Piece_Count]].sideB);
 
                 playerB_Piece_Count = playerB_Piece_Count + 1; // move 1 na posição do proximo index valido
                 }
@@ -652,7 +589,7 @@ int game(player playerA, player playerB){
                 flush_in();
                 if(option < 0 || option > playerA_Piece_Count){
                     //scanf("%d",&option);
-                    printf("Peça inválida...\n");
+                    showMessage("Peça inválida...\n");
                     continue;
                 }else
                     break;
@@ -661,6 +598,8 @@ int game(player playerA, player playerB){
                 //printf("Peça jogada: [%d|%d] foi jogada\n",dominoPieces[playerA.playerPieces[option]].sideA,dominoPieces[playerA.playerPieces[option]].sideB);
                 megaOption = grabOptionBoard(); //opção começo ou fim?
                 mesaCounter = 0; //contador para quebrar a atribuição em partes
+
+
                 if(toupper(megaOption) == 'C'){
                     for(int k = 0; k <= 168; k++){ //começa percorrer o array pelo começo
                         if(mesafudida[k] == true){
@@ -680,8 +619,8 @@ int game(player playerA, player playerB){
                                 mesafudida[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 3){
-                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideB);
-                                mesaLinda[k] = *str;
+                                sprintf(str2, "%d", dominoPieces[playerA.playerPieces[option]].sideB);
+                                mesaLinda[k] = *str2;
                                // mesaLinda[k] = dominoPieces[playerA.playerPieces[option]].sideB;
                                 mesafudida[k] = false;
                                 mesaCounter++;
@@ -717,8 +656,8 @@ int game(player playerA, player playerB){
                                 mesafudida[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 3){
-                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideA);
-                                mesaLinda[k] = *str;
+                                sprintf(str2, "%d", dominoPieces[playerA.playerPieces[option]].sideA);
+                                mesaLinda[k] = *str2;
                                 //mesaLinda[k] = dominoPieces[playerA.playerPieces[option]].sideA;
                                 mesafudida[k] = false;
                                 mesaCounter++;
@@ -753,7 +692,7 @@ int game(player playerA, player playerB){
                 flush_in();
                 if(option < 0 || option > playerB_Piece_Count){
                     //scanf("%d",&option);
-                    printf("Peça inválida...\n");
+                    showMessage("Peça inválida...\n");
                     continue;
                 }else
                     break;
@@ -782,8 +721,8 @@ int game(player playerA, player playerB){
                                 mesafudida[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 3){
-                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideB);
-                                mesaLinda[k] = *str;
+                                sprintf(str2, "%d", dominoPieces[playerB.playerPieces[option]].sideB);
+                                mesaLinda[k] = *str2;
                                // mesaLinda[k] = dominoPieces[playerB.playerPieces[option]].sideB;
                                 mesafudida[k] = false;
                                 mesaCounter++;
@@ -819,8 +758,8 @@ int game(player playerA, player playerB){
                                 mesafudida[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 3){
-                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideA);
-                                mesaLinda[k] = *str;
+                                sprintf(str2, "%d", dominoPieces[playerB.playerPieces[option]].sideA);
+                                mesaLinda[k] = *str2;
                                 //mesaLinda[k] = dominoPieces[playerB.playerPieces[option]].sideA;
                                 mesafudida[k] = false;
                                 mesaCounter++;
