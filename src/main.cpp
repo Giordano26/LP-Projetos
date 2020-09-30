@@ -268,9 +268,9 @@ int game(player playerA, player playerB){
             printInGameMenu(playerInicio);
             option = grabOptionInGame();
 
-            switch(option){  //trocar todos os breaks para continue, apenas brake se a jogada for efetuada
+            switch(option){  
                 case 1:
-                printf("MESA:\n");
+                printf("MESA:\n"); //2 linhas de  14 peças ...
                     mesaCounter2 = 0;
                    for(int lin = 0; lin <= 168  ; lin++){
                     printf("%c",mesaLinda[lin]);
@@ -442,8 +442,8 @@ int game(player playerA, player playerB){
                 dominoPieces[playerA.playerPieces[option]].inGame = true; //status da peça em jogo
                 }
                  if(playerInicio == 2){ //erro do dampé ta aqui mello .... 
-                               do{
-                printf("Escolha uma peça de 0 a %d\n",playerB_Piece_Count-1);
+                do{
+                printf("Escolha uma peça de 0 a %d\n",playerB_Piece_Count-1); //modularizar para o view
                 scanf("%d",&option);
                 flush_in();
                 if(option < 0 || option > playerB_Piece_Count){
@@ -572,7 +572,7 @@ int game(player playerA, player playerB){
             option = grabOptionInGame();
             flush_in();
             
-            switch(option){  //trocar todos os breaks para continue, apenas brake se a jogada for efetuada
+            switch(option){  
                 case 1:
                     printf("MESA:\n");
                     mesaCounter2 = 0;
@@ -746,7 +746,7 @@ int game(player playerA, player playerB){
                 dominoPieces[playerA.playerPieces[option]].inGame = true; //status da peça em jogo
                 }
                  if(playerSecundario == 2){
-                               do{
+                do{
                 printf("Escolha uma peça de 0 a %d\n",playerB_Piece_Count-1);
                 scanf("%d",&option);
                 flush_in();

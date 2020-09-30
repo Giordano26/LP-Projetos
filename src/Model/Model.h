@@ -18,3 +18,7 @@
         int playerPieces[30]; //array de peças do jogador
     } player;
 
+//salvar:
+//struct peça
+//struct player
+// 2 index mesa, crivo e array em si da mesa
