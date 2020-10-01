@@ -171,6 +171,7 @@ int game(player playerA, player playerB){
         mesaLinda[lin] = ' ';
         mesafudida[lin] = true;
     }
+    bool solucaoMacaca = false;
 
 
 
@@ -187,7 +188,7 @@ int game(player playerA, player playerB){
                                                                            );
 
                     
-            showMessage(" -------------------------------- BETA V1.1 ---------------------------------\n\n");
+            showMessage(" -------------------------------- BETA V1.2 ---------------------------------\n\n");
 
             
             // Mostra quem é o primeiro e o segundo a jogar
@@ -209,13 +210,13 @@ int game(player playerA, player playerB){
                 case 1:
                 showMessage("MESA:\n");
                 mesaCounter2 = 0;
+                    if(solucaoMacaca)
+                        printf("[");
                 for(int lin = 0; lin <= 168  ; lin++){
                     printf("%c",mesaLinda[lin]);
-                    mesaCounter2++;
                     if(mesaCounter2 == 84)
                         printf("\n");
-                    else if(mesaCounter2 == 0)
-                        printf("\n");
+                    mesaCounter2++;
 
                     };
                     printf("\n");
@@ -367,7 +368,7 @@ int game(player playerA, player playerB){
 
                         }
                     }
-                    
+                    solucaoMacaca = true;
                 };
 
                 for(int k = option; k < playerA_Piece_Count; k++){ //algoritmo que joga todo o array pra esquerda
@@ -469,7 +470,7 @@ int game(player playerA, player playerB){
 
                         }
                     }
-                    
+                    solucaoMacaca = true;
                 };
 
                 for(int k = option; k < playerA_Piece_Count; k++){ //algoritmo que joga todo o array pra esquerda
@@ -512,15 +513,15 @@ int game(player playerA, player playerB){
             
             switch(option){  
                 case 1:
-                    showMessage("MESA:\n");
-                    mesaCounter2 = 0;
-                   for(int lin = 0; lin <= 168  ; lin++){
+                showMessage("MESA:\n");
+                mesaCounter2 = 0;
+                    if(solucaoMacaca)
+                        printf("[");
+                for(int lin = 0; lin <= 168  ; lin++){
                     printf("%c",mesaLinda[lin]);
-                    mesaCounter2++;
                     if(mesaCounter2 == 84)
                         printf("\n");
-                    else if(mesaCounter2 == 0)
-                        printf("\n");
+                    mesaCounter2++;
 
                     };
                     printf("\n");
@@ -673,7 +674,7 @@ int game(player playerA, player playerB){
 
                         }
                     }
-                    
+                    solucaoMacaca = true;
                 };
 
                 for(int k = option; k < playerA_Piece_Count; k++){ //algoritmo que joga todo o array pra esquerda
@@ -775,7 +776,7 @@ int game(player playerA, player playerB){
 
                         }
                     }
-                    
+                    solucaoMacaca = true;
                 };
 
                 for(int k = option; k < playerA_Piece_Count; k++){ //algoritmo que joga todo o array pra esquerda
