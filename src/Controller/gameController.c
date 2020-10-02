@@ -28,6 +28,7 @@ int game(player playerA, player playerB){
         int timeShiftF_ladoB = 0; 
 
         int validador = 0;
+        int validador2 = 0;
         bool pavement = false;
 
         bool bilola = false;
@@ -42,6 +43,10 @@ int game(player playerA, player playerB){
         bool mesaBool[168];
         int mesaCounter;
         int mesaCounter2;
+
+    //Estado dos jogadores
+    bool playerIni = true;
+    bool playerSec = false;
         
 
         piece dominoPieces[28];
@@ -211,7 +216,8 @@ int game(player playerA, player playerB){
             int newPiece;
 
             
-            back1:
+            while(playerIni){
+
             printInGameMenu(playerInicio);
             option = grabOptionInGame();
             
@@ -325,7 +331,7 @@ int game(player playerA, player playerB){
                          if (timeShiftC_ladoB != dominoPieces[playerA.playerPieces[option]].sideA || timeShiftC_ladoB != dominoPieces[playerA.playerPieces[option]].sideB && bilola == false ){
                             printf("VC BURRO NAO JOGAR PEÇAS CORRETAS QUEBRAR JOGO DESTE MODO\n");
                             bilola = false;
-                            goto back1;
+                            continue;
                                                                                                                  
                         }
                     }else{
@@ -389,7 +395,7 @@ int game(player playerA, player playerB){
                     }
                 }else if(toupper(megaOption) == 'F'){
 
-                if (validador > 0) {
+                if (validador2 > 0) {
                     if (timeShiftF_ladoB == dominoPieces[playerA.playerPieces[option]].sideB && timeShiftF_ladoB != dominoPieces[playerA.playerPieces[option]].sideA )
                             {
                                 pavement = true;
@@ -405,14 +411,14 @@ int game(player playerA, player playerB){
                          if (timeShiftF_ladoA != dominoPieces[playerA.playerPieces[option]].sideB || timeShiftF_ladoA != dominoPieces[playerA.playerPieces[option]].sideA && bilola == false ){
                             printf("VC BURRO NAO JOGAR PEÇAS CORRETAS QUEBRAR JOGO DESTE MODO\n");
                             bilola = false;
-                            goto back1;
+                            continue;
                                                                                                         
                         }
                     }else{
                         timeShiftF_ladoA = dominoPieces[playerA.playerPieces[option]].sideA;
                         timeShiftF_ladoB = dominoPieces[playerA.playerPieces[option]].sideB;
                     }
-                    validador++;
+                    validador2++;
 
                     printf(" MEU NEGRO JOGOU ESTA PEÇA E ELA EM BREVE SERA VALIDADE ->>> [%d|%d]\n",timeShiftF_ladoA,timeShiftF_ladoB );
 
@@ -516,7 +522,7 @@ int game(player playerA, player playerB){
                          if (timeShiftC_ladoB != dominoPieces[playerB.playerPieces[option]].sideA || timeShiftC_ladoB != dominoPieces[playerB.playerPieces[option]].sideB && bilola == false ){
                             printf("VC BURRO NAO JOGAR PEÇAS CORRETAS QUEBRAR JOGO DESTE MODO\n");
                             bilola = false;
-                            goto back1;
+                            continue;
                                                                                                                  
                         }
                     }else{
@@ -580,7 +586,7 @@ int game(player playerA, player playerB){
                         }
                     }
                 }else if(toupper(megaOption) == 'F'){
-                if (validador > 0) {
+                if (validador2 > 0) {
                     if (timeShiftF_ladoB == dominoPieces[playerB.playerPieces[option]].sideB && timeShiftF_ladoB != dominoPieces[playerB.playerPieces[option]].sideA )
                             {
                                 pavement = true;
@@ -596,14 +602,14 @@ int game(player playerA, player playerB){
                          if (timeShiftF_ladoA != dominoPieces[playerB.playerPieces[option]].sideB || timeShiftF_ladoA != dominoPieces[playerB.playerPieces[option]].sideA && bilola == false ){
                             printf("VC BURRO NAO JOGAR PEÇAS CORRETAS QUEBRAR JOGO DESTE MODO\n");
                             bilola = false;
-                            goto back1;
+                            continue;
                                                                                                         
                         }
                     }else{
                         timeShiftF_ladoA = dominoPieces[playerB.playerPieces[option]].sideA;
                         timeShiftF_ladoB = dominoPieces[playerB.playerPieces[option]].sideB;
                     }
-                    validador++;
+                    validador2++;
 
                     printf(" MEU NEGRO JOGOU ESTA PEÇA E ELA EM BREVE SERA VALIDADE ->>> [%d|%d]\n",timeShiftF_ladoA,timeShiftF_ladoB );
 
@@ -685,6 +691,10 @@ int game(player playerA, player playerB){
                 // Sai do jogo 
                 break;
             }
+                clearScreen();
+                playerSec = true;
+                playerIni = false;
+            }
 
 
 
@@ -697,7 +707,8 @@ int game(player playerA, player playerB){
 
 
 
-            back2:
+            while(playerSec){
+
             printInGameMenu(playerSecundario);
             option = grabOptionInGame();
             flush_in();
@@ -716,7 +727,7 @@ int game(player playerA, player playerB){
 
                     };
                     printf("\n");
-                goto back2;
+                    continue;
 
                 //Caso mostrar peças
                 case 2:
@@ -733,7 +744,7 @@ int game(player playerA, player playerB){
                    }
                     printf("\n");
                 }
-                goto back2; //solução primata porém é oq temos para hj
+                    continue; //solução primata porém é oq temos para hj
 
                 //Caso comprar peças
                 case 3:
@@ -771,7 +782,7 @@ int game(player playerA, player playerB){
                 playerB_Piece_Count = playerB_Piece_Count + 1; // move 1 na posição do proximo index valido
                 }
                
-                goto back2; //solução primata porém é oq temos pra hj
+                    continue; //solução primata porém é oq temos pra hj
 
                 case 4:
                 if(playerSecundario == 1){
@@ -810,7 +821,7 @@ int game(player playerA, player playerB){
                          if (timeShiftC_ladoB != dominoPieces[playerA.playerPieces[option]].sideA || timeShiftC_ladoB != dominoPieces[playerA.playerPieces[option]].sideB && bilola == false ){
                             printf("VC BURRO NAO JOGAR PEÇAS CORRETAS QUEBRAR JOGO DESTE MODO\n");
                             bilola = false;
-                            goto back1;
+                            continue;
                                                                                                                  
                         }
                     }else{
@@ -874,7 +885,7 @@ int game(player playerA, player playerB){
                     }
                 }else if(toupper(megaOption) == 'F'){
 
-                if (validador > 0) {
+                if (validador2 > 0) {
                     if (timeShiftF_ladoB == dominoPieces[playerA.playerPieces[option]].sideB && timeShiftF_ladoB != dominoPieces[playerA.playerPieces[option]].sideA )
                             {
                                 pavement = true;
@@ -890,14 +901,14 @@ int game(player playerA, player playerB){
                          if (timeShiftF_ladoA != dominoPieces[playerA.playerPieces[option]].sideB || timeShiftF_ladoA != dominoPieces[playerA.playerPieces[option]].sideA && bilola == false ){
                             printf("VC BURRO NAO JOGAR PEÇAS CORRETAS QUEBRAR JOGO DESTE MODO\n");
                             bilola = false;
-                            goto back1;
+                            continue;
                                                                                                         
                         }
                     }else{
                         timeShiftF_ladoA = dominoPieces[playerA.playerPieces[option]].sideA;
                         timeShiftF_ladoB = dominoPieces[playerA.playerPieces[option]].sideB;
                     }
-                    validador++;
+                    validador2++;
 
                     printf(" MEU NEGRO JOGOU ESTA PEÇA E ELA EM BREVE SERA VALIDADE ->>> [%d|%d]\n",timeShiftF_ladoA,timeShiftF_ladoB );
 
@@ -998,7 +1009,7 @@ int game(player playerA, player playerB){
                          if (timeShiftC_ladoB != dominoPieces[playerB.playerPieces[option]].sideA || timeShiftC_ladoB != dominoPieces[playerB.playerPieces[option]].sideB && bilola == false ){
                             printf("VC BURRO NAO JOGAR PEÇAS CORRETAS QUEBRAR JOGO DESTE MODO\n");
                             bilola = false;
-                            goto back1;
+                            continue;
                                                                                                                  
                         }
                     }else{
@@ -1062,7 +1073,7 @@ int game(player playerA, player playerB){
                     }
                 }else if(toupper(megaOption) == 'F'){
 
-                if (validador > 0) {
+                if (validador2 > 0) {
                     if (timeShiftF_ladoB == dominoPieces[playerB.playerPieces[option]].sideB && timeShiftF_ladoB != dominoPieces[playerB.playerPieces[option]].sideA )
                             {
                                 pavement = true;
@@ -1078,14 +1089,14 @@ int game(player playerA, player playerB){
                          if (timeShiftF_ladoA != dominoPieces[playerB.playerPieces[option]].sideB || timeShiftF_ladoA != dominoPieces[playerB.playerPieces[option]].sideA && bilola == false ){
                             printf("VC BURRO NAO JOGAR PEÇAS CORRETAS QUEBRAR JOGO DESTE MODO\n");
                             bilola = false;
-                            goto back1;
+                            continue;
                                                                                                         
                         }
                     }else{
                         timeShiftF_ladoA = dominoPieces[playerB.playerPieces[option]].sideA;
                         timeShiftF_ladoB = dominoPieces[playerB.playerPieces[option]].sideB;
                     }
-                    validador++;
+                    validador2++;
 
                     printf(" MEU NEGRO JOGOU ESTA PEÇA E ELA EM BREVE SERA VALIDADE ->>> [%d|%d]\n",timeShiftF_ladoA,timeShiftF_ladoB );
 
@@ -1158,7 +1169,7 @@ int game(player playerA, player playerB){
                 //Imprime as regras
                 case 5:
                 printRules();
-                goto back2;
+                    continue;
 
                 case 6:
                 exit(1);
@@ -1166,7 +1177,11 @@ int game(player playerA, player playerB){
                 break;
             }
 
-            
+
+                clearScreen();
+                playerIni = true; //troca as jogadas
+                playerSec = false; //troca as jogadas
+            }
         }; //fase de testes ok...............
             //jogador 2 playerInicio jogar peça (ao menos index 0) jogar no inicio quebra o jogo
 
