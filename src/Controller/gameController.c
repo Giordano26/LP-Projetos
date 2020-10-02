@@ -1,11 +1,11 @@
-#include "./optionController.cpp"
+#include "../View/optionController.c"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "../View/printInterfaces.cpp"
-#include "./shuffleController.cpp"
+#include "../View/printInterfaces.c"
+#include "./shuffleController.c"
 #include "../Model/Model.h"
-#include "./flushController.cpp"
+#include "./flushController.c"
 #include <ctype.h>
 
 
