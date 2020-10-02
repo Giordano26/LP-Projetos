@@ -1,4 +1,3 @@
-
 #include "./optionController.cpp"
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,26 +8,38 @@
 #include "./flushController.cpp"
 #include <ctype.h>
 
+
+
   char str[1000];
   char str2[1000];
 
 int playerInicio,playerSecundario;
-int game(player playerA, player playerB);
 char megaOption;
 
 
 int game(player playerA, player playerB){
 
     
-     
+     //variaveis de comparação:
+        int timeShiftC_ladoA = 0; 
+        int timeShiftC_ladoB = 0;
+
+        int timeShiftF_ladoA = 0;
+        int timeShiftF_ladoB = 0; 
+
+        int validador = 0;
+        bool pavement = false;
+
+        bool bilola = false;
+
     //gera as peças para o jogo;
         int pieceA = 0;
         int pieceB = 0;
         int count = 0;
 
     //variaveis para a mesa;
-        char mesaLinda[168];
-        bool mesafudida[168];
+        char mesaIndex[168];
+        bool mesaBool[168];
         int mesaCounter;
         int mesaCounter2;
         
@@ -69,7 +80,7 @@ int game(player playerA, player playerB){
    }
    //Embaralhando as peças
 
-    // Dando 7 peças aos jogadores --> playerPieces
+    // Dando 7 peças aos jogadores --> playerPieces 
     for (int y = 0; y < 7; y++ ){
             playerA.playerPieces[y] = shuffleSideA[y];
             dominoPieces[y].available = false; //Peça deixa de ser disponível
@@ -168,15 +179,12 @@ int game(player playerA, player playerB){
     //gerar a mesa
 
     for(int lin = 0; lin <= 168; lin++){
-        mesaLinda[lin] = ' ';
-        mesafudida[lin] = true;
+        mesaIndex[lin] = ' ';
+        mesaBool[lin] = true;
     }
     bool solucaoMacaca = false;
 
 
-
-        // Mostra a maior peça do Jogador A e B
-        showBiggestPiece(dominoPieces[pecaMaiorA].sideA,dominoPieces[pecaMaiorA].sideB,dominoPieces[pecaMaiorB].sideA,dominoPieces[pecaMaiorB].sideB);
         
         showMessage(          
                    " ░██████╗██╗░░██╗░█████╗░███████╗░██████╗░░█████╗░███████╗███████╗██████╗░\n"
@@ -188,7 +196,7 @@ int game(player playerA, player playerB){
                                                                            );
 
                     
-            showMessage(" -------------------------------- BETA V1.2 ---------------------------------\n\n");
+            showMessage(" -------------------------------- BETA V2.0 ---------------------------------\n\n");
 
             
             // Mostra quem é o primeiro e o segundo a jogar
@@ -203,9 +211,10 @@ int game(player playerA, player playerB){
             int newPiece;
 
             
+            back1:
             printInGameMenu(playerInicio);
             option = grabOptionInGame();
-
+            
             switch(option){  
                 case 1:
                 showMessage("MESA:\n");
@@ -213,7 +222,7 @@ int game(player playerA, player playerB){
                     if(solucaoMacaca)
                         printf("[");
                 for(int lin = 0; lin <= 168  ; lin++){
-                    printf("%c",mesaLinda[lin]);
+                    printf("%c",mesaIndex[lin]);
                     if(mesaCounter2 == 84)
                         printf("\n");
                     mesaCounter2++;
@@ -250,24 +259,24 @@ int game(player playerA, player playerB){
                     }else 
                         continue;
             }
-                if (1 == playerInicio){ //checa se é Jogador A
+                if (1 == playerInicio){ // Checa se é Jogador A
             
                 playerA.playerPieces[playerA_Piece_Count] = shuffleSideA[newPiece]; //Pega o index de peça disponivel, acessa no array de peças embaralhadas e atribui ao jogador na primeira posição disponivel.
 
-                dominoPieces[newPiece].available = false; //Peça deixa de ser disponível
+                dominoPieces[newPiece].available = false; // Peça deixa de ser disponível
 
                 dominoPieces[newPiece].player = 1; // Vai para o player A
 
                 purchasedPiece(dominoPieces[playerA.playerPieces[playerA_Piece_Count]].sideA,dominoPieces[playerA.playerPieces[playerA_Piece_Count]].sideB);
 
 
-                playerA_Piece_Count = playerA_Piece_Count + 1; // move 1 na posição do proximo index valido
+                playerA_Piece_Count = playerA_Piece_Count + 1; // Move 1 na posição do proximo index valido
 
                 } else if(2 == playerInicio) {
                     
-                playerB.playerPieces[playerB_Piece_Count] = shuffleSideA[newPiece]; //Pega o index de peça disponivel, acessa no array de peças embaralhadas e atribui ao jogador na primeira posição disponivel.
+                playerB.playerPieces[playerB_Piece_Count] = shuffleSideA[newPiece]; // Pega o index de peça disponivel, acessa no array de peças embaralhadas e atribui ao jogador na primeira posição disponivel.
 
-                dominoPieces[newPiece].available = false; //Peça deixa de ser disponível
+                dominoPieces[newPiece].available = false; // Peça deixa de ser disponível
 
                 dominoPieces[newPiece].player = 2; // Vai para o player B
 
@@ -280,7 +289,7 @@ int game(player playerA, player playerB){
 
                 case 4:
                 if(playerInicio == 1){
-                do{
+                do {
                 printf("Escolha uma peça de 0 a %d\n",playerA_Piece_Count-1);
                 scanf("%d",&option);
                 flush_in();
@@ -293,76 +302,169 @@ int game(player playerA, player playerB){
 
                 }while(true); //invalidar a peça, mudar on table para true e available false
                 //printf("Peça jogada: [%d|%d] foi jogada\n",dominoPieces[playerA.playerPieces[option]].sideA,dominoPieces[playerA.playerPieces[option]].sideB);
+
+
+
                 megaOption = grabOptionBoard(); //opção começo ou fim?
                 mesaCounter = 0; //contador para quebrar a atribuição em partes
                 if(toupper(megaOption) == 'C'){
+
+                    if (validador > 0) {
+                        if (timeShiftC_ladoB == dominoPieces[playerA.playerPieces[option]].sideB && timeShiftC_ladoB != dominoPieces[playerA.playerPieces[option]].sideA )
+                            {
+                                bilola = true; 
+                                pavement = true;
+                                
+                                timeShiftC_ladoA = dominoPieces[playerA.playerPieces[option]].sideB;
+                                timeShiftC_ladoB = dominoPieces[playerA.playerPieces[option]].sideA;
+                                
+                            }else{
+                                    timeShiftC_ladoA = dominoPieces[playerA.playerPieces[option]].sideA;
+                                    timeShiftC_ladoB = dominoPieces[playerA.playerPieces[option]].sideB;
+                            }
+                         if (timeShiftC_ladoB != dominoPieces[playerA.playerPieces[option]].sideA || timeShiftC_ladoB != dominoPieces[playerA.playerPieces[option]].sideB && bilola == false ){
+                            printf("VC BURRO NAO JOGAR PEÇAS CORRETAS QUEBRAR JOGO DESTE MODO\n");
+                            bilola = false;
+                            goto back1;
+                                                                                                                 
+                        }
+                    }else{
+                        timeShiftC_ladoA = dominoPieces[playerA.playerPieces[option]].sideA;
+                        timeShiftC_ladoB = dominoPieces[playerA.playerPieces[option]].sideB;
+                    }
+                    validador++;
+
+                    printf(" MEU NEGRO JOGOU ESTA PEÇA E ELA EM BREVE SERA VALIDADE ->>> [%d|%d]\n",timeShiftC_ladoA,timeShiftC_ladoB );
+
+        
                     for(int k = 0; k <= 168; k++){ //começa percorrer o array pelo começo
-                        if(mesafudida[k] == true){
+                        if(mesaBool[k] == true){
                             if(mesaCounter == 0){ //vai colocando em partes a peça no array da mesa
-                                mesaLinda[k] = '[';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = '[';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }
                             else if(mesaCounter == 1){
-                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideA);
-                                mesaLinda[k] = *str;
-                                mesafudida[k] = false;
+                                if(pavement){
+                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideB);
+                                mesaIndex[k] = *str;
+                                mesaBool[k] = false;
                                 mesaCounter++;
+                                }else{
+                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideA);
+                                mesaIndex[k] = *str;
+                                mesaBool[k] = false;
+                                mesaCounter++;
+
+                                }
                             }
                             else if(mesaCounter == 2){
-                                mesaLinda[k] = '|';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = '|';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 3){
-                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideB);
-                                mesaLinda[k] = *str;
-                               // mesaLinda[k] = dominoPieces[playerA.playerPieces[option]].sideB;
-                                mesafudida[k] = false;
+                                if(pavement){
+                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideA);
+                                mesaIndex[k] = *str;
+                                mesaBool[k] = false;
                                 mesaCounter++;
+                                pavement = false;
+                                }else{
+                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideB);
+                                mesaIndex[k] = *str;
+                               // mesaIndex[k] = dominoPieces[playerA.playerPieces[option]].sideB;
+                                mesaBool[k] = false;
+                                mesaCounter++;
+                                }
                             }else if(mesaCounter == 4){
-                                mesaLinda[k] = ']';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = ']';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 5){
-                                mesaLinda[k] = ' ';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = ' ';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }
-
                         }
                     }
                 }else if(toupper(megaOption) == 'F'){
+
+                if (validador > 0) {
+                    if (timeShiftF_ladoB == dominoPieces[playerA.playerPieces[option]].sideB && timeShiftF_ladoB != dominoPieces[playerA.playerPieces[option]].sideA )
+                            {
+                                pavement = true;
+                                bilola = true;
+                                
+                                timeShiftF_ladoA = dominoPieces[playerA.playerPieces[option]].sideB;
+                                timeShiftF_ladoB = dominoPieces[playerA.playerPieces[option]].sideA;
+                                
+                            }else{
+                                    timeShiftF_ladoA = dominoPieces[playerA.playerPieces[option]].sideA;
+                                    timeShiftF_ladoB = dominoPieces[playerA.playerPieces[option]].sideB;
+                            }
+                         if (timeShiftF_ladoA != dominoPieces[playerA.playerPieces[option]].sideB || timeShiftF_ladoA != dominoPieces[playerA.playerPieces[option]].sideA && bilola == false ){
+                            printf("VC BURRO NAO JOGAR PEÇAS CORRETAS QUEBRAR JOGO DESTE MODO\n");
+                            bilola = false;
+                            goto back1;
+                                                                                                        
+                        }
+                    }else{
+                        timeShiftF_ladoA = dominoPieces[playerA.playerPieces[option]].sideA;
+                        timeShiftF_ladoB = dominoPieces[playerA.playerPieces[option]].sideB;
+                    }
+                    validador++;
+
+                    printf(" MEU NEGRO JOGOU ESTA PEÇA E ELA EM BREVE SERA VALIDADE ->>> [%d|%d]\n",timeShiftF_ladoA,timeShiftF_ladoB );
+
+
                     for(int k = 168; k >= 0 ; k--){
-                        if(mesafudida[k] == true){
+                        if(mesaBool[k] == true){
                             if(mesaCounter == 0){
-                                mesaLinda[k] = ']';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = ']';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }
                             else if(mesaCounter == 1){
-                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideB);
-                                mesaLinda[k] = *str;
-                                //mesaLinda[k] = dominoPieces[playerA.playerPieces[option]].sideB;
-                                mesafudida[k] = false;
+                                if(pavement){
+                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideA);
+                                mesaIndex[k] = *str;
+                                //mesaIndex[k] = dominoPieces[playerA.playerPieces[option]].sideB;
+                                mesaBool[k] = false;
                                 mesaCounter++;
+                                }else{
+                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideB);
+                                mesaIndex[k] = *str;
+                                //mesaIndex[k] = dominoPieces[playerA.playerPieces[option]].sideB;
+                                mesaBool[k] = false;
+                                mesaCounter++;
+                                }
                             }
                             else if(mesaCounter == 2){
-                                mesaLinda[k] = '|';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = '|';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 3){
-                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideA);
-                                mesaLinda[k] = *str;
-                                //mesaLinda[k] = dominoPieces[playerA.playerPieces[option]].sideA;
-                                mesafudida[k] = false;
+                                if(pavement){
+                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideB);
+                                mesaIndex[k] = *str;
+                                //mesaIndex[k] = dominoPieces[playerA.playerPieces[option]].sideB;
+                                mesaBool[k] = false;
                                 mesaCounter++;
+                                pavement = false;
+                                }else{
+                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideA);
+                                mesaIndex[k] = *str;
+                                //mesaIndex[k] = dominoPieces[playerA.playerPieces[option]].sideB;
+                                mesaBool[k] = false;
+                                mesaCounter++;
+                                }
                             }else if(mesaCounter == 4){
-                                mesaLinda[k] = '[';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = '[';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 5){
-                                mesaLinda[k] = ' ';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = ' ';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }
 
@@ -371,18 +473,18 @@ int game(player playerA, player playerB){
                     solucaoMacaca = true;
                 };
 
-                for(int k = option; k < playerA_Piece_Count; k++){ //algoritmo que joga todo o array pra esquerda
+                for(int k = option; k < playerA_Piece_Count; k++){ // Algoritmo que joga todo o array pra esquerda
                     dominoPieces[playerA.playerPieces[k]].sideA = dominoPieces[playerA.playerPieces[k+1]].sideA;
                     dominoPieces[playerA.playerPieces[k]].sideB = dominoPieces[playerA.playerPieces[k+1]].sideB;
                 }
                 dominoPieces[playerA.playerPieces[playerA_Piece_Count-1]].sideA = '\0';
                 dominoPieces[playerA.playerPieces[playerA_Piece_Count-1]].sideB = '\0';
                 playerA_Piece_Count--;
-                dominoPieces[playerA.playerPieces[option]].inGame = true; //status da peça em jogo
+                dominoPieces[playerA.playerPieces[option]].inGame = true; // Status da peça em jogo
                 }
-                 if(playerInicio == 2){ //erro do dampé ta aqui mello .... 
+                 if(playerInicio == 2){ 
                 do{
-                printf("Escolha uma peça de 0 a %d\n",playerB_Piece_Count-1); //modularizar para o view
+                printf("Escolha uma peça de 0 a %d\n",playerB_Piece_Count-1); // Modularizar para o view
                 scanf("%d",&option);
                 flush_in();
                 if(option < 0 || option > playerB_Piece_Count){
@@ -397,74 +499,163 @@ int game(player playerA, player playerB){
                 megaOption = grabOptionBoard(); //opção começo ou fim?
                 mesaCounter = 0; //contador para quebrar a atribuição em partes
                 if(toupper(megaOption) == 'C'){
+                   
+                    if (validador > 0) {
+                        if (timeShiftC_ladoB == dominoPieces[playerB.playerPieces[option]].sideB && timeShiftC_ladoB != dominoPieces[playerB.playerPieces[option]].sideA )
+                            {
+                                bilola = true; 
+                                pavement = true;
+                                
+                                timeShiftC_ladoA = dominoPieces[playerB.playerPieces[option]].sideB;
+                                timeShiftC_ladoB = dominoPieces[playerB.playerPieces[option]].sideA;
+                                
+                            }else{
+                                    timeShiftC_ladoA = dominoPieces[playerB.playerPieces[option]].sideA;
+                                    timeShiftC_ladoB = dominoPieces[playerB.playerPieces[option]].sideB;
+                            }
+                         if (timeShiftC_ladoB != dominoPieces[playerB.playerPieces[option]].sideA || timeShiftC_ladoB != dominoPieces[playerB.playerPieces[option]].sideB && bilola == false ){
+                            printf("VC BURRO NAO JOGAR PEÇAS CORRETAS QUEBRAR JOGO DESTE MODO\n");
+                            bilola = false;
+                            goto back1;
+                                                                                                                 
+                        }
+                    }else{
+                        timeShiftC_ladoA = dominoPieces[playerB.playerPieces[option]].sideA;
+                        timeShiftC_ladoB = dominoPieces[playerB.playerPieces[option]].sideB;
+                    }
+                    validador++;
+
+                    printf("%d %d", timeShiftC_ladoA,timeShiftC_ladoB );
+                    printf(" MEU NEGRO JOGOU ESTA PEÇA E ELA EM BREVE SERA VALIDADE ->>> [%d|%d]\n",timeShiftC_ladoA,timeShiftC_ladoB );
+
+                    //dampé ta aqui pra baixo
                     for(int k = 0; k <= 168; k++){ //começa percorrer o array pelo começo
-                        if(mesafudida[k] == true){
+                        if(mesaBool[k] == true){
                             if(mesaCounter == 0){ //vai colocando em partes a peça no array da mesa
-                                mesaLinda[k] = '[';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = '[';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }
                             else if(mesaCounter == 1){
-                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideA);
-                                mesaLinda[k] = *str;
-                                //mesaLinda[k] = dominoPieces[playerB.playerPieces[option]].sideA;
-                                mesafudida[k] = false;
+                                if(pavement){
+                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideB);
+                                mesaIndex[k] = *str;
+                                mesaBool[k] = false;
                                 mesaCounter++;
+                                }else{
+                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideA);
+                                mesaIndex[k] = *str;
+                                mesaBool[k] = false;
+                                mesaCounter++;
+
+                                }
                             }
                             else if(mesaCounter == 2){
-                                mesaLinda[k] = '|';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = '|';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 3){
-                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideB);
-                                mesaLinda[k] = *str;
-                               // mesaLinda[k] = dominoPieces[playerB.playerPieces[option]].sideB;
-                                mesafudida[k] = false;
+                                if(pavement){
+                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideA);
+                                mesaIndex[k] = *str;
+                                mesaBool[k] = false;
                                 mesaCounter++;
+                                pavement = false;
+                                }else{
+                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideB);
+                                mesaIndex[k] = *str;
+                                mesaBool[k] = false;
+                                mesaCounter++;
+                                }
                             }else if(mesaCounter == 4){
-                                mesaLinda[k] = ']';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = ']';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 5){
-                                mesaLinda[k] = ' ';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = ' ';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }
 
                         }
                     }
                 }else if(toupper(megaOption) == 'F'){
+                if (validador > 0) {
+                    if (timeShiftF_ladoB == dominoPieces[playerB.playerPieces[option]].sideB && timeShiftF_ladoB != dominoPieces[playerB.playerPieces[option]].sideA )
+                            {
+                                pavement = true;
+                                bilola = true;
+                                
+                                timeShiftF_ladoA = dominoPieces[playerB.playerPieces[option]].sideB;
+                                timeShiftF_ladoB = dominoPieces[playerB.playerPieces[option]].sideA;
+                                
+                            }else{
+                                    timeShiftF_ladoA = dominoPieces[playerB.playerPieces[option]].sideA;
+                                    timeShiftF_ladoB = dominoPieces[playerB.playerPieces[option]].sideB;
+                            }
+                         if (timeShiftF_ladoA != dominoPieces[playerB.playerPieces[option]].sideB || timeShiftF_ladoA != dominoPieces[playerB.playerPieces[option]].sideA && bilola == false ){
+                            printf("VC BURRO NAO JOGAR PEÇAS CORRETAS QUEBRAR JOGO DESTE MODO\n");
+                            bilola = false;
+                            goto back1;
+                                                                                                        
+                        }
+                    }else{
+                        timeShiftF_ladoA = dominoPieces[playerB.playerPieces[option]].sideA;
+                        timeShiftF_ladoB = dominoPieces[playerB.playerPieces[option]].sideB;
+                    }
+                    validador++;
+
+                    printf(" MEU NEGRO JOGOU ESTA PEÇA E ELA EM BREVE SERA VALIDADE ->>> [%d|%d]\n",timeShiftF_ladoA,timeShiftF_ladoB );
+
+
                     for(int k = 168; k >= 0 ; k--){
-                        if(mesafudida[k] == true){
+                        if(mesaBool[k] == true){
                             if(mesaCounter == 0){
-                                mesaLinda[k] = ']';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = ']';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }
                             else if(mesaCounter == 1){
-                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideB);
-                                mesaLinda[k] = *str;
-                               // mesaLinda[k] = dominoPieces[playerB.playerPieces[option]].sideB;
-                                mesafudida[k] = false;
+                                if(pavement){
+                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideA);
+                                mesaIndex[k] = *str;
+                                //mesaIndex[k] = dominoPieces[playerB.playerPieces[option]].sideB;
+                                mesaBool[k] = false;
                                 mesaCounter++;
+
+                                }else{
+                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideB);
+                                mesaIndex[k] = *str;
+                                //mesaIndex[k] = dominoPieces[playerB.playerPieces[option]].sideB;
+                                mesaBool[k] = false;
+                                mesaCounter++;
+                                }
                             }
                             else if(mesaCounter == 2){
-                                mesaLinda[k] = '|';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = '|';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 3){
-                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideA);
-                                mesaLinda[k] = *str;
-                                //mesaLinda[k] = dominoPieces[playerB.playerPieces[option]].sideA;
-                                mesafudida[k] = false;
+                                if(pavement){
+                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideB);
+                                mesaIndex[k] = *str;
+                                mesaBool[k] = false;
                                 mesaCounter++;
+                                pavement = false;
+                                }else{
+                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideA);
+                                mesaIndex[k] = *str;
+                                mesaBool[k] = false;
+                                mesaCounter++;
+
+                                }
                             }else if(mesaCounter == 4){
-                                mesaLinda[k] = '[';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = '[';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 5){
-                                mesaLinda[k] = ' ';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = ' ';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }
 
@@ -518,7 +709,7 @@ int game(player playerA, player playerB){
                     if(solucaoMacaca)
                         printf("[");
                 for(int lin = 0; lin <= 168  ; lin++){
-                    printf("%c",mesaLinda[lin]);
+                    printf("%c",mesaIndex[lin]);
                     if(mesaCounter2 == 84)
                         printf("\n");
                     mesaCounter2++;
@@ -602,73 +793,160 @@ int game(player playerA, player playerB){
 
 
                 if(toupper(megaOption) == 'C'){
+
+                    if (validador > 0) {
+                        if (timeShiftC_ladoB == dominoPieces[playerA.playerPieces[option]].sideB && timeShiftC_ladoB != dominoPieces[playerA.playerPieces[option]].sideA )
+                            {
+                                bilola = true; 
+                                pavement = true;
+                                
+                                timeShiftC_ladoA = dominoPieces[playerA.playerPieces[option]].sideB;
+                                timeShiftC_ladoB = dominoPieces[playerA.playerPieces[option]].sideA;
+                                
+                            }else{
+                                    timeShiftC_ladoA = dominoPieces[playerA.playerPieces[option]].sideA;
+                                    timeShiftC_ladoB = dominoPieces[playerA.playerPieces[option]].sideB;
+                            }
+                         if (timeShiftC_ladoB != dominoPieces[playerA.playerPieces[option]].sideA || timeShiftC_ladoB != dominoPieces[playerA.playerPieces[option]].sideB && bilola == false ){
+                            printf("VC BURRO NAO JOGAR PEÇAS CORRETAS QUEBRAR JOGO DESTE MODO\n");
+                            bilola = false;
+                            goto back1;
+                                                                                                                 
+                        }
+                    }else{
+                        timeShiftC_ladoA = dominoPieces[playerA.playerPieces[option]].sideA;
+                        timeShiftC_ladoB = dominoPieces[playerA.playerPieces[option]].sideB;
+                    }
+                    validador++;
+
+                    printf("%d %d", timeShiftC_ladoA,timeShiftC_ladoB );
+                    printf(" MEU NEGRO JOGOU ESTA PEÇA E ELA EM BREVE SERA VALIDADE ->>> [%d|%d]\n",timeShiftC_ladoA,timeShiftC_ladoB );
+
                     for(int k = 0; k <= 168; k++){ //começa percorrer o array pelo começo
-                        if(mesafudida[k] == true){
+                        if(mesaBool[k] == true){
                             if(mesaCounter == 0){ //vai colocando em partes a peça no array da mesa
-                                mesaLinda[k] = '[';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = '[';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }
                             else if(mesaCounter == 1){
-                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideA);
-                                mesaLinda[k] = *str;
-                                mesafudida[k] = false;
+                                if(pavement){
+                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideB);
+                                mesaIndex[k] = *str;
+                                mesaBool[k] = false;
                                 mesaCounter++;
+                                }else{
+                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideA);
+                                mesaIndex[k] = *str;
+                                mesaBool[k] = false;
+                                mesaCounter++;
+
+                                }
                             }
                             else if(mesaCounter == 2){
-                                mesaLinda[k] = '|';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = '|';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 3){
-                                sprintf(str2, "%d", dominoPieces[playerA.playerPieces[option]].sideB);
-                                mesaLinda[k] = *str2;
-                               // mesaLinda[k] = dominoPieces[playerA.playerPieces[option]].sideB;
-                                mesafudida[k] = false;
+                                if(pavement){
+                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideA);
+                                mesaIndex[k] = *str;
+                                mesaBool[k] = false;
                                 mesaCounter++;
+                                pavement = false;
+                                }else{
+                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideB);
+                                mesaIndex[k] = *str;;
+                                mesaBool[k] = false;
+                                mesaCounter++;
+                                }
                             }else if(mesaCounter == 4){
-                                mesaLinda[k] = ']';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = ']';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 5){
-                                mesaLinda[k] = ' ';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = ' ';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }
 
                         }
                     }
                 }else if(toupper(megaOption) == 'F'){
+
+                if (validador > 0) {
+                    if (timeShiftF_ladoB == dominoPieces[playerA.playerPieces[option]].sideB && timeShiftF_ladoB != dominoPieces[playerA.playerPieces[option]].sideA )
+                            {
+                                pavement = true;
+                                bilola = true;
+                                
+                                timeShiftF_ladoA = dominoPieces[playerA.playerPieces[option]].sideB;
+                                timeShiftF_ladoB = dominoPieces[playerA.playerPieces[option]].sideA;
+                                
+                            }else{
+                                    timeShiftF_ladoA = dominoPieces[playerA.playerPieces[option]].sideA;
+                                    timeShiftF_ladoB = dominoPieces[playerA.playerPieces[option]].sideB;
+                            }
+                         if (timeShiftF_ladoA != dominoPieces[playerA.playerPieces[option]].sideB || timeShiftF_ladoA != dominoPieces[playerA.playerPieces[option]].sideA && bilola == false ){
+                            printf("VC BURRO NAO JOGAR PEÇAS CORRETAS QUEBRAR JOGO DESTE MODO\n");
+                            bilola = false;
+                            goto back1;
+                                                                                                        
+                        }
+                    }else{
+                        timeShiftF_ladoA = dominoPieces[playerA.playerPieces[option]].sideA;
+                        timeShiftF_ladoB = dominoPieces[playerA.playerPieces[option]].sideB;
+                    }
+                    validador++;
+
+                    printf(" MEU NEGRO JOGOU ESTA PEÇA E ELA EM BREVE SERA VALIDADE ->>> [%d|%d]\n",timeShiftF_ladoA,timeShiftF_ladoB );
+
                     for(int k = 168; k >= 0 ; k--){
-                        if(mesafudida[k] == true){
+                        if(mesaBool[k] == true){
                             if(mesaCounter == 0){
-                                mesaLinda[k] = ']';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = ']';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }
                             else if(mesaCounter == 1){
-                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideB);
-                                mesaLinda[k] = *str;
-                                //mesaLinda[k] = dominoPieces[playerA.playerPieces[option]].sideB;
-                                mesafudida[k] = false;
+                                if(pavement){
+                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideA);
+                                mesaIndex[k] = *str;
+                                mesaBool[k] = false;
                                 mesaCounter++;
+                                }else{
+                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideB);
+                                mesaIndex[k] = *str;
+                                mesaBool[k] = false;
+                                mesaCounter++;
+
+                                }
                             }
                             else if(mesaCounter == 2){
-                                mesaLinda[k] = '|';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = '|';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 3){
-                                sprintf(str2, "%d", dominoPieces[playerA.playerPieces[option]].sideA);
-                                mesaLinda[k] = *str2;
-                                //mesaLinda[k] = dominoPieces[playerA.playerPieces[option]].sideA;
-                                mesafudida[k] = false;
+                                if(pavement){
+                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideB);
+                                mesaIndex[k] = *str;
+                                mesaBool[k] = false;
                                 mesaCounter++;
+                                pavement = false;
+                                }else{
+                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideA);
+                                mesaIndex[k] = *str;
+                                mesaBool[k] = false;
+                                mesaCounter++;
+
+                                }
                             }else if(mesaCounter == 4){
-                                mesaLinda[k] = '[';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = '[';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 5){
-                                mesaLinda[k] = ' ';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = ' ';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }
 
@@ -703,74 +981,161 @@ int game(player playerA, player playerB){
                 megaOption = grabOptionBoard(); //opção começo ou fim?
                 mesaCounter = 0; //contador para quebrar a atribuição em partes
                 if(toupper(megaOption) == 'C'){
+                
+                    if (validador > 0) {
+                        if (timeShiftC_ladoB == dominoPieces[playerB.playerPieces[option]].sideB && timeShiftC_ladoB != dominoPieces[playerB.playerPieces[option]].sideA )
+                            {
+                                bilola = true; 
+                                pavement = true;
+                                
+                                timeShiftC_ladoA = dominoPieces[playerB.playerPieces[option]].sideB;
+                                timeShiftC_ladoB = dominoPieces[playerB.playerPieces[option]].sideA;
+                                
+                            }else{
+                                    timeShiftC_ladoA = dominoPieces[playerB.playerPieces[option]].sideA;
+                                    timeShiftC_ladoB = dominoPieces[playerB.playerPieces[option]].sideB;
+                            }
+                         if (timeShiftC_ladoB != dominoPieces[playerB.playerPieces[option]].sideA || timeShiftC_ladoB != dominoPieces[playerB.playerPieces[option]].sideB && bilola == false ){
+                            printf("VC BURRO NAO JOGAR PEÇAS CORRETAS QUEBRAR JOGO DESTE MODO\n");
+                            bilola = false;
+                            goto back1;
+                                                                                                                 
+                        }
+                    }else{
+                        timeShiftC_ladoA = dominoPieces[playerB.playerPieces[option]].sideA;
+                        timeShiftC_ladoB = dominoPieces[playerB.playerPieces[option]].sideB;
+                    }
+                    validador++;
+
+                    printf("%d %d", timeShiftC_ladoA,timeShiftC_ladoB );
+                    printf(" MEU NEGRO JOGOU ESTA PEÇA E ELA EM BREVE SERA VALIDADE ->>> [%d|%d]\n",timeShiftC_ladoA,timeShiftC_ladoB );
+
                     for(int k = 0; k <= 168; k++){ //começa percorrer o array pelo começo
-                        if(mesafudida[k] == true){
+                        if(mesaBool[k] == true){
                             if(mesaCounter == 0){ //vai colocando em partes a peça no array da mesa
-                                mesaLinda[k] = '[';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = '[';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }
                             else if(mesaCounter == 1){
-                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideA);
-                                mesaLinda[k] = *str;
-                                //mesaLinda[k] = dominoPieces[playerB.playerPieces[option]].sideA;
-                                mesafudida[k] = false;
+                               if(pavement){
+                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideB);
+                                mesaIndex[k] = *str;
+                                mesaBool[k] = false;
                                 mesaCounter++;
+                                }else{
+                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideA);
+                                mesaIndex[k] = *str;
+                                mesaBool[k] = false;
+                                mesaCounter++;
+
+                                }
                             }
                             else if(mesaCounter == 2){
-                                mesaLinda[k] = '|';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = '|';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 3){
-                                sprintf(str2, "%d", dominoPieces[playerB.playerPieces[option]].sideB);
-                                mesaLinda[k] = *str2;
-                               // mesaLinda[k] = dominoPieces[playerB.playerPieces[option]].sideB;
-                                mesafudida[k] = false;
+                                   if(pavement){
+                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideA);
+                                mesaIndex[k] = *str;
+                                mesaBool[k] = false;
                                 mesaCounter++;
+                                pavement = false;
+                                }else{
+                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideB);
+                                mesaIndex[k] = *str;
+                                mesaBool[k] = false;
+                                mesaCounter++;
+                                }
                             }else if(mesaCounter == 4){
-                                mesaLinda[k] = ']';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = ']';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 5){
-                                mesaLinda[k] = ' ';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = ' ';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }
 
                         }
                     }
                 }else if(toupper(megaOption) == 'F'){
+
+                if (validador > 0) {
+                    if (timeShiftF_ladoB == dominoPieces[playerB.playerPieces[option]].sideB && timeShiftF_ladoB != dominoPieces[playerB.playerPieces[option]].sideA )
+                            {
+                                pavement = true;
+                                bilola = true;
+                                
+                                timeShiftF_ladoA = dominoPieces[playerB.playerPieces[option]].sideB;
+                                timeShiftF_ladoB = dominoPieces[playerB.playerPieces[option]].sideA;
+                                
+                            }else{
+                                    timeShiftF_ladoA = dominoPieces[playerB.playerPieces[option]].sideA;
+                                    timeShiftF_ladoB = dominoPieces[playerB.playerPieces[option]].sideB;
+                            }
+                         if (timeShiftF_ladoA != dominoPieces[playerB.playerPieces[option]].sideB || timeShiftF_ladoA != dominoPieces[playerB.playerPieces[option]].sideA && bilola == false ){
+                            printf("VC BURRO NAO JOGAR PEÇAS CORRETAS QUEBRAR JOGO DESTE MODO\n");
+                            bilola = false;
+                            goto back1;
+                                                                                                        
+                        }
+                    }else{
+                        timeShiftF_ladoA = dominoPieces[playerB.playerPieces[option]].sideA;
+                        timeShiftF_ladoB = dominoPieces[playerB.playerPieces[option]].sideB;
+                    }
+                    validador++;
+
+                    printf(" MEU NEGRO JOGOU ESTA PEÇA E ELA EM BREVE SERA VALIDADE ->>> [%d|%d]\n",timeShiftF_ladoA,timeShiftF_ladoB );
+
+
                     for(int k = 168; k >= 0 ; k--){
-                        if(mesafudida[k] == true){
+                        if(mesaBool[k] == true){
                             if(mesaCounter == 0){
-                                mesaLinda[k] = ']';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = ']';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }
                             else if(mesaCounter == 1){
-                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideB);
-                                mesaLinda[k] = *str;
-                               // mesaLinda[k] = dominoPieces[playerB.playerPieces[option]].sideB;
-                                mesafudida[k] = false;
+                               if(pavement){
+                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideA);
+                                mesaIndex[k] = *str;
+                                mesaBool[k] = false;
                                 mesaCounter++;
+                                }else{
+                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideB);
+                                mesaIndex[k] = *str;
+                                mesaBool[k] = false;
+                                mesaCounter++;
+
+                                }
                             }
                             else if(mesaCounter == 2){
-                                mesaLinda[k] = '|';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = '|';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 3){
-                                sprintf(str2, "%d", dominoPieces[playerB.playerPieces[option]].sideA);
-                                mesaLinda[k] = *str2;
-                                //mesaLinda[k] = dominoPieces[playerB.playerPieces[option]].sideA;
-                                mesafudida[k] = false;
+                                if(pavement){
+                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideB);
+                                mesaIndex[k] = *str;
+                                mesaBool[k] = false;
                                 mesaCounter++;
+                                pavement = false;
+                                }else{
+                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideA);
+                                mesaIndex[k] = *str;
+                                mesaBool[k] = false;
+                                mesaCounter++;
+
+                                }
                             }else if(mesaCounter == 4){
-                                mesaLinda[k] = '[';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = '[';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 5){
-                                mesaLinda[k] = ' ';
-                                mesafudida[k] = false;
+                                mesaIndex[k] = ' ';
+                                mesaBool[k] = false;
                                 mesaCounter++;
                             }
 
@@ -806,5 +1171,7 @@ int game(player playerA, player playerB){
             //jogador 2 playerInicio jogar peça (ao menos index 0) jogar no inicio quebra o jogo
 
 
-   return 0; 
-}
+            return 0; 
+        }
+
+

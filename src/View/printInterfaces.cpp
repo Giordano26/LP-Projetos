@@ -163,12 +163,6 @@ void showMessage(char msg[200])
 
 }
 
-void showBiggestPiece(int peca1_ladoA, int peca1_ladoB, int peca2_ladoA, int peca2_ladoB){
-
-        printf("Peça Maior do jogador A é: [%d|%d]\n",peca1_ladoA, peca1_ladoB);
-        printf("Peça Maior do jogador B é: [%d|%d]\n",peca2_ladoA,peca2_ladoB);
-
-}
 
 void firstToPlay(int player_1, int player_2){
     printf("Primeiro a jogar: Player%d \n", player_1);
