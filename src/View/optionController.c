@@ -98,7 +98,7 @@ char grabOptionInvert(){
         showMessage("\n Inverter a peça?\n(S/N)\n");
         scanf("%s",&option);
         
-        if(toupper(option) == 'C' || toupper(option) == 'F'){
+        if(toupper(option) == 'S' || toupper(option) == 'N'){
             return option;
         }
         else{

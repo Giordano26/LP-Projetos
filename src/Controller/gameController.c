@@ -14,11 +14,15 @@
   char str2[1000];
 
 int playerInicio,playerSecundario;
-char megaOption;
+char megaOption; //opção para começo e final
+char pazuzu; //opção para inversão
+int locale1 = 0;
+int locale2 = 0;
 
 
 int game(player playerA, player playerB){
-
+     //sentinela 
+     bool winCondition = false;
     
      //variaveis de comparação:
         int timeShiftC_ladoA = 0; 
@@ -29,9 +33,11 @@ int game(player playerA, player playerB){
 
         int validador = 0;
         int validador2 = 0;
-        bool pavement = false;
 
-        bool bilola = false;
+    //variaveis para pontuação
+
+        int playerA_Points = 0;
+        int playerB_Points = 0;
 
     //gera as peças para o jogo;
         int pieceA = 0;
@@ -201,7 +207,7 @@ int game(player playerA, player playerB){
                                                                            );
 
                     
-            showMessage(" -------------------------------- BETA V2.0 ---------------------------------\n\n");
+        showMessage(" -------------------------------- BETA V2.0 ---------------------------------\n\n");
 
             
             // Mostra quem é o primeiro e o segundo a jogar
@@ -210,7 +216,7 @@ int game(player playerA, player playerB){
 
 
         
-        while(true){
+        while(winCondition == false){
             int option;
             
             int newPiece;
@@ -220,6 +226,7 @@ int game(player playerA, player playerB){
 
             printInGameMenu(playerInicio);
             option = grabOptionInGame();
+            flush_in();
             
             switch(option){  
                 case 1:
@@ -260,7 +267,7 @@ int game(player playerA, player playerB){
                     if(dominoPieces[k].available  == true){
                         newPiece = k;
                         dominoPieces[k].available = false;
-                        printf("Próxima posição válida = %d\n",k); 
+                        //printf("Próxima posição válida = %d\n",k); 
                         break;
                     }else 
                         continue;
@@ -300,49 +307,46 @@ int game(player playerA, player playerB){
                 scanf("%d",&option);
                 flush_in();
                 if(option < 0 || option > playerA_Piece_Count){
-                    //scanf("%d",&option);
                     showMessage("Peça inválida...\n");
                     continue;
                 }else
                     break;
 
-                }while(true); //invalidar a peça, mudar on table para true e available false
-                //printf("Peça jogada: [%d|%d] foi jogada\n",dominoPieces[playerA.playerPieces[option]].sideA,dominoPieces[playerA.playerPieces[option]].sideB);
+                }while(true); 
+              
+                pazuzu = grabOptionInvert();
+                flush_in();
+                if(toupper(pazuzu) == 'S'){
+                    locale1 = dominoPieces[playerA.playerPieces[option]].sideA;
+                    locale2 = dominoPieces[playerA.playerPieces[option]].sideB;
 
-
+                    dominoPieces[playerA.playerPieces[option]].sideA = locale2;
+                    dominoPieces[playerA.playerPieces[option]].sideB = locale1;
+                    showMessage("Invertendo peça...\n");
+                }else{
+                    showMessage("Continuando...\n");
+                }
 
                 megaOption = grabOptionBoard(); //opção começo ou fim?
                 mesaCounter = 0; //contador para quebrar a atribuição em partes
-                if(toupper(megaOption) == 'C'){
-
+                if(toupper(megaOption) == 'C'){ // ab ab
+  
                     if (validador > 0) {
-                        if (timeShiftC_ladoB == dominoPieces[playerA.playerPieces[option]].sideB && timeShiftC_ladoB != dominoPieces[playerA.playerPieces[option]].sideA )
+                        if (timeShiftC_ladoB != dominoPieces[playerA.playerPieces[option]].sideA)
                             {
-                                bilola = true; 
-                                pavement = true;
-                                
-                                timeShiftC_ladoA = dominoPieces[playerA.playerPieces[option]].sideB;
-                                timeShiftC_ladoB = dominoPieces[playerA.playerPieces[option]].sideA;
-                                
-                            }else{
-                                    timeShiftC_ladoA = dominoPieces[playerA.playerPieces[option]].sideA;
-                                    timeShiftC_ladoB = dominoPieces[playerA.playerPieces[option]].sideB;
+                                printf("Jogada inválida\nVoltando...\n");
+                                continue;
                             }
-                         if (timeShiftC_ladoB != dominoPieces[playerA.playerPieces[option]].sideA || timeShiftC_ladoB != dominoPieces[playerA.playerPieces[option]].sideB && bilola == false ){
-                            printf("VC BURRO NAO JOGAR PEÇAS CORRETAS QUEBRAR JOGO DESTE MODO\n");
-                            bilola = false;
-                            continue;
-                                                                                                                 
-                        }
+                        timeShiftC_ladoA = dominoPieces[playerA.playerPieces[option]].sideA;
+                        timeShiftC_ladoB = dominoPieces[playerA.playerPieces[option]].sideB;
                     }else{
                         timeShiftC_ladoA = dominoPieces[playerA.playerPieces[option]].sideA;
                         timeShiftC_ladoB = dominoPieces[playerA.playerPieces[option]].sideB;
                     }
+
+                    
                     validador++;
 
-                    printf(" MEU NEGRO JOGOU ESTA PEÇA E ELA EM BREVE SERA VALIDADE ->>> [%d|%d]\n",timeShiftC_ladoA,timeShiftC_ladoB );
-
-        
                     for(int k = 0; k <= 168; k++){ //começa percorrer o array pelo começo
                         if(mesaBool[k] == true){
                             if(mesaCounter == 0){ //vai colocando em partes a peça no array da mesa
@@ -351,37 +355,22 @@ int game(player playerA, player playerB){
                                 mesaCounter++;
                             }
                             else if(mesaCounter == 1){
-                                if(pavement){
-                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideB);
-                                mesaIndex[k] = *str;
-                                mesaBool[k] = false;
-                                mesaCounter++;
-                                }else{
                                 sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideA);
                                 mesaIndex[k] = *str;
                                 mesaBool[k] = false;
                                 mesaCounter++;
-
-                                }
+                                
                             }
                             else if(mesaCounter == 2){
                                 mesaIndex[k] = '|';
                                 mesaBool[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 3){
-                                if(pavement){
-                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideA);
-                                mesaIndex[k] = *str;
-                                mesaBool[k] = false;
-                                mesaCounter++;
-                                pavement = false;
-                                }else{
                                 sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideB);
                                 mesaIndex[k] = *str;
-                               // mesaIndex[k] = dominoPieces[playerA.playerPieces[option]].sideB;
                                 mesaBool[k] = false;
                                 mesaCounter++;
-                                }
+                                
                             }else if(mesaCounter == 4){
                                 mesaIndex[k] = ']';
                                 mesaBool[k] = false;
@@ -395,32 +384,21 @@ int game(player playerA, player playerB){
                     }
                 }else if(toupper(megaOption) == 'F'){
 
-                if (validador2 > 0) {
-                    if (timeShiftF_ladoB == dominoPieces[playerA.playerPieces[option]].sideB && timeShiftF_ladoB != dominoPieces[playerA.playerPieces[option]].sideA )
+                if (validador2 > 0) { // [a|b][a|b]
+                    if (timeShiftF_ladoA != dominoPieces[playerA.playerPieces[option]].sideB)
                             {
-                                pavement = true;
-                                bilola = true;
                                 
-                                timeShiftF_ladoA = dominoPieces[playerA.playerPieces[option]].sideB;
-                                timeShiftF_ladoB = dominoPieces[playerA.playerPieces[option]].sideA;
+                                printf("Jogada inválida\nVoltando...\n");
+                                continue;
                                 
-                            }else{
-                                    timeShiftF_ladoA = dominoPieces[playerA.playerPieces[option]].sideA;
-                                    timeShiftF_ladoB = dominoPieces[playerA.playerPieces[option]].sideB;
                             }
-                         if (timeShiftF_ladoA != dominoPieces[playerA.playerPieces[option]].sideB || timeShiftF_ladoA != dominoPieces[playerA.playerPieces[option]].sideA && bilola == false ){
-                            printf("VC BURRO NAO JOGAR PEÇAS CORRETAS QUEBRAR JOGO DESTE MODO\n");
-                            bilola = false;
-                            continue;
-                                                                                                        
-                        }
+                            timeShiftF_ladoA = dominoPieces[playerA.playerPieces[option]].sideA;
+                            timeShiftF_ladoB = dominoPieces[playerA.playerPieces[option]].sideB;
                     }else{
                         timeShiftF_ladoA = dominoPieces[playerA.playerPieces[option]].sideA;
                         timeShiftF_ladoB = dominoPieces[playerA.playerPieces[option]].sideB;
                     }
                     validador2++;
-
-                    printf(" MEU NEGRO JOGOU ESTA PEÇA E ELA EM BREVE SERA VALIDADE ->>> [%d|%d]\n",timeShiftF_ladoA,timeShiftF_ladoB );
 
 
                     for(int k = 168; k >= 0 ; k--){
@@ -431,39 +409,20 @@ int game(player playerA, player playerB){
                                 mesaCounter++;
                             }
                             else if(mesaCounter == 1){
-                                if(pavement){
-                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideA);
-                                mesaIndex[k] = *str;
-                                //mesaIndex[k] = dominoPieces[playerA.playerPieces[option]].sideB;
-                                mesaBool[k] = false;
-                                mesaCounter++;
-                                }else{
                                 sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideB);
                                 mesaIndex[k] = *str;
-                                //mesaIndex[k] = dominoPieces[playerA.playerPieces[option]].sideB;
                                 mesaBool[k] = false;
                                 mesaCounter++;
-                                }
                             }
                             else if(mesaCounter == 2){
                                 mesaIndex[k] = '|';
                                 mesaBool[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 3){
-                                if(pavement){
-                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideB);
-                                mesaIndex[k] = *str;
-                                //mesaIndex[k] = dominoPieces[playerA.playerPieces[option]].sideB;
-                                mesaBool[k] = false;
-                                mesaCounter++;
-                                pavement = false;
-                                }else{
                                 sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideA);
                                 mesaIndex[k] = *str;
-                                //mesaIndex[k] = dominoPieces[playerA.playerPieces[option]].sideB;
                                 mesaBool[k] = false;
                                 mesaCounter++;
-                                }
                             }else if(mesaCounter == 4){
                                 mesaIndex[k] = '[';
                                 mesaBool[k] = false;
@@ -501,38 +460,41 @@ int game(player playerA, player playerB){
                     break;
 
                 }while(true); //invalidar a peça, mudar on table para true e available false
-                //printf("Peça jogada: [%d|%d] foi jogada\n",dominoPieces[playerA.playerPieces[option]].sideA,dominoPieces[playerA.playerPieces[option]].sideB);
+
+                pazuzu =  grabOptionInvert();
+                flush_in();
+
+                if(toupper(pazuzu) == 'S'){
+                    locale1 = dominoPieces[playerB.playerPieces[option]].sideA;
+                    locale2 = dominoPieces[playerB.playerPieces[option]].sideB;
+
+                    dominoPieces[playerB.playerPieces[option]].sideA = locale2;
+                    dominoPieces[playerB.playerPieces[option]].sideB = locale1;
+                    showMessage("Invertendo peça...\n");
+                }else{
+                    showMessage("Continuando...\n");
+                }
+               
                 megaOption = grabOptionBoard(); //opção começo ou fim?
                 mesaCounter = 0; //contador para quebrar a atribuição em partes
                 if(toupper(megaOption) == 'C'){
                    
                     if (validador > 0) {
-                        if (timeShiftC_ladoB == dominoPieces[playerB.playerPieces[option]].sideB && timeShiftC_ladoB != dominoPieces[playerB.playerPieces[option]].sideA )
+                        if (timeShiftC_ladoB != dominoPieces[playerB.playerPieces[option]].sideA)
                             {
-                                bilola = true; 
-                                pavement = true;
-                                
-                                timeShiftC_ladoA = dominoPieces[playerB.playerPieces[option]].sideB;
-                                timeShiftC_ladoB = dominoPieces[playerB.playerPieces[option]].sideA;
-                                
-                            }else{
-                                    timeShiftC_ladoA = dominoPieces[playerB.playerPieces[option]].sideA;
-                                    timeShiftC_ladoB = dominoPieces[playerB.playerPieces[option]].sideB;
-                            }
-                         if (timeShiftC_ladoB != dominoPieces[playerB.playerPieces[option]].sideA || timeShiftC_ladoB != dominoPieces[playerB.playerPieces[option]].sideB && bilola == false ){
-                            printf("VC BURRO NAO JOGAR PEÇAS CORRETAS QUEBRAR JOGO DESTE MODO\n");
-                            bilola = false;
+                            printf("Jogada inválida\nVoltando...\n");
                             continue;
-                                                                                                                 
-                        }
+                                
+                            }
+                            timeShiftC_ladoA = dominoPieces[playerB.playerPieces[option]].sideA;
+                            timeShiftC_ladoB = dominoPieces[playerB.playerPieces[option]].sideB;
+
                     }else{
                         timeShiftC_ladoA = dominoPieces[playerB.playerPieces[option]].sideA;
                         timeShiftC_ladoB = dominoPieces[playerB.playerPieces[option]].sideB;
                     }
                     validador++;
 
-                    printf("%d %d", timeShiftC_ladoA,timeShiftC_ladoB );
-                    printf(" MEU NEGRO JOGOU ESTA PEÇA E ELA EM BREVE SERA VALIDADE ->>> [%d|%d]\n",timeShiftC_ladoA,timeShiftC_ladoB );
 
                     //dampé ta aqui pra baixo
                     for(int k = 0; k <= 168; k++){ //começa percorrer o array pelo começo
@@ -543,36 +505,20 @@ int game(player playerA, player playerB){
                                 mesaCounter++;
                             }
                             else if(mesaCounter == 1){
-                                if(pavement){
-                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideB);
-                                mesaIndex[k] = *str;
-                                mesaBool[k] = false;
-                                mesaCounter++;
-                                }else{
                                 sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideA);
                                 mesaIndex[k] = *str;
                                 mesaBool[k] = false;
                                 mesaCounter++;
-
-                                }
                             }
                             else if(mesaCounter == 2){
                                 mesaIndex[k] = '|';
                                 mesaBool[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 3){
-                                if(pavement){
-                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideA);
-                                mesaIndex[k] = *str;
-                                mesaBool[k] = false;
-                                mesaCounter++;
-                                pavement = false;
-                                }else{
                                 sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideB);
                                 mesaIndex[k] = *str;
                                 mesaBool[k] = false;
                                 mesaCounter++;
-                                }
                             }else if(mesaCounter == 4){
                                 mesaIndex[k] = ']';
                                 mesaBool[k] = false;
@@ -587,31 +533,23 @@ int game(player playerA, player playerB){
                     }
                 }else if(toupper(megaOption) == 'F'){
                 if (validador2 > 0) {
-                    if (timeShiftF_ladoB == dominoPieces[playerB.playerPieces[option]].sideB && timeShiftF_ladoB != dominoPieces[playerB.playerPieces[option]].sideA )
+                    if (timeShiftF_ladoA != dominoPieces[playerB.playerPieces[option]].sideB)
                             {
-                                pavement = true;
-                                bilola = true;
+                  
+                                printf("Jogada inválida\nVoltando...\n");
+                                continue;
                                 
-                                timeShiftF_ladoA = dominoPieces[playerB.playerPieces[option]].sideB;
-                                timeShiftF_ladoB = dominoPieces[playerB.playerPieces[option]].sideA;
-                                
-                            }else{
-                                    timeShiftF_ladoA = dominoPieces[playerB.playerPieces[option]].sideA;
-                                    timeShiftF_ladoB = dominoPieces[playerB.playerPieces[option]].sideB;
                             }
-                         if (timeShiftF_ladoA != dominoPieces[playerB.playerPieces[option]].sideB || timeShiftF_ladoA != dominoPieces[playerB.playerPieces[option]].sideA && bilola == false ){
-                            printf("VC BURRO NAO JOGAR PEÇAS CORRETAS QUEBRAR JOGO DESTE MODO\n");
-                            bilola = false;
-                            continue;
-                                                                                                        
-                        }
+
+                            timeShiftF_ladoA = dominoPieces[playerB.playerPieces[option]].sideA;
+                            timeShiftF_ladoB = dominoPieces[playerB.playerPieces[option]].sideB;
+                            
                     }else{
                         timeShiftF_ladoA = dominoPieces[playerB.playerPieces[option]].sideA;
                         timeShiftF_ladoB = dominoPieces[playerB.playerPieces[option]].sideB;
                     }
                     validador2++;
 
-                    printf(" MEU NEGRO JOGOU ESTA PEÇA E ELA EM BREVE SERA VALIDADE ->>> [%d|%d]\n",timeShiftF_ladoA,timeShiftF_ladoB );
 
 
                     for(int k = 168; k >= 0 ; k--){
@@ -622,39 +560,21 @@ int game(player playerA, player playerB){
                                 mesaCounter++;
                             }
                             else if(mesaCounter == 1){
-                                if(pavement){
-                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideA);
-                                mesaIndex[k] = *str;
-                                //mesaIndex[k] = dominoPieces[playerB.playerPieces[option]].sideB;
-                                mesaBool[k] = false;
-                                mesaCounter++;
-
-                                }else{
                                 sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideB);
                                 mesaIndex[k] = *str;
                                 //mesaIndex[k] = dominoPieces[playerB.playerPieces[option]].sideB;
                                 mesaBool[k] = false;
                                 mesaCounter++;
-                                }
                             }
                             else if(mesaCounter == 2){
                                 mesaIndex[k] = '|';
                                 mesaBool[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 3){
-                                if(pavement){
-                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideB);
-                                mesaIndex[k] = *str;
-                                mesaBool[k] = false;
-                                mesaCounter++;
-                                pavement = false;
-                                }else{
                                 sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideA);
                                 mesaIndex[k] = *str;
                                 mesaBool[k] = false;
                                 mesaCounter++;
-
-                                }
                             }else if(mesaCounter == 4){
                                 mesaIndex[k] = '[';
                                 mesaBool[k] = false;
@@ -690,7 +610,18 @@ int game(player playerA, player playerB){
                 exit(1);
                 // Sai do jogo 
                 break;
-            }
+            }   
+                if(playerA_Piece_Count-1 == 0){
+                    for(int k = 0; k < playerB_Piece_Count;k++){
+                        playerA_Points = dominoPieces[playerB.playerPieces[k]].sideA + dominoPieces[playerB.playerPieces[k]].sideB;
+                    }
+                    winCondition = true;
+                }else if(playerB_Piece_Count-1 == 0){
+                    for(int k = 0; k < playerA_Piece_Count; k++){
+                        playerB_Points = dominoPieces[playerA.playerPieces[k]].sideA + dominoPieces[playerA.playerPieces[k]].sideB;
+                    }
+                    winCondition = true;
+                }
                 clearScreen();
                 playerSec = true;
                 playerIni = false;
@@ -752,7 +683,7 @@ int game(player playerA, player playerB){
                     if(dominoPieces[k].available  == true){
                         newPiece = k;
                         dominoPieces[k].available = false;
-                        printf("Próxima posição válida = %d\n",k);
+                        //printf("Próxima posição válida = %d\n",k);
                         break;
                     }else 
                         continue;
@@ -791,47 +722,48 @@ int game(player playerA, player playerB){
                 scanf("%d",&option);
                 flush_in();
                 if(option < 0 || option > playerA_Piece_Count){
-                    //scanf("%d",&option);
                     showMessage("Peça inválida...\n");
                     continue;
                 }else
                     break;
 
                 }while(true); //invalidar a peça, mudar on table para true e available false
-                //printf("Peça jogada: [%d|%d] foi jogada\n",dominoPieces[playerA.playerPieces[option]].sideA,dominoPieces[playerA.playerPieces[option]].sideB);
+               
+                pazuzu = grabOptionInvert();
+                if(toupper(pazuzu) == 'S'){
+                    locale1 = dominoPieces[playerA.playerPieces[option]].sideA;
+                    locale2 = dominoPieces[playerA.playerPieces[option]].sideB;
+
+                    dominoPieces[playerA.playerPieces[option]].sideA = locale2;
+                    dominoPieces[playerA.playerPieces[option]].sideB = locale1;
+                    showMessage("Invertendo peça...\n");
+                }else{
+                    showMessage("Continuando...\n");
+                }
+
                 megaOption = grabOptionBoard(); //opção começo ou fim?
                 mesaCounter = 0; //contador para quebrar a atribuição em partes
-
 
                 if(toupper(megaOption) == 'C'){
 
                     if (validador > 0) {
-                        if (timeShiftC_ladoB == dominoPieces[playerA.playerPieces[option]].sideB && timeShiftC_ladoB != dominoPieces[playerA.playerPieces[option]].sideA )
+                        if (timeShiftC_ladoB != dominoPieces[playerA.playerPieces[option]].sideA)
                             {
-                                bilola = true; 
-                                pavement = true;
                                 
-                                timeShiftC_ladoA = dominoPieces[playerA.playerPieces[option]].sideB;
-                                timeShiftC_ladoB = dominoPieces[playerA.playerPieces[option]].sideA;
+                                printf("Jogada inválida\nVoltando...\n");
+                                continue;
                                 
                             }else{
                                     timeShiftC_ladoA = dominoPieces[playerA.playerPieces[option]].sideA;
                                     timeShiftC_ladoB = dominoPieces[playerA.playerPieces[option]].sideB;
                             }
-                         if (timeShiftC_ladoB != dominoPieces[playerA.playerPieces[option]].sideA || timeShiftC_ladoB != dominoPieces[playerA.playerPieces[option]].sideB && bilola == false ){
-                            printf("VC BURRO NAO JOGAR PEÇAS CORRETAS QUEBRAR JOGO DESTE MODO\n");
-                            bilola = false;
-                            continue;
-                                                                                                                 
-                        }
                     }else{
                         timeShiftC_ladoA = dominoPieces[playerA.playerPieces[option]].sideA;
                         timeShiftC_ladoB = dominoPieces[playerA.playerPieces[option]].sideB;
                     }
                     validador++;
 
-                    printf("%d %d", timeShiftC_ladoA,timeShiftC_ladoB );
-                    printf(" MEU NEGRO JOGOU ESTA PEÇA E ELA EM BREVE SERA VALIDADE ->>> [%d|%d]\n",timeShiftC_ladoA,timeShiftC_ladoB );
+                   
 
                     for(int k = 0; k <= 168; k++){ //começa percorrer o array pelo começo
                         if(mesaBool[k] == true){
@@ -841,36 +773,20 @@ int game(player playerA, player playerB){
                                 mesaCounter++;
                             }
                             else if(mesaCounter == 1){
-                                if(pavement){
-                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideB);
-                                mesaIndex[k] = *str;
-                                mesaBool[k] = false;
-                                mesaCounter++;
-                                }else{
                                 sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideA);
                                 mesaIndex[k] = *str;
                                 mesaBool[k] = false;
                                 mesaCounter++;
-
-                                }
                             }
                             else if(mesaCounter == 2){
                                 mesaIndex[k] = '|';
                                 mesaBool[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 3){
-                                if(pavement){
-                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideA);
-                                mesaIndex[k] = *str;
-                                mesaBool[k] = false;
-                                mesaCounter++;
-                                pavement = false;
-                                }else{
                                 sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideB);
                                 mesaIndex[k] = *str;;
                                 mesaBool[k] = false;
                                 mesaCounter++;
-                                }
                             }else if(mesaCounter == 4){
                                 mesaIndex[k] = ']';
                                 mesaBool[k] = false;
@@ -886,31 +802,21 @@ int game(player playerA, player playerB){
                 }else if(toupper(megaOption) == 'F'){
 
                 if (validador2 > 0) {
-                    if (timeShiftF_ladoB == dominoPieces[playerA.playerPieces[option]].sideB && timeShiftF_ladoB != dominoPieces[playerA.playerPieces[option]].sideA )
+                    if (timeShiftF_ladoA != dominoPieces[playerA.playerPieces[option]].sideB)
                             {
-                                pavement = true;
-                                bilola = true;
-                                
-                                timeShiftF_ladoA = dominoPieces[playerA.playerPieces[option]].sideB;
-                                timeShiftF_ladoB = dominoPieces[playerA.playerPieces[option]].sideA;
-                                
-                            }else{
-                                    timeShiftF_ladoA = dominoPieces[playerA.playerPieces[option]].sideA;
-                                    timeShiftF_ladoB = dominoPieces[playerA.playerPieces[option]].sideB;
+                                printf("Jogada inválida\nVoltando...\n");
+                                continue;
                             }
-                         if (timeShiftF_ladoA != dominoPieces[playerA.playerPieces[option]].sideB || timeShiftF_ladoA != dominoPieces[playerA.playerPieces[option]].sideA && bilola == false ){
-                            printf("VC BURRO NAO JOGAR PEÇAS CORRETAS QUEBRAR JOGO DESTE MODO\n");
-                            bilola = false;
-                            continue;
-                                                                                                        
-                        }
+
+                            timeShiftF_ladoA = dominoPieces[playerA.playerPieces[option]].sideB;
+                            timeShiftF_ladoB = dominoPieces[playerA.playerPieces[option]].sideA;
+
                     }else{
                         timeShiftF_ladoA = dominoPieces[playerA.playerPieces[option]].sideA;
                         timeShiftF_ladoB = dominoPieces[playerA.playerPieces[option]].sideB;
                     }
                     validador2++;
 
-                    printf(" MEU NEGRO JOGOU ESTA PEÇA E ELA EM BREVE SERA VALIDADE ->>> [%d|%d]\n",timeShiftF_ladoA,timeShiftF_ladoB );
 
                     for(int k = 168; k >= 0 ; k--){
                         if(mesaBool[k] == true){
@@ -920,37 +826,20 @@ int game(player playerA, player playerB){
                                 mesaCounter++;
                             }
                             else if(mesaCounter == 1){
-                                if(pavement){
-                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideA);
-                                mesaIndex[k] = *str;
-                                mesaBool[k] = false;
-                                mesaCounter++;
-                                }else{
                                 sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideB);
                                 mesaIndex[k] = *str;
                                 mesaBool[k] = false;
                                 mesaCounter++;
-
-                                }
                             }
                             else if(mesaCounter == 2){
                                 mesaIndex[k] = '|';
                                 mesaBool[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 3){
-                                if(pavement){
-                                sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideB);
-                                mesaIndex[k] = *str;
-                                mesaBool[k] = false;
-                                mesaCounter++;
-                                pavement = false;
-                                }else{
                                 sprintf(str, "%d", dominoPieces[playerA.playerPieces[option]].sideA);
                                 mesaIndex[k] = *str;
                                 mesaBool[k] = false;
                                 mesaCounter++;
-
-                                }
                             }else if(mesaCounter == 4){
                                 mesaIndex[k] = '[';
                                 mesaBool[k] = false;
@@ -981,45 +870,48 @@ int game(player playerA, player playerB){
                 scanf("%d",&option);
                 flush_in();
                 if(option < 0 || option > playerB_Piece_Count){
-                    //scanf("%d",&option);
                     showMessage("Peça inválida...\n");
                     continue;
                 }else
                     break;
 
                 }while(true); //invalidar a peça, mudar on table para true e available false
-                //printf("Peça jogada: [%d|%d] foi jogada\n",dominoPieces[playerA.playerPieces[option]].sideA,dominoPieces[playerA.playerPieces[option]].sideB);
+
+               pazuzu = grabOptionInvert();
+               
+               if(toupper(pazuzu) == 'S'){
+                    locale1 = dominoPieces[playerB.playerPieces[option]].sideA;
+                    locale2 = dominoPieces[playerB.playerPieces[option]].sideB;
+
+                    dominoPieces[playerB.playerPieces[option]].sideA = locale2;
+                    dominoPieces[playerB.playerPieces[option]].sideB = locale1;
+                    showMessage("Invertendo peça...\n");
+                }else{
+                    showMessage("Continuando...\n");
+                }
+
                 megaOption = grabOptionBoard(); //opção começo ou fim?
                 mesaCounter = 0; //contador para quebrar a atribuição em partes
                 if(toupper(megaOption) == 'C'){
                 
                     if (validador > 0) {
-                        if (timeShiftC_ladoB == dominoPieces[playerB.playerPieces[option]].sideB && timeShiftC_ladoB != dominoPieces[playerB.playerPieces[option]].sideA )
+                        if (timeShiftC_ladoB != dominoPieces[playerB.playerPieces[option]].sideA)
                             {
-                                bilola = true; 
-                                pavement = true;
+                                printf("Jogada inválida\nVoltando...\n");
+                                continue;
                                 
-                                timeShiftC_ladoA = dominoPieces[playerB.playerPieces[option]].sideB;
-                                timeShiftC_ladoB = dominoPieces[playerB.playerPieces[option]].sideA;
-                                
-                            }else{
-                                    timeShiftC_ladoA = dominoPieces[playerB.playerPieces[option]].sideA;
-                                    timeShiftC_ladoB = dominoPieces[playerB.playerPieces[option]].sideB;
                             }
-                         if (timeShiftC_ladoB != dominoPieces[playerB.playerPieces[option]].sideA || timeShiftC_ladoB != dominoPieces[playerB.playerPieces[option]].sideB && bilola == false ){
-                            printf("VC BURRO NAO JOGAR PEÇAS CORRETAS QUEBRAR JOGO DESTE MODO\n");
-                            bilola = false;
-                            continue;
-                                                                                                                 
-                        }
+                        timeShiftC_ladoA = dominoPieces[playerB.playerPieces[option]].sideA;
+                                    
+                        timeShiftC_ladoB = dominoPieces[playerB.playerPieces[option]].sideB;
+
                     }else{
                         timeShiftC_ladoA = dominoPieces[playerB.playerPieces[option]].sideA;
                         timeShiftC_ladoB = dominoPieces[playerB.playerPieces[option]].sideB;
                     }
                     validador++;
 
-                    printf("%d %d", timeShiftC_ladoA,timeShiftC_ladoB );
-                    printf(" MEU NEGRO JOGOU ESTA PEÇA E ELA EM BREVE SERA VALIDADE ->>> [%d|%d]\n",timeShiftC_ladoA,timeShiftC_ladoB );
+                    
 
                     for(int k = 0; k <= 168; k++){ //começa percorrer o array pelo começo
                         if(mesaBool[k] == true){
@@ -1029,36 +921,20 @@ int game(player playerA, player playerB){
                                 mesaCounter++;
                             }
                             else if(mesaCounter == 1){
-                               if(pavement){
-                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideB);
-                                mesaIndex[k] = *str;
-                                mesaBool[k] = false;
-                                mesaCounter++;
-                                }else{
                                 sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideA);
                                 mesaIndex[k] = *str;
                                 mesaBool[k] = false;
                                 mesaCounter++;
-
-                                }
                             }
                             else if(mesaCounter == 2){
                                 mesaIndex[k] = '|';
                                 mesaBool[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 3){
-                                   if(pavement){
-                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideA);
-                                mesaIndex[k] = *str;
-                                mesaBool[k] = false;
-                                mesaCounter++;
-                                pavement = false;
-                                }else{
                                 sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideB);
                                 mesaIndex[k] = *str;
                                 mesaBool[k] = false;
                                 mesaCounter++;
-                                }
                             }else if(mesaCounter == 4){
                                 mesaIndex[k] = ']';
                                 mesaBool[k] = false;
@@ -1074,31 +950,19 @@ int game(player playerA, player playerB){
                 }else if(toupper(megaOption) == 'F'){
 
                 if (validador2 > 0) {
-                    if (timeShiftF_ladoB == dominoPieces[playerB.playerPieces[option]].sideB && timeShiftF_ladoB != dominoPieces[playerB.playerPieces[option]].sideA )
+                    if (timeShiftF_ladoA != dominoPieces[playerB.playerPieces[option]].sideB)
                             {
-                                pavement = true;
-                                bilola = true;
+                               printf("Jogada inválida\nVoltando...\n");
+                               continue;
                                 
-                                timeShiftF_ladoA = dominoPieces[playerB.playerPieces[option]].sideB;
-                                timeShiftF_ladoB = dominoPieces[playerB.playerPieces[option]].sideA;
-                                
-                            }else{
-                                    timeShiftF_ladoA = dominoPieces[playerB.playerPieces[option]].sideA;
-                                    timeShiftF_ladoB = dominoPieces[playerB.playerPieces[option]].sideB;
                             }
-                         if (timeShiftF_ladoA != dominoPieces[playerB.playerPieces[option]].sideB || timeShiftF_ladoA != dominoPieces[playerB.playerPieces[option]].sideA && bilola == false ){
-                            printf("VC BURRO NAO JOGAR PEÇAS CORRETAS QUEBRAR JOGO DESTE MODO\n");
-                            bilola = false;
-                            continue;
-                                                                                                        
-                        }
+                            timeShiftF_ladoA = dominoPieces[playerB.playerPieces[option]].sideA;
+                            timeShiftF_ladoB = dominoPieces[playerB.playerPieces[option]].sideB;
                     }else{
                         timeShiftF_ladoA = dominoPieces[playerB.playerPieces[option]].sideA;
                         timeShiftF_ladoB = dominoPieces[playerB.playerPieces[option]].sideB;
                     }
                     validador2++;
-
-                    printf(" MEU NEGRO JOGOU ESTA PEÇA E ELA EM BREVE SERA VALIDADE ->>> [%d|%d]\n",timeShiftF_ladoA,timeShiftF_ladoB );
 
 
                     for(int k = 168; k >= 0 ; k--){
@@ -1109,37 +973,20 @@ int game(player playerA, player playerB){
                                 mesaCounter++;
                             }
                             else if(mesaCounter == 1){
-                               if(pavement){
-                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideA);
-                                mesaIndex[k] = *str;
-                                mesaBool[k] = false;
-                                mesaCounter++;
-                                }else{
                                 sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideB);
                                 mesaIndex[k] = *str;
                                 mesaBool[k] = false;
                                 mesaCounter++;
-
-                                }
                             }
                             else if(mesaCounter == 2){
                                 mesaIndex[k] = '|';
                                 mesaBool[k] = false;
                                 mesaCounter++;
                             }else if(mesaCounter == 3){
-                                if(pavement){
-                                sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideB);
-                                mesaIndex[k] = *str;
-                                mesaBool[k] = false;
-                                mesaCounter++;
-                                pavement = false;
-                                }else{
                                 sprintf(str, "%d", dominoPieces[playerB.playerPieces[option]].sideA);
                                 mesaIndex[k] = *str;
                                 mesaBool[k] = false;
                                 mesaCounter++;
-
-                                }
                             }else if(mesaCounter == 4){
                                 mesaIndex[k] = '[';
                                 mesaBool[k] = false;
@@ -1176,16 +1023,27 @@ int game(player playerA, player playerB){
                 // Sai do jogo 
                 break;
             }
-
-
+                if(playerA_Piece_Count-1 == 0){
+                    for(int k = 0; k < playerB_Piece_Count;k++){
+                        playerA_Points = dominoPieces[playerB.playerPieces[k]].sideA + dominoPieces[playerB.playerPieces[k]].sideB;
+                    }
+                    winCondition = true;
+                }else if(playerB_Piece_Count-1 == 0){
+                    for(int k = 0; k < playerA_Piece_Count; k++){
+                        playerB_Points = dominoPieces[playerA.playerPieces[k]].sideA + dominoPieces[playerA.playerPieces[k]].sideB;
+                    }
+                    winCondition = true;
+                }
                 clearScreen();
                 playerIni = true; //troca as jogadas
                 playerSec = false; //troca as jogadas
             }
         }; //fase de testes ok...............
-            //jogador 2 playerInicio jogar peça (ao menos index 0) jogar no inicio quebra o jogo
-
-
+        if(playerA_Points > 0){ //mais para frente dar return nos pontos de quem ganhar,perguntar para jogar novamente e guardar os pontos e ir somando...
+            printf("JOGADOR 1 GANHOU COM %d PONTOS!!!!\n",playerA_Points);
+        }else if(playerB_Points > 0){
+            printf("JOGADOR 2 GANHOU COM %d PONTOS!!!!\n",playerB_Points);
+        } 
             return 0; 
         }
 

@@ -1,12 +1,12 @@
 //Grupo Shoegazer - Função Principal com lógica do jogo e inicio do mesmo.
 //MVC - Controller - isto virou uma anarquia
-// ATENÇÃO ATE O PRESENTE MOMENTO SE O JOGADOR 2 INICIAR O JOGO, ELE QUEBRA
+// ATENÇÃO ATE O PRESENTE MOMENTO SE O JOGADOR 2 INICIAR O JOGO E NÃO COMPRAR PEÇA, ELE QUEBRA
 //NÃO SABEMOS O PORQUE PF ALGUEM ME AJUDA
+
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-
 #include <ctype.h>
 #include "./Controller/gameController.c"
 
