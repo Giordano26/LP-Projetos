@@ -24,7 +24,7 @@ int main()
         
         flush_in();
 
-        // OPÇÃO --
+        // OPÇÃO de saida
         if(option == 3)
             exit(1);
 

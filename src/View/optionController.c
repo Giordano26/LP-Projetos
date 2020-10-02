@@ -14,11 +14,11 @@ int grabOption()
 
     do
     {
-        printf("\nEscolha uma opção: \n");
+       showMessage("\nEscolha uma opção: \n");
         scanf("%d", &option);
 
         if(option < 1 || option > 3){
-            printf("Opção inválida...\n");
+            showMessage("Opção inválida...\n");
         }else
             break;
     } while (true);
@@ -35,11 +35,11 @@ int grabOptionMode()
 
     do
     {
-        printf("\nEscolha uma opção: \n");
+        showMessage("\nEscolha uma opção: \n");
         scanf("%d", &option);
 
         if(option < 1 || option > 3){
-            printf("Opção inválida...\n");
+            showMessage("Opção inválida...\n");
         }else
             break;
     } while (true);
@@ -56,11 +56,11 @@ int grabOptionInGame()
 
     do
     {
-        printf("\nEscolha uma opção: \n");
+        showMessage("\nEscolha uma opção: \n");
         scanf("%d", &option);
 
         if(option < 1 || option > 6){
-            printf("Opção inválida...\n");
+            showMessage("Opção inválida...\n");
         }else
             break;
     } while (true);
@@ -70,23 +70,40 @@ int grabOptionInGame()
     return option;
 }
 
+
+//função para opções dentro da mesa
 char grabOptionBoard(){
     char option;
     do{
-        printf("\n Jogar no começo ou no final?\n(C/F)\n");
+        showMessage("\n Jogar no começo ou no final?\n(C/F)\n");
         scanf("%s",&option);
 
         if(toupper(option) == 'C' || toupper(option) == 'F'){
             return option;
         }
         else{
-            printf("Opção inválida...");
+            showMessage("Opção inválida...");
             continue;
         }
 
     }while(true);
-
+}
 
 
     
+//funlção para a inversão da peça
+char grabOptionInvert(){
+    char option;
+    do{
+        showMessage("\n Inverter a peça?\n(S/N)\n");
+        scanf("%s",&option);
+        
+        if(toupper(option) == 'C' || toupper(option) == 'F'){
+            return option;
+        }
+        else{
+            showMessage("Opção inválida...");
+            continue;
+        }
+    }while(true);
 }
