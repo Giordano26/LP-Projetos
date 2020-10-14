@@ -1075,7 +1075,7 @@ int game(player playerA, player playerB){
             for(int k = 0; k < playerA_Piece_Count;k++)
                 playerB_Points = dominoPieces[playerA.playerPieces[k]].sideA + dominoPieces[playerB.playerPieces[k]].sideB;
             
-            if(playerA_Points > playerB_Points){
+            if(playerA_Points > playerB_Points){ //mudar msg de vitória
                 printf("JOGADOR 1 GANHOU COM %d PONTOS", playerA_Points);
             }else if(playerB_Points > playerA_Points){
                 printf("JOGADOR 2 GANHOU COM %d PONTOS",playerB_Points);
