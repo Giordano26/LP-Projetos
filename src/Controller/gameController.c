@@ -1,3 +1,7 @@
+//MVC - Controller 
+//Grupo Shoegazer - Função principal com a lógica do jogo inteira
+
+
 #include "../View/optionController.c"
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,6 +20,7 @@
 int playerInicio,playerSecundario;
 char megaOption; //opção para começo e final
 char pazuzu; //opção para inversão
+char fim; //opção para passar a vez;
 int locale1 = 0;
 int locale2 = 0;
 
@@ -23,6 +28,7 @@ int locale2 = 0;
 int game(player playerA, player playerB){
      //sentinela 
      bool winCondition = false;
+     int endGame = 0;
     
      //variaveis de comparação:
         int timeShiftC_ladoA = 0; 
@@ -207,7 +213,7 @@ int game(player playerA, player playerB){
                                                                            );
 
                     
-        showMessage(" -------------------------------- BETA V2.0 ---------------------------------\n\n");
+        showMessage(" -------------------------------- BETA V2.1 ---------------------------------\n\n");
 
             
             // Mostra quem é o primeiro e o segundo a jogar
@@ -223,6 +229,13 @@ int game(player playerA, player playerB){
 
             
             while(playerIni){
+                if(endGame >= 2){
+                showMessage("Nenhum dos jogadores possui mais peças...\n");
+                showMessage("Encerrando o jogo\n");
+                winCondition = true;
+                playerSec = false;
+                playerIni = false;
+            }
 
             printInGameMenu(playerInicio);
             option = grabOptionInGame();
@@ -263,15 +276,26 @@ int game(player playerA, player playerB){
 
                 //Caso comprar peças
                 case 3:
-                for(int k = 14; k < 28; k++){ //Função para o jogador comprar uma peça
-                    if(dominoPieces[k].available  == true){
-                        newPiece = k;
-                        dominoPieces[k].available = false;
-                        //printf("Próxima posição válida = %d\n",k); 
-                        break;
-                    }else 
-                        continue;
-            }
+                if(dominoPieces[27].available == false){
+                        showMessage("Não há mais peças para comprar\n");
+                        showMessage("Passando a vez...");
+                        endGame++;
+                        playerSec = true;
+                        playerIni = false;
+                    }else{
+                    for(int k = 14; k < 28; k++){ //Função para o jogador comprar uma peça
+                        if(dominoPieces[k].available  == true){
+                            newPiece = k;
+                            dominoPieces[k].available = false;
+                            //printf("Próxima posição válida = %d\n",k); 
+                            break;
+                        }else 
+                            continue;
+                    }
+
+                    }
+                
+            
                 if (1 == playerInicio){ // Checa se é Jogador A
             
                 playerA.playerPieces[playerA_Piece_Count] = shuffleSideA[newPiece]; //Pega o index de peça disponivel, acessa no array de peças embaralhadas e atribui ao jogador na primeira posição disponivel.
@@ -612,14 +636,8 @@ int game(player playerA, player playerB){
                 break;
             }   
                 if(playerA_Piece_Count-1 == 0){
-                    for(int k = 0; k < playerB_Piece_Count;k++){
-                        playerA_Points = dominoPieces[playerB.playerPieces[k]].sideA + dominoPieces[playerB.playerPieces[k]].sideB;
-                    }
                     winCondition = true;
                 }else if(playerB_Piece_Count-1 == 0){
-                    for(int k = 0; k < playerA_Piece_Count; k++){
-                        playerB_Points = dominoPieces[playerA.playerPieces[k]].sideA + dominoPieces[playerA.playerPieces[k]].sideB;
-                    }
                     winCondition = true;
                 }
                 clearScreen();
@@ -639,6 +657,14 @@ int game(player playerA, player playerB){
 
 
             while(playerSec){
+            if(endGame >= 2){
+                showMessage("Nenhum dos jogadores possui mais peças...\n");
+                showMessage("Encerrando o jogo\n");
+                winCondition = true;
+                playerIni = false;
+                playerSec = false;
+
+            }
 
             printInGameMenu(playerSecundario);
             option = grabOptionInGame();
@@ -679,15 +705,23 @@ int game(player playerA, player playerB){
 
                 //Caso comprar peças
                 case 3:
-                for(int k = 14; k < 28; k++){ //Função para o jogador comprar uma peça
-                    if(dominoPieces[k].available  == true){
-                        newPiece = k;
-                        dominoPieces[k].available = false;
-                        //printf("Próxima posição válida = %d\n",k);
-                        break;
-                    }else 
-                        continue;
-            }
+                 if(dominoPieces[27].available == false){
+                        showMessage("Não há mais peças para comprar\n");
+                        showMessage("Passando a vez...");
+                        endGame++;
+                        playerIni = true;
+                        playerSec = false;
+                    }else{
+                    for(int k = 14; k < 28; k++){ //Função para o jogador comprar uma peça
+                        if(dominoPieces[k].available  == true){
+                            newPiece = k;
+                            dominoPieces[k].available = false;
+                            //printf("Próxima posição válida = %d\n",k); 
+                            break;
+                        }else 
+                            continue;
+                    }
+                    }
                 if (1 == playerSecundario){ //checa se é Jogador A
             
                 playerA.playerPieces[playerA_Piece_Count] = shuffleSideA[newPiece]; //Pega o index de peça disponivel, acessa no array de peças embaralhadas e atribui ao jogador na primeira posição disponivel.
@@ -1024,14 +1058,8 @@ int game(player playerA, player playerB){
                 break;
             }
                 if(playerA_Piece_Count-1 == 0){
-                    for(int k = 0; k < playerB_Piece_Count;k++){
-                        playerA_Points = dominoPieces[playerB.playerPieces[k]].sideA + dominoPieces[playerB.playerPieces[k]].sideB;
-                    }
                     winCondition = true;
                 }else if(playerB_Piece_Count-1 == 0){
-                    for(int k = 0; k < playerA_Piece_Count; k++){
-                        playerB_Points = dominoPieces[playerA.playerPieces[k]].sideA + dominoPieces[playerA.playerPieces[k]].sideB;
-                    }
                     winCondition = true;
                 }
                 clearScreen();
@@ -1039,11 +1067,22 @@ int game(player playerA, player playerB){
                 playerSec = false; //troca as jogadas
             }
         }; //fase de testes ok...............
-        if(playerA_Points > 0){ //mais para frente dar return nos pontos de quem ganhar,perguntar para jogar novamente e guardar os pontos e ir somando...
-            printf("JOGADOR 1 GANHOU COM %d PONTOS!!!!\n",playerA_Points);
-        }else if(playerB_Points > 0){
-            printf("JOGADOR 2 GANHOU COM %d PONTOS!!!!\n",playerB_Points);
-        } 
+
+
+        if(winCondition == true){
+            for(int k = 0; k < playerB_Piece_Count;k++)
+                playerA_Points = dominoPieces[playerB.playerPieces[k]].sideA + dominoPieces[playerB.playerPieces[k]].sideB;
+            for(int k = 0; k < playerA_Piece_Count;k++)
+                playerB_Points = dominoPieces[playerA.playerPieces[k]].sideA + dominoPieces[playerB.playerPieces[k]].sideB;
+            
+            if(playerA_Points > playerB_Points){
+                printf("JOGADOR 1 GANHOU COM %d PONTOS", playerA_Points);
+            }else if(playerB_Points > playerA_Points){
+                printf("JOGADOR 2 GANHOU COM %d PONTOS",playerB_Points);
+            }
+        }
+
+
             return 0; 
         }
 

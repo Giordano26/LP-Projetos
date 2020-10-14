@@ -1,4 +1,3 @@
-//MVC - Controller --> passar para o view
 //Grupo Shoegazer - Função para pegar o input do usuário
 
 #include <stdio.h>
