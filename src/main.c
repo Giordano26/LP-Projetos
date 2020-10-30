@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #include <ctype.h>
 #include "./Controller/gameController.c"
+#include "./Controller/gameSPController.c"
 
 
 
@@ -35,8 +36,8 @@ int main()
           
           
           if(option == 1){
-              showMessage("Modo em desenvolvimento...\n");
-              showMessage("Reiniciando...\n\n");
+              gameSP();
+              
           }
           else if(option == 2){
               showMessage("Modo de 2 jogadores selecionado\n\n");

@@ -17,7 +17,7 @@
   char str[1000];
   char str2[1000];
 
-int playerInicio,playerSecundario; //salvar --> quem é quem fedaseeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+int playerInicio,playerSecundario; //salvar
 char megaOption; //opção para começo e final
 char pazuzu; //opção para inversão
 char fim; //opção para passar a vez;
