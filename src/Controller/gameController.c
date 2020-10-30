@@ -17,15 +17,19 @@
   char str[1000];
   char str2[1000];
 
-int playerInicio,playerSecundario;
+int playerInicio,playerSecundario; //salvar --> quem é quem fedaseeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
 char megaOption; //opção para começo e final
 char pazuzu; //opção para inversão
 char fim; //opção para passar a vez;
+char mama; //opção para salvar o jogo
 int locale1 = 0;
 int locale2 = 0;
+int contador = 0;
+
+FILE * fp;
 
 
-int game(player playerA, player playerB){
+int game(player playerA, player playerB ){
      //sentinela 
      bool winCondition = false;
      int endGame = 0;
@@ -51,16 +55,16 @@ int game(player playerA, player playerB){
         int count = 0;
 
     //variaveis para a mesa;
-        char mesaIndex[168];
-        bool mesaBool[168];
+        char mesaIndex[168]; //salvar --> mesa
+        bool mesaBool[168]; //salvar --> mesa
         int mesaCounter;
         int mesaCounter2;
 
     //Estado dos jogadores
-    bool playerIni = true;
-    bool playerSec = false;
+    bool playerIni = true; //salvar --> com quem ta jogando
+    bool playerSec = false; //salvar --> com quem ta jogando
         
-
+//else >>>
         piece dominoPieces[28];
 
         for (int createPiece = 0; createPiece < 7; createPiece++){
@@ -109,8 +113,8 @@ int game(player playerA, player playerB){
             dominoPieces[y+7].player = 2; // Vai para o player B
     }
 
-    int playerA_Piece_Count = 7; // Primeira posição com index vazio para peça
-    int playerB_Piece_Count = 7; // Primeira posição com index vazio para peça
+    int playerA_Piece_Count = 7; // Primeira posição com index vazio para peça --> salvar
+    int playerB_Piece_Count = 7; // Primeira posição com index vazio para peça --> salvar
 
 
     int pecaMaiorA = '\0'; // Analisa as peças de cada jogador para decidir quem começa o jogo
@@ -213,13 +217,13 @@ int game(player playerA, player playerB){
                                                                            );
 
                     
-        showMessage(" -------------------------------- BETA V2.1 ---------------------------------\n\n");
+        showMessage(" -------------------------------- V1.0 ---------------------------------\n\n");
 
             
             // Mostra quem é o primeiro e o segundo a jogar
             firstToPlay(playerInicio,playerSecundario);
 
-
+//else <<<<<
 
         
         while(winCondition == false){
@@ -237,13 +241,8 @@ int game(player playerA, player playerB){
                 playerIni = false;
             }
 
-            printInGameMenu(playerInicio);
-            option = grabOptionInGame();
-            flush_in();
-            
-            switch(option){  
-                case 1:
-                showMessage("MESA:\n");
+            //printa a mesa 
+            showMessage("MESA:\n");
                 mesaCounter2 = 0;
                     if(solucaoMacaca)
                         printf("[");
@@ -255,27 +254,34 @@ int game(player playerA, player playerB){
 
                     };
                     printf("\n");
-                continue;
 
-                //Caso mostrar peças
-                case 2:
-                if(1 == playerInicio){ //checa se é jogador A 
+            //mostra as peças 
+            if(1 == playerInicio){ //checa se é jogador A 
                     for(int k = 0 ; k < playerA_Piece_Count; k++){
-                        showPlayerPieces(dominoPieces[playerA.playerPieces[k]].sideA,dominoPieces[playerA.playerPieces[k]].sideB);
+                        showPlayerPieces(dominoPieces[playerA.playerPieces[k]].sideA,dominoPieces[playerA.playerPieces[k]].sideB,contador);
+                        contador++;
                    }
-                   
+                    contador = 0;
                     printf("\n");
                 }else{
                     
                     for(int k = 0 ; k < playerB_Piece_Count; k++){
-                        showPlayerPieces(dominoPieces[playerB.playerPieces[k]].sideA,dominoPieces[playerB.playerPieces[k]].sideB);
+                        showPlayerPieces(dominoPieces[playerB.playerPieces[k]].sideA,dominoPieces[playerB.playerPieces[k]].sideB,contador);
+                        contador++;
                    }
+                    contador = 0;
                     printf("\n");
                 }
-                continue;
 
+
+            //Imprime o menu
+            printInGameMenu(playerInicio);
+            option = grabOptionInGame();
+            flush_in();
+            
+            switch(option){  
                 //Caso comprar peças
-                case 3:
+                case 2:
                 if(dominoPieces[27].available == false){
                         showMessage("Não há mais peças para comprar\n");
                         showMessage("Passando a vez...");
@@ -324,7 +330,7 @@ int game(player playerA, player playerB){
                
                 continue;
 
-                case 4:
+                case 1:
                 if(playerInicio == 1){
                 do {
                 printf("Escolha uma peça de 0 a %d\n",playerA_Piece_Count-1);
@@ -626,12 +632,46 @@ int game(player playerA, player playerB){
                 break; 
 
                 //Imprime as regras
-                case 5:
+                case 3:
                 printRules();
                 continue;
 
-                case 6:
-                exit(1);
+                case 4:
+                mama = saveGame();
+                if(toupper(mama) == 'S'){
+                    showMessage("Função em desenvolvimento...");
+                    showMessage("Saindo...");
+                    exit(0);
+                    /* showMessage("Salvando jogo...");
+                    fp = fopen("save.txt","w");
+                    fwrite(&playerIni,1,1,fp);
+                    fwrite(&playerSec,1,1,fp);
+                    fwrite(&playerInicio,1,1,fp);
+                    fwrite(&playerSecundario,1,1,fp);
+                    fwrite(&playerA_Piece_Count,1,1,fp);
+                    fwrite(&playerB_Piece_Count,1,1,fp);
+                    for(int i = 0; i <= 168; i++){
+                        fwrite(&mesaIndex[i],168,1,fp);
+                        fwrite(&mesaBool[i],168,1,fp);
+                    }
+                    for(int i = 0; i <= 28; i++){
+                        fwrite(&dominoPieces[i],28,1,fp);
+                    }
+                    for(int i = 0; i <= 30; i++){
+                        fwrite(&playerA.playerPieces[i],30,1,fp);
+                        fwrite(&playerB.playerPieces[i],30,1,fp);
+                    }
+                    fclose(fp);
+                    if(fwrite != 0)
+                        printf("Salvo com sucesso!");
+                    else
+                        printf("Erro ao salvar...");
+                    exit(0); */
+                }else if(toupper(mama) == 'N'){
+                    showMessage("Saindo sem salvar...");
+                    exit(0);
+                }
+                
                 // Sai do jogo 
                 break;
             }   
@@ -666,13 +706,8 @@ int game(player playerA, player playerB){
 
             }
 
-            printInGameMenu(playerSecundario);
-            option = grabOptionInGame();
-            flush_in();
-            
-            switch(option){  
-                case 1:
-                showMessage("MESA:\n");
+            //printa a mesa 
+            showMessage("MESA:\n");
                 mesaCounter2 = 0;
                     if(solucaoMacaca)
                         printf("[");
@@ -684,27 +719,33 @@ int game(player playerA, player playerB){
 
                     };
                     printf("\n");
-                    continue;
+            
 
-                //Caso mostrar peças
-                case 2:
-                if(1 == playerSecundario){ //checa se é jogador A 
+            if(1 == playerSecundario){ //checa se é jogador A 
                     for(int k = 0 ; k < playerA_Piece_Count; k++){
-                        showPlayerPieces(dominoPieces[playerA.playerPieces[k]].sideA,dominoPieces[playerA.playerPieces[k]].sideB);
+                        showPlayerPieces(dominoPieces[playerA.playerPieces[k]].sideA,dominoPieces[playerA.playerPieces[k]].sideB,contador);
+                        contador++;
                    }
-                   
+                    contador = 0;
                     printf("\n");
                 }else{
                     
                     for(int k = 0 ; k < playerB_Piece_Count; k++){
-                        showPlayerPieces(dominoPieces[playerB.playerPieces[k]].sideA,dominoPieces[playerB.playerPieces[k]].sideB);
+                        showPlayerPieces(dominoPieces[playerB.playerPieces[k]].sideA,dominoPieces[playerB.playerPieces[k]].sideB,contador);
+                        contador++;
                    }
+                   contador = 0;
                     printf("\n");
                 }
-                    continue; //solução primata porém é oq temos para hj
+            
+            printInGameMenu(playerSecundario);
+            option = grabOptionInGame();
+            flush_in();
 
+                
+            switch(option){  
                 //Caso comprar peças
-                case 3:
+                case 2:
                  if(dominoPieces[27].available == false){
                         showMessage("Não há mais peças para comprar\n");
                         showMessage("Passando a vez...");
@@ -749,7 +790,7 @@ int game(player playerA, player playerB){
                
                     continue; //solução primata porém é oq temos pra hj
 
-                case 4:
+                case 1:
                 if(playerSecundario == 1){
                 do{
                 printf("Escolha uma peça de 0 a %d\n",playerA_Piece_Count-1);
@@ -1048,15 +1089,50 @@ int game(player playerA, player playerB){
                 break; 
 
                 //Imprime as regras
-                case 5:
+                case 3:
                 printRules();
                     continue;
 
-                case 6:
-                exit(1);
+                case 4:
+                mama = saveGame();
+                if(toupper(mama) == 'S'){
+                    showMessage("Função em desenvolvimento...\n");
+                    showMessage("Saindo...\n");
+                    exit(0);
+                    /* showMessage("Salvando jogo...");
+                    fp = fopen("save.txt","w");
+                    fwrite(&playerIni,1,1,fp);
+                    fwrite(&playerSec,1,1,fp);
+                    fwrite(&playerInicio,1,1,fp);
+                    fwrite(&playerSecundario,1,1,fp);
+                    fwrite(&playerA_Piece_Count,1,1,fp);
+                    fwrite(&playerB_Piece_Count,1,1,fp);
+                    for(int i = 0; i <= 168; i++){
+                        fwrite(&mesaIndex[i],168,1,fp);
+                        fwrite(&mesaBool[i],168,1,fp);
+                    }
+                    for(int i = 0; i <= 28; i++){
+                        fwrite(&dominoPieces[i],28,1,fp);
+                    }
+                    for(int i = 0; i <= 30; i++){
+                        fwrite(&playerA.playerPieces[i],30,1,fp);
+                        fwrite(&playerB.playerPieces[i],30,1,fp);
+                    }
+                    fclose(fp);
+                    if(fwrite != 0)
+                        printf("Salvo com sucesso!");
+                    else
+                        printf("Erro ao salvar...");
+                    exit(0); */
+                }else if(toupper(mama) == 'N'){
+                    showMessage("Saindo sem salvar...");
+                    exit(0);
+                }
+                
                 // Sai do jogo 
                 break;
             }
+
                 if(playerA_Piece_Count-1 == 0){
                     winCondition = true;
                 }else if(playerB_Piece_Count-1 == 0){
@@ -1081,8 +1157,6 @@ int game(player playerA, player playerB){
                 printf("JOGADOR 2 GANHOU COM %d PONTOS",playerB_Points);
             }
         }
-
-
             return 0; 
         }
 

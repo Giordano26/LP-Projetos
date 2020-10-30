@@ -27,7 +27,6 @@ void printMenu()
 void printMode (){
     printf(
     " ___________________________\n"
-    "|                           |\n"
     "|     Modo de jogo          |\n"  
     "|                           |\n"
     "|    1) Solo - P1 VS IA     |\n"
@@ -42,24 +41,21 @@ void printMode (){
 void printInGameMenu(int numero){
     printf(
     " _______________________________\n"
-    "|                               |\n"
     "|         Jogador  #%d           |\n" //espaço pois % não vai para a tela final
     "|                               |\n"
-    "|   1) Ver Mesa                 |\n"
+    "|   1) Jogar                    |\n"
     "|                               |\n"
-    "|   2) Mostrar Peças            |\n"
+    "|   2) Comprar Peças            |\n"
     "|                               |\n"
-    "|   3) Comprar Peças            |\n"
+    "|   3) Regras                   |\n"
     "|                               |\n"
-    "|   4) Jogar                    |\n"
-    "|                               |\n"
-    "|   5) Regras                   |\n"
-    "|                               |\n"
-    "|   6) Sair do Jogo             |\n"
+    "|   4) Sair do Jogo             |\n"
     "|_______________________________|\n"
     ,numero);
 }
 
+
+    
 //Regras do jogo
 void printRules(){
     printf(
@@ -114,37 +110,10 @@ void printRules(){
         "|       iguais vence o jogador que    |\n"
         "|       começou a partida.            |\n"
         "|                                     |\n"
-        "|_____________________________________|\n");
+        "|_____________________________________|\n\n\n");
 }
 
-//Mesa inicial -- essa função vai fica so pro rage
-void printMesa(){ // NÃO CONSEGUIMOS FAZER A MESA AINDA, ESTÁ MUITO COMPLICADO!!!!!!!!
-                  // O PROGRAMA SE TORNOU UM MONSTRO A PARTIR DO MOMENTO EM QUE TIRARM MINHA LIBERDADE
-                  // DE MODULARIZAR, LOGO EU NAO CONSIGO TRABALHAR COM UMA FILE DE 500 LINHAS PQ MEU SCROLL DO MOUSE NAO E GRANDE
-                  // OU SEJA, EU SEI PONTEIRO NAO POSSO USA E TENHO QUE FICAR USANDO METODOS PALEOLITICOS;
-    
-            printf(
-        " __________________________________________________________________\n"
-        "|                                                                  |\n"
-        "|                                                                  |\n"  
-        "|                                                                  |\n"
-        "|                                                                  |\n"
-        "|                                                                  |\n"
-        "|                                                                  |\n"
-        "|                                                                  |\n"
-        "|                                                                  |\n"
-        "|                                                                  |\n"
-        "|                                                                  |\n"
-        "|                                                                  |\n"
-        "|                                                                  |\n"
-        "|                                                                  |\n"
-        "|                                                                  |\n"
-        "|                                                                  |\n"
-        "|                                                                  |\n"
-        "|                                                                  |\n"
-        "|__________________________________________________________________|\n\n");
 
-}
 //função para apagar a tela e dar a impressão de mudança de interface 
 void clearScreen()
 {
@@ -170,8 +139,8 @@ void firstToPlay(int player_1, int player_2){
 
 }
 
-void showPlayerPieces(int pecaLadoA, int pecaLadoB){
-    printf("[%d|%d] ",pecaLadoA,pecaLadoB);
+void showPlayerPieces(int pecaLadoA, int pecaLadoB, int contador){
+    printf("%d) [%d|%d] \n",contador,pecaLadoA,pecaLadoB);
 
 }
 

@@ -106,3 +106,20 @@ char grabOptionInvert(){
         }
     }while(true);
 }
+
+
+char saveGame(){
+    char option;
+    do{
+        showMessage("Salvar jogo?\n(S/N)\n");
+        scanf("%s",&option);
+
+        if(toupper(option) == 'S' || toupper(option) == 'N'){
+            return option;
+        }
+        else{
+            showMessage("Opção inválida...");
+            continue;
+        }
+    }while(true);
+}

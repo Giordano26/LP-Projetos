@@ -18,6 +18,7 @@
         int playerPieces[30]; //array de peças do jogador
     } player;
 
+
 //salvar:
 //struct peça
 //struct player
